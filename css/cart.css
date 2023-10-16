@@ -142,7 +142,7 @@ a:hover {
 }
 
 .nav-link {
-    color: green !important;
+    color: #508E46 !important;
 }
 
 .navbar {
@@ -191,7 +191,7 @@ icon-shape {
 }
 
 .payment-info {
-    background: green;
+    background: #508E46;
     padding: 30px;
     border-radius: 6px;
     color: #fff;
