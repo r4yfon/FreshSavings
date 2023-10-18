@@ -170,12 +170,12 @@
                                 <span>Total(Incl. taxes)</span>
                                 <span>$3020.00</span>
                             </div>
-                            <button class="btn btn-primary btn-block d-flex justify-content-between mt-3" type="button">
-                                <span>
-                                    Checkout
-                                    <i class="fa fa-long-arrow-right ml-1"></i>
-                                </span>
+                            <button type="button" class="btn btn-block btn-lg btn-work">
+                              <div class="d-flex justify-content-between">
+                                <span id="checkout">Checkout</span>
+                              </div>
                             </button>
+
                         </div>
                     </div>
       
@@ -196,66 +196,68 @@
       components: {
         NavBar,
       },
-      data() {
-        return {};
-      }
+      data:() => ({
+        loading: false,
+      })
     }
+
   </script>
+  
   
   <style>
     /* Add your CSS styles here */
     * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-}
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
 
-body {
-    background-color: #f8f9fa;
-    font-family: Arial, sans-serif;
-}
+    body {
+        background-color: #f8f9fa;
+        font-family: Arial, sans-serif;
+    }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
 
-.product {
-    border-bottom: 1px solid #e0e0e0;
-    padding: 15px 0;
-    display: flex;
-    align-items: center;
-}
+    .product {
+        border-bottom: 1px solid #e0e0e0;
+        padding: 15px 0;
+        display: flex;
+        align-items: center;
+    }
 
-.product:last-child {
-    border-bottom: none;
-}
+    .product:last-child {
+        border-bottom: none;
+    }
 
-.product img {
-    width: 80px;
-    border-radius: 5px;
-    margin-right: 20px;
-}
+    .product img {
+        width: 80px;
+        border-radius: 5px;
+        margin-right: 20px;
+    }
 
-.product-details {
-    flex: 1;
-}
+    .product-details {
+        flex: 1;
+    }
 
-.product-actions {
-    display: flex;
-    align-items: center;
-}
+    .product-actions {
+        display: flex;
+        align-items: center;
+    }
 
-.product-actions a {
-    padding: 0 10px;
-}
+    .product-actions a {
+        padding: 0 10px;
+    }
 
-.close {
-    margin-left: auto;
-    font-size: 0.7rem;
-}
+    .close {
+        margin-left: auto;
+        font-size: 0.7rem;
+    }
 
 .summary {
     background-color: #f8f9fa;
@@ -292,9 +294,9 @@ input:focus::placeholder {
 }
 
 .btn {
-    background-color: #343a40;
-    border-color: #343a40;
-    color: white;
+    background-color: #D3D3D3;
+    border-color: #ffffff;
+    color: black;
     width: 100%;
     font-size: 14px;
     margin-top: 20px;
@@ -304,15 +306,19 @@ input:focus::placeholder {
     transition: background-color 0.3s;
 }
 
-  .btn:focus {
-      outline: none;
-  }
+
 
   .btn:hover {
-      background-color: white;
-      max-width: fit-content;
-      color: black;
+    background-color: white;
+    color: black;
   }
+
+  #checkout {
+    text-align: center;
+    margin: auto;
+    font-weight: bold;
+  }
+
 
   a {
       color: #343a40;
@@ -347,11 +353,7 @@ input:focus::placeholder {
         width: 40px; /* Adjust the width */
     }
 
-    .btn {
-        width: 30px; /* Adjust the width of the buttons */
-        border: none !important; /* Remove the border */
-        background-color: transparent; /* Set the background color as transparent */
-    }
+
 
     .input-group-prepend,
     .input-group-append {
