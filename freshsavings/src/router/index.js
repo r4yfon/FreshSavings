@@ -1,6 +1,6 @@
 import App from "../App.vue";
 import { createRouter, createWebHistory } from "vue-router";
-import Marketplace from "../components/Marketplace.vue";
+import Marketplace from "../views/Marketplace.vue";
 
 const routes = [
   {
