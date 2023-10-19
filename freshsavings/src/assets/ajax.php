@@ -23,7 +23,7 @@ class ConnectionManager {
     $pid = $_GET['pid'];
     
 
-    $sql = "select Posting.pid, Ingredient.iid, expiring_in, selling_price, selling_quantity, fname, lname, address, iname, icat, price
+    $sql = "select Posting.pid, Ingredient.iid, expiring_in, selling_price, selling_quantity, fname, lname, address, iname, icat, price, image
     from Posting, Account, Ingredient where Posting.said = Account.aid and Posting.iid = Ingredient.iid and Posting.pid = :pid";
     
     $stmt = $pdo->prepare($sql);
@@ -46,7 +46,8 @@ class ConnectionManager {
         "address" => $row['address'], 
         "iname" => $row['iname'], 
         "icat" => $row['icat'], 
-        "price" => $row['price']];
+        "price" => $row['price'],
+        "image" => $row['image']];
     }
     echo json_encode($result);
     exit;

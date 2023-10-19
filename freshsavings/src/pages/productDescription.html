@@ -19,7 +19,7 @@ integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1
             <div class="row">
                 <div class="col-md-6">
                     <div class="images p-3">
-                        <div class="text-center p-4"> <img id="main-image" src="../assets/img/cabbage.webp" width="250" /> </div>
+                        <div class="text-center p-4"> <img id="main-image" :src="image" width="250" /> </div>
                         <!--<div class="thumbnail text-center"> <img onclick="change_image(this)" src="https://i.imgur.com/Rx7uKd0.jpg" width="70"> <img onclick="change_image(this)" src="https://i.imgur.com/Dhebu4F.jpg" width="70"> </div>-->
                     </div>
                 </div>
@@ -43,9 +43,12 @@ integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1
                             
                             <div class="row">
                                 <div class="cart justify-content-center d-flex "> 
-                                    <button v-on:click="qty--" class="btn btn-primary text-uppercase mr-2 px-4">-</button>  
-                                    <input type="number" style='width: 55px' class="text-center mx-2" v-model="qty" min="1"></input>
-                                    <button v-on:click="qty++" class="btn btn-primary text-uppercase mr-2 px-4">+</button>  
+                                    <button v-if="qty==1" disabled class="btn btn-primary text-uppercase mr-2 px-4">-</button>  
+                                    <button v-else v-on:click="qty--" class="btn btn-primary text-uppercase mr-2 px-4">-</button>  
+                                    <input type="number" style='width: 55px' class="text-center mx-2" :value="qty" min="1" :max="max_qty"></input>
+                                
+                                    <button v-if="qty == max_qty" class="btn btn-primary text-uppercase mr-2 px-4" disabled>+</button>  
+                                    <button v-else v-on:click="qty++" class="btn btn-primary text-uppercase mr-2 px-4">+</button>
                                     
                                     
                             </div>
@@ -76,7 +79,7 @@ integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1
             disPrice: undefined,
             discountPercentage: 80,
             expiry: undefined,
-            
+            image: undefined,
             pid: 1
 
         }
@@ -97,6 +100,9 @@ integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1
             this.actPrice = dat.price;
             this.disPrice = dat.selling_price;
             this.expiry = dat.expiring_in;
+            
+            this.image = "../assets/img/" + dat.image;
+            console.log(this.image);
             
 
             
