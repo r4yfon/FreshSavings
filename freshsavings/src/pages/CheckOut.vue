@@ -3,23 +3,28 @@
     <!-- <NavBar /> -->
 
     <section class="h-100 p-5">
-      <h2 class="pt-4 pb-3" id="heading">Cart</h2>
+      <h2 class="pb-3" id="heading">Cart</h2>
       <div class="container py-2 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
           <div class="col-lg-12">
             <div class="row">
-              <div class="col-lg-7">
+              <div class="col-lg-7" id="cart-section">
 
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                  <div style="flex: 1; padding-right: 280px;">
-                    <p class="mb-1 text-end">Product</p>
+                <!-- <div class="d-flex justify-content-between align-items-center mb-4">
+                  <div style="flex: 1;">
+                    <p class="mb-1 text-center">Product</p>
                   </div>
-                  <div style="flex: 1; padding-left: 125px;">
-                    <p class="mb-1 text-end ml-10">Quantity</p>
+                  <div style="flex: 1;">
+                    <p class="mb-1 text-center">Quantity</p>
                   </div>
                   <div style="flex: 1; padding-right: 40px;">
-                    <p class="mb-1 text-end">Price</p>
+                    <p class="mb-1 text-center">Price</p>
                   </div>
+                </div> -->
+                <div class="header-container">
+                  <p class="mb-1 custom-text">Product</p>
+                  <p class="mb-1 custom-text">Quantity</p>
+                  <p class="mb-1 custom-text">Price</p>
                 </div>
 
                 <div class="card mb-3">
@@ -41,10 +46,15 @@
                         <div style="width: 90px;">
                           <h7 class="fw-normal mb-0">2</h7>
                         </div>
-                        <div style="width: 80px;">
+                        <div style="width: 90px;">
                           <h7 class="mb-0">$900</h7>
                         </div>
-                        <a href="#!" style="color: #cecece;"><i class="fas fa-trash-alt"></i></a>
+                        <div style="width: 50px;">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                          </svg>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -72,10 +82,15 @@
                         <div style="width: 90px;">
                           <h7 class="fw-normal mb-0">2</h7>
                         </div>
-                        <div style="width: 80px;">
+                        <div style="width: 90px;">
                           <h7 class="mb-0">$900</h7>
                         </div>
-                        <a href="#!" style="color: #cecece;"><i class="fas fa-trash-alt"></i></a>
+                        <div style="width: 50px;">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                          </svg>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -100,16 +115,21 @@
                         <div style="width: 90px;">
                           <h7 class="fw-normal mb-0">1</h7>
                         </div>
-                        <div style="width: 80px;">
+                        <div style="width: 90px;">
                           <h7 class="mb-0">$1199</h7>
                         </div>
-                        <a href="#!" style="color: #cecece;"><i class="fas fa-trash-alt"></i></a>
+                        <div style="width: 50px;">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                          </svg>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div class="card mb-3 mb-lg-0">
+                <div class="card mb-3 mb-lg-0" id="card4">
                   <div class="card-body">
                     <div class="d-flex justify-content-between">
                       <div class="d-flex flex-row align-items-center">
@@ -128,10 +148,15 @@
                         <div style="width: 90px;">
                           <h7 class="fw-normal mb-0">1</h7>
                         </div>
-                        <div style="width: 80px;">
+                        <div style="width: 90px;">
                           <h7 class="mb-0">$1799</h7>
                         </div>
-                        <a href="#!" style="color: #cecece;"><i class="fas fa-trash-alt"></i></a>
+                        <div style="width: 50px;">
+                          <svg @click="deleteCard(4)" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16" id="delete4">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                          </svg>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -205,14 +230,25 @@
 import NavBar from "@/components/NavBar.vue";
 
 export default {
-  name: "ShoppingCart",
+  name: "CheckOut",
   components: {
     NavBar,
   },
   data: () => ({
     loading: false,
-  })
+  }),
+  methods: {
+    deleteCard(cardNumber) {
+      // Use appropriate logic to delete the card based on the card number
+      const cardId = `#card${cardNumber}`;
+      const card = document.querySelector(cardId);
+      if (card) {
+        card.remove();
+      }
+    }
+  }
 }
+
 
 </script>
 
@@ -497,4 +533,42 @@ label.radio input:checked+span {
 
 .payment-info {
   text-align: left;
-}</style>
+}
+
+#cart-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.custom-text:nth-of-type(1) {
+  display: flex;
+  flex-grow: 8;
+  margin: 0;
+  padding: 10px;
+}
+
+.custom-text:nth-of-type(2) {
+  display: flex;
+  flex-grow: 1.5;
+
+  text-align: center;
+  margin: 0;
+  padding: 10px;
+}
+.custom-text:nth-of-type(3) {
+  display: flex;
+  flex-grow: 1;
+  left: -40px;
+  position: relative;
+  text-align: center;
+  margin: 0;
+  padding: 10px;
+}
+
+
+</style>
