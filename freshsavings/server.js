@@ -1,10 +1,14 @@
 require('dotenv').config();
 
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const port = 3000;
 const mysql = require('mysql2');
 
+
+// Enable CORS for all routes
+app.use(cors());
 
 // Create a MySQL connection
 const connection = mysql.createConnection({
@@ -39,6 +43,31 @@ app.get('/get_all_ingredients', (req, res) => {
     res.json(results);
   });
 });
+app.get('/get_all_products', (req, res) => {
+  // Query the database to retrieve ingredients
+  connection.query("select pid, Ingredient.iid, Ingredient.iname, selling_price, selling_quantity, said, posting_status, icat, image from freshsavings.Posting, freshsavings.Ingredient where freshsavings.Posting.iid = freshsavings.Ingredient.iid", (err, results) => {
+    if (err) {
+      console.error('Error querying the database:', err);
+      res.status(500).json({ error: 'Internal Server Error' });
+      return;
+    }
+    res.json(results);
+  });
+});
+app.get('/get_product_description/:pid', (req, res) => {
+  // Query the database to retrieve ingredients
+  const pid = parseInt(req.params.pid);
+  connection.query("select Posting.pid, Ingredient.iid, expiring_in, selling_price, selling_quantity, fname, lname, address, iname, icat, price, image from freshsavings.Posting, freshsavings.Account, freshsavings.Ingredient where Posting.said = Account.aid and Posting.iid = Ingredient.iid and Posting.pid = ?", 
+  [pid],(err, results) => {
+    if (err) {
+      console.error('Error querying the database:', err);
+      res.status(500).json({ error: 'Internal Server Error' });
+      return;
+    }
+    res.json(results);
+  });
+});
+
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

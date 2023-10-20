@@ -23,6 +23,7 @@
         <div class="modal-header" style="border-style: none;" >
         <div class="modal-body">
             <div class="container" id='PDescription'>
+                {{GetAllPostings()}}
                 {{AccessDB()}}
                 <div class="row d-flex justify-content-center">
                     <div class="col-md-12">
@@ -108,7 +109,14 @@
         }
     },
     methods: {
-        
+        GetAllPostings(){
+    axios.get('../assets/AllProducts.php').then(response => { 
+      
+      console.log(response.data);
+  }) .catch(function (error) { 
+      console.log(error); 
+});
+        },
         AccessDB(){
             let dat = "";
             para = {pid : this.pid}

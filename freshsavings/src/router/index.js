@@ -1,7 +1,7 @@
 import App from "../App.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import Marketplace from "../pages/Marketplace.vue";
-import ShoppingCart from "../pages/ShoppingCart.vue";
+import CheckOut from "../pages/CheckOut.vue";
 import LogIn from "../pages/LogIn.vue";
 import SignUp from "../pages/SignUp.vue";
 import RecipeGenerator from "../pages/RecipeGenerator.vue";
@@ -18,9 +18,9 @@ const routes = [
     component: Marketplace,
   },
   {
-    path: "/shopping_cart",
-    name: "ShoppingCart",
-    component: ShoppingCart,
+    path: "/checkout",
+    name: "CheckOut",
+    component: CheckOut,
   },
   {
     path: "/log-in",
