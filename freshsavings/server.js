@@ -1,15 +1,23 @@
+require('dotenv').config();
+
 const express = require('express');
 const app = express();
 const port = 3000;
 const mysql = require('mysql2');
 
+
 // Create a MySQL connection
 const connection = mysql.createConnection({
-  host: 'wad2-g7t2.c2ttwb5huwip.ap-southeast-1.rds.amazonaws.com',
-  user: 'g7t2',
-  password: 'wad2g7t2',
-  database: ''
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
 });
+
+console.log(process.env.DB_HOST);
+console.log(process.env.DB_USER);
+console.log(process.env.DB_PASSWORD);
+console.log(process.env.DB_NAME);
 
 // Connect to the database
 connection.connect(err => {
