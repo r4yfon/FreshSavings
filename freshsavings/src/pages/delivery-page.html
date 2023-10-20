@@ -58,7 +58,7 @@
                     </div>
                     <!-- Calendar -->
                     <form>
-                      <input class="form-control" type="datetime-local" placeholder="Select Date & Time">
+                      <input class="form-control" type="datetime-local" name= "slot" placeholder="Select Date & Time">
                     </form>
 
 
@@ -80,31 +80,34 @@
                 <!-- Collapsible panel -->
                 <div id="delivery" class="collapse">
                   <div class="card-body">
-                    <!-- Need to fix alignment @waiwenc -->
-                    <label class="btn btn-lg btn-default container">
-                      <input type="radio" class="form-check-input" id="address1" name="optradio" value="home" checked>
-                      <label class="form-check-label" for="address1">
-                        <div class="d-flex mb-4">
-                          <div class="card-text" style="text-align: left;">
-                            <p style="justify-content: flex-start">
-                              <span>Home</span>
-                              <a href="#" class="text-body justify-content-right">Edit</a>
-                            </p>
-                            <p>
-                              {Name}
-                              <span class="text-body">| {Contact Number}</span>
-                            </p>
-                            <p>{Address}</p>
-                          </div>
-                        </div>
-                      </label>
-                    </label>
 
-                    <button class="btn btn-primary"
-                      style="display:flex; justify-content: center; margin-left:auto; margin-right: auto;">
-                      <a href="#">
-                        <p style="color: white;">Enter new address</p>
-                      </a></button>
+                    <h5>Address</h5>
+                    <div class="form-row mt-4">
+                      <div class="col">
+                          <input type="text" placeholder="Street Name, Building" />
+                      </div>
+                      <br/>
+                      <div class="col-12 col-sm-6">
+                          <input type="text" placeholder="Postal Code" />
+                      </div>
+                      <br/>
+                      <div class="col-6 col-sm-3 mt-4 mt-sm-0">
+                          <input type="text" placeholder="Unit No." />
+                      </div>
+                    
+                      <br/>
+                      <h5>Contact Number</h5>
+                      <div class="form-row mt-4">
+                        <div class="col">
+                            <input type="text" placeholder="Name" />
+                        </div>
+                        <br/>
+                        <div class="col-12 col-sm-6">
+                            <input type="text" placeholder="Phone Number" />
+                        </div>
+                      </div>
+                  </div>
+
                   </div>
                 </div>
               </div>
