@@ -2,7 +2,8 @@ import App from "../App.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import Marketplace from "../pages/Marketplace.vue";
 import ShoppingCart from "../pages/ShoppingCart.vue";
-import SignIn from "../pages/SignIn.vue";
+import LogIn from "../pages/LogIn.vue";
+import SignUp from "../pages/SignUp.vue";
 
 const routes = [
   {
@@ -21,9 +22,14 @@ const routes = [
     component: ShoppingCart,
   },
   {
-    path: "/sign-in",
-    name: "SignIn",
-    component: SignIn,
+    path: "/log-in",
+    name: "LogIn",
+    component: LogIn,
+  },
+  {
+    path: "/sign-up",
+    name: "SignUp",
+    component: SignUp,
   },
 ];
 
