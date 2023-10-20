@@ -4,6 +4,7 @@ import Marketplace from "../pages/Marketplace.vue";
 import ShoppingCart from "../pages/ShoppingCart.vue";
 import LogIn from "../pages/LogIn.vue";
 import SignUp from "../pages/SignUp.vue";
+import RecipeGenerator from "../pages/RecipeGenerator.vue";
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
     path: "/sign-up",
     name: "SignUp",
     component: SignUp,
+  },
+  {
+    path: "/recipe-generator",
+    name: "RecipeGenerator",
+    component: RecipeGenerator,
   },
 ];
 

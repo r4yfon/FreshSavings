@@ -3,11 +3,12 @@ import { Icon } from "@iconify/vue";
 </script>
 
 <template>
-  <section class="">
-    <div class="container-fluid">
+  <section class="container">
+    <div class="">
       <div class="d-flex">
         <div class="col d-flex flex-column justify-content-between">
-          <figure><img src="images/signin-image.jpg" alt="sign up image" /></figure>
+          <figure><img src="https://colorlib.com/etc/regform/colorlib-regform-7/images/signin-image.jpg"
+              alt="log in image" /></figure>
           <a href="../sign-up">Create an account</a>
         </div>
         <div class="col">

@@ -6,7 +6,6 @@ import { Icon } from "@iconify/vue";
   <section>
     <!-- Search bar -->
     <div class="input-group m-3">
-      <!-- TODO: change icon -->
       <span id="search_input" class="input-group-text">
         <Icon icon="ph:magnifying-glass" />
       </span>
@@ -214,3 +213,9 @@ export default {
   },
 };
 </script>
+
+<style>
+input {
+  margin-bottom: 0;
+}
+</style>

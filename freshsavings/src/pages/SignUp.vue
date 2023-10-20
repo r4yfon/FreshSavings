@@ -35,7 +35,8 @@ import { Icon } from "@iconify/vue";
           <div class="form-check">
             <input class="form-check-input" type="checkbox" value="" id="checkTerms">
             <label class="form-check-label" for="checkTerms">
-              I have read and agree with the Terms of service
+              I have read and agree with the <a href="https://google.com" target="_blank" rel="noopener">Terms of
+                service</a>
             </label>
           </div>
           <button type="button" class="btn btn-primary">Register</button>
@@ -61,5 +62,9 @@ export default {
 <style>
 .form-check {
   text-align: left;
+}
+
+img {
+  padding: 0;
 }
 </style>
