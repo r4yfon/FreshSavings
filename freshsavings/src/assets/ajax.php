@@ -2,12 +2,12 @@
 <?php
 class ConnectionManager {
     public function getConnection() {
-      $servername = 'wad2-g7t2.c2ttwb5huwip.ap-southeast-1.rds.amazonaws.com';
-      $dbname = 'freshsavings';
-      $username = 'g7t2';
-      $password = 'wad2g7t2';
-      $port = 3306;
-      $url  = "mysql:host=$servername;dbname=$dbname;port=$port";
+      $servername = '';
+      $dbname = '';
+      $username = '';
+      $password = '';
+      $port = ;
+      $url  = "";
       return new PDO($url, $username, $password);
     }
   }
