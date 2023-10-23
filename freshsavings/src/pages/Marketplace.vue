@@ -3,6 +3,9 @@ import { Icon } from "@iconify/vue";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap';
 import axios from 'axios';
+import firstImage from '@/assets/img/sale.png'
+import secondImage from '@/assets/img/trusted.png'
+import thirdImage from '@/assets/img/quality.png'
 </script>
 
 
@@ -16,14 +19,88 @@ import axios from 'axios';
       <input type="text" id="search_input" class="form-control" placeholder="Search your grocery products etc..." />
       <button class="btn btn-outline-secondary" id="search_input" type="button">Search</button>
     </div>
+    </section>
 
+  <section>
+    <div class="container-fluid ">
+      <div class="row">
+        <h1 class="text-center">OUR PROMISE</h1>
+      </div>
+      <div class="row justify-content-around">
+        <div class="col-4">
+
+          <div class="card h-40">
+              <!-- Product image -->
+              <img class="card-img-top m-auto" style="width:400px; height: auto;" :src="firstImageUrl" alt="..." />
+              <!-- Product details -->
+              <div class="card-body p-4">
+                <div class="text-center">
+                  <!-- Product name -->
+                  <h5 class="fw-bolder text-center">DISCOUNTED PRODUCT</h5>
+                  
+                </div>
+              </div>
+              <!-- Product actions -->
+              <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                <div class="text-center">
+                  <button class="btn btn-outline-dark mt-auto">Learn More</button>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="col-4">
+
+<div class="card h-40">
+    <!-- Product image -->
+    <img class="card-img-top m-auto" :src="secondImageUrl" alt="..." style="width:400px; height: auto;" />
+    <!-- Product details -->
+    <div class="card-body p-4">
+      <div class="text-center">
+        <!-- Product name -->
+        <h5 class="fw-bolder text-center">TRUSTABLE VENDORS</h5>
+        
+      </div>
+    </div>
+    <!-- Product actions -->
+    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+      <div class="text-center">
+        <button class="btn btn-outline-dark mt-auto">Learn More</button>      </div>
+    </div>
+  </div>
+</div>
+<div class="col-4">
+
+<div class="card h-40">
+    <!-- Product image -->
+    <img class="card-img-top m-auto" :src="thirdImageUrl" alt="..."  style="width:400px; height: auto;" />
+    <!-- Product details -->
+    <div class="card-body p-4">
+      <div class="text-center">
+        <!-- Product name -->
+        <h5 class="fw-bolder text-center">QUALITY PRESERVED</h5>
+        <!-- Product price -->
+        
+      </div>
+    </div>
+    <!-- Product actions -->
+    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+      <div class="text-center">
+        <button class="btn btn-outline-dark mt-auto">Learn More</button>      </div>
+    </div>
+  </div>
+</div>
+      </div>
+      
+    </div>
+  </section>
+    <section>
     <div class="m-3">
       <h3 class="text-start">Categories</h3>
 
       <!-- Container for categories / swiper -->
       <div class="container-fluid d-flex justify-content-between">
         <div v-for="category of categories" :key="category.categoryName" class="border rounded m-3 p-3 d-flex flex-column justify-content-between col-2 align-items-center">
-          <img :src="category.imgLink" />
+          <img :src=imageUrl(category.imgLink) style="width:100px"/>
           <p class="mb-0 mt-3">{{ category.categoryName }}</p>
         </div>
       </div>
@@ -108,27 +185,30 @@ export default {
       expiry: undefined,
       productimage: "cabbage.webp",
       pid: 1,
+      firstImageUrl : firstImage,
+      secondImageUrl : secondImage,
+      thirdImageUrl : thirdImage,
       groceryItems: [],
       categories: [
         {
           categoryName: "Fruits",
-          imgLink: "https://example.com/fruits.jpg",
+          imgLink: "fruits.png",
         },
         {
           categoryName: "Vegetables",
-          imgLink: "https://example.com/vegetables.jpg",
+          imgLink: "vegetable.png",
         },
         {
           categoryName: "Dairy",
-          imgLink: "https://example.com/dairy.jpg",
+          imgLink: "milk.png",
         },
         {
           categoryName: "Meat",
-          imgLink: "https://example.com/meat.jpg",
+          imgLink: "barbecue.png",
         },
         {
           categoryName: "Bakery",
-          imgLink: "https://example.com/bakery.jpg",
+          imgLink: "bread.png",
         },
       ],
     };
