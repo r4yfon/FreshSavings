@@ -215,7 +215,7 @@ GetAllPostings(){
     console.log(error);
 });
 },
-imageurl(img){
+imageUrl(img){
   console.log("@/assets/img/" + img);
   return "@/assets/img/" + img;
 },
