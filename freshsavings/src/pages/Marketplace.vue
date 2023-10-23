@@ -51,7 +51,7 @@ import axios from 'axios';
                 <!-- Modal -->
                 <div class="modal fade modal-lg" id="productDesc" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content" style="background-color: rgba(0,0,0,.75)">
+                    <div class="modal-content" style="background-color: rgba(0,0,0,.5)">
                       <div class="modal-body">
                         <div class="container" id="PDescription">
                           <div class="row">
@@ -64,7 +64,7 @@ import axios from 'axios';
                               <div style="height: 100%; background-color: #eee;">
                                 <h1 class="px-4 py-2">{{ productName }}</h1>
                                 <h4 class="px-4 py-2">Vendor: {{ vendor }}</h4>
-                                <h4 class="act-price px-4 py-2">Price: {{ actPrice }} <small style="text-decoration: line-through">{{ disPrice }}</small> each</h4>
+                                <h4 class="act-price px-4 py-2">Price: ${{ actPrice }} <small style="text-decoration: line-through">${{ disPrice }}</small> each</h4>
                                 <p class="px-4">Expiring in: {{ expiry }} days</p>
                                 <h6 class="px-4">Quantity Left: {{ max_qty }}</h6>
                                 <div class="justify-content-center">
@@ -72,8 +72,8 @@ import axios from 'axios';
                                     <button v-if="qty <= 1" disabled class="btn btn-primary disabled d-inline-block">-</button>
                                     <button v-else v-on:click="qty--" class="btn btn-primary d-inline-block">-</button>
                                     <input type="number" disabled style="width: 55px" class="text-center d-inline-block" :value="qty" min="1" :max="max_qty" />
-                                    <button v-if="qty >= max_qty" class="btn btn-primary d-inline-block" disabled>+</button>
-                                    <button v-else v-on:click="qty++" class="btn btn-primary disabled d-inline-block">+</button>
+                                    <button v-if="qty >= max_qty" class="btn btn-primary disabled d-inline-block" disabled>+</button>
+                                    <button v-else v-on:click="qty++" class="btn btn-primary d-inline-block">+</button>
                                   </div>
                                 </div>
                               </div>
