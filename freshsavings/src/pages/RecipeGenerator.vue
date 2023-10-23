@@ -5,7 +5,7 @@ import { Icon } from "@iconify/vue";
 <template>
   <section class="container">
     <!-- left sidebar -->
-    <div class="col-4">
+    <div class="col">
       <h3 class="mb-4">Recipe Generator</h3>
       <div class="mb-3">
         <label for="search_input" class="form-label">Select the ingredients you want to use.</label>
@@ -18,16 +18,24 @@ import { Icon } from "@iconify/vue";
         </div>
       </div>
 
-      <div v-for="category in categories" :key="category" class="container border rounded m-3 p-3">
-        <div class="row">
-          <img class="col rounded" :src="category.img" />
-          <p class="col">{{ category.name }}</p>
-        </div>
-        <!-- <div class="row">
-          <div class="border rounded d-inline" v-for="item in category.items" :key="item">
-            <p>{{ item }}</p>
+      <div class="accordion" id="accordionExample">
+        <div v-for="category in categories" :key="category" class="accordion-item border my-3 p-3">
+          <div class="accordion-header">
+            <button type="button" class="accordion-button d-flex align-items-center" data-bs-toggle="collapse"
+              data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              <img class="rounded category-image" :src="category.img" />
+              <p class="mx-3 text-capitalize">{{ category.name }}</p>
+            </button>
           </div>
-        </div> -->
+          <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+            <div class="border rounded accordion-body d-flex flex-wrap">
+              <p class="border rounded d-inline m-1 p-2 text-capitalize" v-for="item in category.items" :key="item">{{
+                item
+              }}
+              </p>
+            </div>
+          </div>
+        </div>
 
       </div>
     </div>
@@ -169,5 +177,9 @@ h3 {
 
 input {
   margin-bottom: 0;
+}
+
+.category-image {
+  width: 48px;
 }
 </style>
