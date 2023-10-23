@@ -18,11 +18,11 @@ import axios from 'axios';
     </div>
 
     <div class="m-3">
-      <h3 class="text-start">Categories</h3>
+      <h4 class="text-start">Categories</h4>
 
       <!-- Container for categories / swiper -->
       <div class="container-fluid d-flex justify-content-between">
-        <div v-for="category of categories" :key="category.categoryName" class="border rounded m-3 p-3 d-flex flex-column justify-content-between col-2 align-items-center">
+        <div v-for="category of categories" :key="category.categoryName" class="border rounded m-3 p-3 d-flex flex-column justify-content-between col-2 align-items-center category-card">
           <img :src="category.imgLink" />
           <p class="mb-0 mt-3">{{ category.categoryName }}</p>
         </div>
@@ -123,44 +123,43 @@ import axios from 'axios';
 </template>
 
 <script>
-export default {
-  name: "marketplaceHome",
-  data() {
-    return {
-      qty: 1,
-      max_qty: undefined,
-      vendor: undefined,
-      productName: undefined,
-      actPrice: undefined,
-      disPrice: undefined,
-      discountPercentage: 80,
-      expiry: undefined,
-      productimage: undefined,
-      pid: 1,
-
-      groceryItems: [],
-      categories: [
-        {
-          categoryName: "Fruits",
-          imgLink: "https://example.com/fruits.jpg",
-        },
-        {
-          categoryName: "Vegetables",
-          imgLink: "https://example.com/vegetables.jpg",
-        },
-        {
-          categoryName: "Dairy",
-          imgLink: "https://example.com/dairy.jpg",
-        },
-        {
-          categoryName: "Meat",
-          imgLink: "https://example.com/meat.jpg",
-        },
-        {
-          categoryName: "Bakery",
-          imgLink: "https://example.com/bakery.jpg",
-        },
-      ],
+  export default {
+    name: "marketplaceHome",
+    data() {
+      return {
+        qty: 1,
+        max_qty: undefined,
+        vendor: undefined,
+        productName: undefined,
+        actPrice: undefined,
+        disPrice: undefined,
+        discountPercentage: 80,
+        expiry: undefined,
+        productimage: undefined,
+        pid: 1,
+        groceryItems: [],
+        categories: [
+    {
+      categoryName: "Fruits",
+      imgLink: require("../assets/img/fruits.png"),
+    },
+    {
+      categoryName: "Vegetables",
+      imgLink: require("../assets/img/vegetable.png"),
+    },
+    {
+      categoryName: "Dairy",
+      imgLink: require("../assets/img/dairy-products.png"),
+    },
+    {
+      categoryName: "Meat",
+      imgLink: require("../assets/img/barbeque.png"),
+    },
+    {
+      categoryName: "Fish",
+      imgLink: require("../assets/img/fish.png"),
+    }
+  ],
     };
   },
   components: {
@@ -232,6 +231,28 @@ imageurl(img){
 <style>
 input {
   margin-bottom: 0;
+}
+
+/* Added style for category cards */
+/* Added style for category cards */
+.category-card {
+  background-color: white;
+  width: 120px; /* You can adjust the width as needed */
+  height: 150px; /* You can adjust the height as needed */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5px; /* Adjust the padding as needed */
+  text-align: center; /* Center the text horizontally */
+}
+
+/* Ensure text remains within the card */
+.category-card p {
+  margin: 0; /* Set margin to 0 to prevent any unwanted spacing */
+  font-size: 14px; /* Adjust the font size as needed */
+  overflow-wrap: break-word; /* Allow the category name to wrap within the container */
+  
 }
 </style>
 <style>body{background-color: white}.card{border:none}.product{background-color: #eee}.brand{font-size: 13px}.act-price{color:blue;font-weight: 700}.dis-price{text-decoration: line-through}.about{font-size: 14px}.color{margin-bottom:10px}label.radio{cursor: pointer}label.radio input{position: absolute;top: 0;left: 0;visibility: hidden;pointer-events: none}label.radio span{padding: 2px 9px;border: 2px solid #ff0000;display: inline-block;color: #ff0000;border-radius: 3px;text-transform: uppercase}label.radio input:checked+span{border-color: #ff0000;background-color: #ff0000;color: #fff}.btn-danger{background-color: #ff0000 !important;border-color: #ff0000 !important}.btn-danger:hover{background-color: #da0606 !important;border-color: #da0606 !important}.btn-danger:focus{box-shadow: none}.cart i{margin-right: 10px}</style>
