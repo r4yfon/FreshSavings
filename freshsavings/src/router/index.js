@@ -26,12 +26,17 @@ const routes = [
     path: "/login",
     name: "LogIn",
     component: LogIn,
-    meta: { hideNavigation: true },
+    meta: {
+      hideNavBar: true,
+    },
   },
   {
     path: "/signup",
     name: "SignUp",
     component: SignUp,
+    meta: {
+      hideNavBar: true,
+    },
   },
   {
     path: "/recipe-generator",

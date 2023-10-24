@@ -1,18 +1,22 @@
 <template>
-  <div id="app">
-    <template v-if="showNavbar">
-      <!-- Your navbar code here -->
-      <nav>
-        <!-- Navbar content -->
-      </nav>
-    </template>
-    <router-view></router-view>
-  </div>
+  <NavBar v-if="!this.$route.meta.hideNavBar" />
+  <main>
+    <RouterView
+      :class="[this.$route.meta.hideNavBar ? 'bg-white' : 'bg-light']"
+      :style="[
+        this.$route.meta.hideNavBar
+          ? { 'min-height': `100vh` }
+          : { 'min-height': `calc(100vh - 75px)` },
+      ]"
+    />
+  </main>
+  <Footer v-if="!this.$route.meta.hideNavBar" />
 </template>
 
 <script>
 import HelloWorld from "./components/HelloWorld.vue";
 import NavBar from "./components/NavBar.vue";
+
 
 export default {
   name: "App",
@@ -22,20 +26,14 @@ export default {
   },
   data() {
     return {
-      showNavbar: true, // Set the initial value to true
+      shouldShowNavbar: true
     };
   },
   watch: {
-    '$route'(to) {
-      // Conditionally set the value of showNavbar based on the route meta
-      if (to.meta.hideNavigation) {
-        this.showNavbar = false;
-      } else {
-        this.showNavbar = true;
-      }
-    },
-  },
-
+    $route(to) {
+      this.shouldShowNavbar = to.name !== "LogIn";
+    }
+  }
 };
 </script>
 
