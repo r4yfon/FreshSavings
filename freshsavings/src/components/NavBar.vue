@@ -36,7 +36,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="login">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="green" class="bi bi-person"
                             viewBox="0 0 16 16">
                             <path
