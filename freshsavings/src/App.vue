@@ -1,8 +1,13 @@
 <template>
-  <!-- <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js App" /> -->
-  <nav-bar />
-  <router-view />
+  <div id="app">
+    <template v-if="showNavbar">
+      <!-- Your navbar code here -->
+      <nav>
+        <!-- Navbar content -->
+      </nav>
+    </template>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
@@ -15,6 +20,22 @@ export default {
     HelloWorld,
     NavBar
   },
+  data() {
+    return {
+      showNavbar: true, // Set the initial value to true
+    };
+  },
+  watch: {
+    '$route'(to) {
+      // Conditionally set the value of showNavbar based on the route meta
+      if (to.meta.hideNavigation) {
+        this.showNavbar = false;
+      } else {
+        this.showNavbar = true;
+      }
+    },
+  },
+
 };
 </script>
 
@@ -28,7 +49,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 75px;
-  background-color: #FAF9F6;
+  background-color: #f8f9fa;
 
 }
 </style>

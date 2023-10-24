@@ -23,12 +23,13 @@ const routes = [
     component: CheckOut,
   },
   {
-    path: "/log-in",
+    path: "/login",
     name: "LogIn",
     component: LogIn,
+    meta: { hideNavigation: true },
   },
   {
-    path: "/sign-up",
+    path: "/signup",
     name: "SignUp",
     component: SignUp,
   },
@@ -43,5 +44,6 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
+
 
 export default router;
