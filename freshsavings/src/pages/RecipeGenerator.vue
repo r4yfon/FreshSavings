@@ -3,7 +3,7 @@ import { Icon } from "@iconify/vue";
 </script>
 
 <template>
-  <section class="container">
+  <section class="container" style="padding-top: 50px">
     <!-- left sidebar -->
     <div class="col">
       <h3 class="mb-4">Recipe Generator</h3>
