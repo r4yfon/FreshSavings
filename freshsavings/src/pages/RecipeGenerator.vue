@@ -18,21 +18,26 @@ import { Icon } from "@iconify/vue";
         </div>
       </div>
 
-      <div class="accordion" id="accordionExample">
-        <div v-for="category in categories" :key="category" class="accordion-item border my-3 p-3">
-          <div class="accordion-header">
+      <div v-for="(category, index) in categories" :key="category" class="accordion border my-3 p-3"
+        :id="'accordion' + index">
+        <div class="accordion-item">
+          <div class="accordion-header" :id="'heading' + index" @click="toggleAccordion(index)">
             <button type="button" class="accordion-button d-flex align-items-center" data-bs-toggle="collapse"
-              data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              :data-bs-target="'#collapse' + index" :aria-expanded="activeAccordion === index"
+              :aria-controls="'collapse' + index">
               <img class="rounded category-image" :src="category.img" />
               <p class="mx-3 text-capitalize">{{ category.name }}</p>
             </button>
           </div>
-          <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-            <div class="border rounded accordion-body d-flex flex-wrap">
-              <p class="border rounded d-inline m-1 p-2 text-capitalize" v-for="item in category.items" :key="item">{{
-                item
-              }}
-              </p>
+          <div :id="'collapse' + index" class="accordion-collapse collapse" :class="{ 'show': activeAccordion === index }"
+            :aria-labelledby="'heading' + index">
+            <!-- :data-bs-parent="'#accordion' + index"> -->
+            <div class="rounded accordion-body d-flex flex-wrap">
+              <button type="button" class="btn btn-primary m-1 p-2 text-capitalize" v-for="item in category.items"
+                :key="item" @click="modifyIngredientList(item)" data-bs-toggle="button">{{
+                  item
+                }}
+              </button>
             </div>
           </div>
         </div>
@@ -47,10 +52,14 @@ import { Icon } from "@iconify/vue";
   </section>
 </template>
 
+
+
 <script>
 export default {
   data() {
     return {
+      ingredientList: [],
+      activeAccordion: null,
       categories: {
         vegetables: {
           name: "vegetables",
@@ -162,6 +171,31 @@ export default {
   },
   components: {
     Icon,
+  },
+  methods: {
+    toggleAccordion(index) {
+      if (this.activeAccordion === index) {
+        this.activeAccordion = null;
+      } else {
+        this.activeAccordion = index;
+      }
+      console.log(this.activeAccordion);
+    },
+
+    modifyIngredientList(item) {
+      const itemIndex = this.ingredientList.indexOf(item);
+      if (itemIndex !== -1) {
+        this.ingredientList.splice(itemIndex, 1);
+      } else {
+        this.ingredientList.push(item);
+      }
+      console.log(this.ingredientList);
+    },
+
+    // inIngredientList(item) {
+    //   console.log(this.ingredientList);
+    //   return this.ingredientList.indexOf(item) !== -1;
+    // }
   }
 }
 </script>
