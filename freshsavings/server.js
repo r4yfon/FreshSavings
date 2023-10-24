@@ -45,7 +45,7 @@ app.get('/get_all_ingredients', (req, res) => {
 });
 app.get('/get_all_products', (req, res) => {
   // Query the database to retrieve ingredients
-  connection.query("select pid, Ingredient.iid, Ingredient.iname, selling_price, selling_quantity, said, posting_status, icat, image from freshsavings.Posting, freshsavings.Ingredient where freshsavings.Posting.iid = freshsavings.Ingredient.iid", (err, results) => {
+  connection.query("select pid, Ingredient.iid, Ingredient.iname, selling_price, selling_quantity, fname, lname, said, posting_status, icat, Ingredient.price, image from freshsavings.Posting, freshsavings.Account, freshsavings.Ingredient where Posting.said = Account.aid and Posting.iid = Ingredient.iid", (err, results) => {
     if (err) {
       console.error('Error querying the database:', err);
       res.status(500).json({ error: 'Internal Server Error' });
