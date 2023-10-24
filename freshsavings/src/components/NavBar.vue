@@ -27,7 +27,7 @@
 
             <ul class=" navbar-nav ms-auto" style="padding-right: 30px; display: flex; align-items: center;">
                 <li class="nav-item" style="margin-right: 0px; margin-top: 1px;">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="checkout">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="green" class="bi bi-cart"
                             viewBox="0 0 16 16">
                             <path
