@@ -11,10 +11,10 @@ import thirdImage from '@/assets/img/quality.png'
 
 
 <template>
-  <section>
+  <section style="padding-top: 20px; padding-bottom: 20px;">
     
     <!-- Search bar -->
-    <div class="input-group m-3">
+    <div class="input-group mt-10" style="padding-left: 20px; padding-right: 20px; height: 45px;">
       <span id="search_input" class="input-group-text">
         <Icon icon="ph:magnifying-glass" />
       </span>

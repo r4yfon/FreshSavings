@@ -270,17 +270,12 @@ export default {
 
 <style scoped>
 /* Add your CSS styles here */
-* {
+/* * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-}
-
-body {
-  background-color: #f8f9fa;
-  font-family: Arial, sans-serif;
-}
+} */
 
 .container {
   max-width: 1200px;
@@ -288,52 +283,17 @@ body {
   padding: 20px;
 }
 
-.product {
-  border-bottom: 1px solid #e0e0e0;
-  padding: 15px 0;
-  display: flex;
-  align-items: center;
-}
 
-.product:last-child {
-  border-bottom: none;
-}
-
-.product img {
-  width: 80px;
-  border-radius: 5px;
-  margin-right: 20px;
-}
-
-.product-details {
-  flex: 1;
-}
-
-.product-actions {
-  display: flex;
-  align-items: center;
-}
-
-.product-actions a {
-  padding: 0 10px;
-}
-
-.close {
-  margin-left: auto;
-  font-size: 0.7rem;
-}
-
-.summary {
+/* .summary {
   background-color: #f8f9fa;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+} */
 
-.summary p {
+/* .summary p {
   margin-bottom: 15px;
-}
-
+} */
 
 
 form {
@@ -396,22 +356,6 @@ a:hover {
 }
 
 
-
-
-icon-shape {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  vertical-align: middle;
-}
-
-.icon-sm {
-  width: 2rem;
-  height: 2rem;
-
-}
-
 .quantity-field {
   border: none !important;
   /* Remove the border */
@@ -420,8 +364,6 @@ icon-shape {
   width: 40px;
   /* Adjust the width */
 }
-
-
 
 .input-group-prepend,
 .input-group-append {
@@ -442,10 +384,6 @@ icon-shape {
   font-weight: bold;
   height: auto;
   font-size: 20px;
-}
-
-.product-details {
-  padding: 10px;
 }
 
 body {
@@ -585,4 +523,6 @@ label.radio input:checked+span {
   text-align: center;
   margin: 0;
   padding: 10px;
-}</style>
+}
+
+</style>
