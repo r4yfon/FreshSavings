@@ -227,7 +227,7 @@ export default {
       return require(`@/assets/img/${this.productimage}`);
     },
     totalCost(a, b){
-      return a * b;
+      return (a * b).toFixed(2);
     },
     Added(pid){
       this.cart.push(pid);
