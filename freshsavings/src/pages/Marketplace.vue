@@ -18,8 +18,8 @@ import thirdImage from '@/assets/img/quality.png'
       <span id="search_input" class="input-group-text">
         <Icon icon="ph:magnifying-glass" />
       </span>
-      <input type="text" id="search_input" class="form-control" placeholder="Search your grocery products etc..." />
-      <button class="btn btn-outline-secondary" id="search_input" type="button">Search</button>
+      <input v-model="searching" type="text" id="search_input" class="form-control" placeholder="Search your grocery products etc..." />
+      
     </div>
   
     </section>
@@ -111,8 +111,9 @@ import thirdImage from '@/assets/img/quality.png'
 
     <div class="container px-4 px-lg-5 mt-5">
       <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-start">
-        <div class="col mb-5" v-for="product of groceryItems" :key="product.iname">
-          <div v-if="product.posting_status == 'Active' && cart.indexOf(product.pid) == -1" class="card h-100">
+        <template v-for="product of groceryItems" :key="product.iname">
+          <div v-if="product.posting_status == 'Active' && cart.indexOf(product.pid) == -1 && searched(product.iname)" class="col mb-5">
+          <div class="card h-100">
             <!-- Product image -->
             <img class="card-img-top" :src="imageUrl(product.image)" alt="..." />
             <!-- Product details -->
@@ -132,11 +133,14 @@ import thirdImage from '@/assets/img/quality.png'
               </div>
             </div>
           </div>
-          <div v-else-if="product.posting_status == 'Active' && cart.indexOf(product.pid) != -1" class="card h-100">
+          </div>
+          <div v-else-if="product.posting_status == 'Active' && cart.indexOf(product.pid) != -1 && searched(product.iname)" class="col mb-5">
+            <div class="card h-100">
             <!-- Product image -->
             <img class="card-img-top" :src="imageUrl(product.image)" alt="..." />
             <!-- Product details -->
             <div class="card-body p-4">
+
               <div class="text-center">
                 <!-- Product name -->
                 <h5 class="fw-bolder text-center">{{ product.iname }} x{{product.selling_quantity}}</h5>
@@ -153,6 +157,7 @@ import thirdImage from '@/assets/img/quality.png'
             </div>
           </div>
         </div>
+        </template>
       </div>
     </div>
   </section>
@@ -167,6 +172,7 @@ export default {
       firstImageUrl : firstImage,
       secondImageUrl : secondImage,
       thirdImageUrl : thirdImage,
+      searching: "",
       cart : [],
       groceryItems: [],
       categories: [
@@ -232,7 +238,22 @@ export default {
       this.cart = this.cart.splice(a, 1);
       console.log(this.cart);
       
-    }
+    },
+    searched(productName){
+      productName = productName.toLowerCase();
+      this.searching = this.searching.toLowerCase();
+      if(this.searching === ""){
+        return true;
+      }
+      else{
+        if(productName.indexOf(this.searching) === -1){
+          return false;
+        }
+        else{
+          return true;
+        }
+      }
+    },
   },
 };
 </script>
