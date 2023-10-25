@@ -5,7 +5,6 @@ import CheckOut from "../pages/CheckOut.vue";
 import LogIn from "../pages/LogIn.vue";
 import SignUp from "../pages/SignUp.vue";
 import RecipeGenerator from "../pages/RecipeGenerator.vue";
-import Inventory from "../pages/Inventory.vue";
 
 const routes = [
   {
@@ -43,11 +42,6 @@ const routes = [
     path: "/recipe-generator",
     name: "RecipeGenerator",
     component: RecipeGenerator,
-  },
-  {
-    path: "/inventory",
-    name: "Inventory",
-    component: Inventory,
   },
 ];
 

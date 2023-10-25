@@ -357,15 +357,6 @@ export default {
       }
     }
   },
-    name: 'ValueType',
-    data() {
-      return {
-        value1: new Date(2019, 9, 9),
-        value2: '2019-10-09',
-        value3: new Date(2019, 9, 9).getTime(),
-        value4: '09/10/2019',
-      };
-    },
 }
 
 
