@@ -1,9 +1,9 @@
 <script setup>
   import AccordionPanel from '../components/AccordianPanel.vue';
   import { ref } from 'vue';
-  const date = ref(new Date());
   import VueDatePicker from '@vuepic/vue-datepicker';
   import '@vuepic/vue-datepicker/dist/main.css'
+  const date = ref(new Date());
 
 </script>
 
