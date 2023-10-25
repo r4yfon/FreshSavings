@@ -12,22 +12,14 @@
 
 <template>
   <div class="panel container mb-4 border-2 rounded-lg shadow-sm">
-    <button
-      :arial-controls="'accordion-content-' + ariaTitle"
-      :id="'accordion-control-' + ariaTitle"
-      @click.prevent="togglePanel"
-      class="p-4 w-full border-b-2 font-semibold flex flex-row items-center justify-between">
-      {{ title }}
-      <span
-        class="material-icons"
-        v-if="showPanel">
-        expand_more
-      </span>
-      <span
-        class="material-icons"
-        v-else>
-        chevron_right
-      </span>
+      <button 
+        :arial-controls="'accordion-content-' + ariaTitle"
+        :id="'accordion-control-' + ariaTitle"
+        @click.prevent="togglePanel" >
+        <label class="radio">
+          <input type="radio" name="option" value="option">
+        {{ title }}
+        </label>
     </button>
     <div
       :aria-hidden="!showPanel"
@@ -38,3 +30,39 @@
     </div>
   </div>
 </template>
+
+<style>
+  button{
+    padding: 4;
+    width: auto; 
+    height:auto;  
+    flex-direction: row; 
+    align-items: center; 
+    justify-content: normal; 
+  }
+
+  label.radio {
+  cursor: pointer;
+}
+
+label.radio input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+label.radio span {
+  padding: 1px 12px;
+  border: 2px solid #ada9a9;
+  display: inline-block;
+  color: #8f37aa;
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 300;
+}
+
+
+</style>

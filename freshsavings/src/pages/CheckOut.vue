@@ -1,3 +1,12 @@
+<script setup>
+  import AccordionPanel from '../components/AccordianPanel.vue';
+  import { ref } from 'vue';
+  const date = ref(new Date());
+  import VueDatePicker from '@vuepic/vue-datepicker';
+  import '@vuepic/vue-datepicker/dist/main.css'
+
+</script>
+
 <template>
   <div>
     <!-- <NavBar /> -->
@@ -176,6 +185,92 @@
                   <p class="mb-1 custom-text">Delivery Options</p>
                 </div>
 
+                <div class="card mb-3">
+                  <main>
+                    <AccordionPanel aria-title="incidents" title="Self Pickup">
+                      <div>
+                        <p> Store Name, Address, Opening Hours </p>
+                      </div>
+                      <div>
+                        <p>
+                          Choose a pickup time!
+                        </p>
+                      </div>
+                      <!-- Calendar -->
+                      <section>
+                        <VueDatePicker v-model:value="date" inline auto-apply value-type="format" @change="onChange()"/>
+                        <p> Your selected day is {{date}} </p>
+                      </section>
+                    </AccordionPanel>
+                  </main>
+                </div>
+
+                <div class="card mb-3">
+                  <main>
+                    <AccordionPanel aria-title="incidents" title="Delivery ($20)">
+                      <h5> Contact Details </h5>
+                      <div class="input">
+                        <label
+                          class="font-semibold"
+                          for="fullName">Full Name</label>
+                        <input
+                          class="block inner-shadow rounded border-2 w-full mt-2 p-1"
+                          type="text"
+                          id="fullName"
+                          name="fullName"
+                        />
+                      </div>
+                      <div class="input mt-4">
+                        <label class="font-semibold" for="email">Email</label>
+                        <input
+                          class="block inner-shadow rounded border-2 w-3/5 mt-2 p-1"
+                          type="text"
+                          id="email"
+                          name="email"
+                        />
+                      </div>
+                      <div class="input mt-4">
+                        <label class="font-semibold" for="phoneNumber">Phone Number</label>
+                        <input
+                          class="block inner-shadow rounded border-2 w-1/2 mt-2 p-1"
+                          type="text"
+                          id="phoneNumber"
+                          name="phoneNumber"
+                        />
+                      </div>
+                      <br/>
+                      <h5> Address Details </h5>
+                      <div class="input">
+                        <label class="font-semibold" for="address">Address</label>
+                        <input
+                          class="block inner-shadow rounded border-2 w-full mt-2 p-1"
+                          type="text"
+                          id="address"
+                          name="address"
+                        />
+                      </div>
+                      <div class="input mt-4">
+                        <label class="font-semibold" for="city">Postal Code</label>
+                        <input
+                          class="block inner-shadow rounded border-2 w-full mt-2 p-1"
+                          type="text"
+                          id="city"
+                          name="city"
+                        />
+                      </div>
+                      <div class="input mt-4">
+                        <label class="font-semibold" for="state">Unit No.</label>
+                        <input
+                          class="block inner-shadow rounded border-2 w-1/2 mt-2 p-1"
+                          type="text"
+                          id="state"
+                          name="state"
+                        />
+                      </div>
+                    </AccordionPanel>
+                  </main>
+                </div>
+
 
               </div>
               <div class="col-md-5">
@@ -261,11 +356,21 @@ export default {
         card.remove();
       }
     }
-  }
+  },
+    name: 'ValueType',
+    data() {
+      return {
+        value1: new Date(2019, 9, 9),
+        value2: '2019-10-09',
+        value3: new Date(2019, 9, 9).getTime(),
+        value4: '09/10/2019',
+      };
+    },
 }
 
 
 </script>
+
 
 
 <style scoped>
