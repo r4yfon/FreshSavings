@@ -4,6 +4,7 @@ import { Icon } from "@iconify/vue";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap';
 import axios from 'axios';
+import { gsap } from 'gsap';
 import firstImage from '@/assets/img/sale.png'
 import secondImage from '@/assets/img/trusted.png'
 import thirdImage from '@/assets/img/quality.png'
@@ -30,11 +31,11 @@ import thirdImage from '@/assets/img/quality.png'
         <h1 class="text-center">OUR PROMISE</h1>
       </div>
       <div class="row justify-content-around">
-        <div class="col-4">
+        <div class="col-4" id="firstcol">
 
-          <div class="card h-40">
+          <div class="card h-40" ref="firstcard">
               <!-- Product image -->
-              <img class="card-img-top m-auto" style="width:400px; height: auto;" :src="firstImageUrl" alt="..." />
+              <img class="card-img-top m-auto" style="width:200px; height: auto;" :src="firstImageUrl" alt="..." />
               <!-- Product details -->
               <div class="card-body p-4">
                 <div class="text-center">
@@ -51,11 +52,11 @@ import thirdImage from '@/assets/img/quality.png'
               </div>
             </div>
         </div>
-        <div class="col-4">
+        <div class="col-4" id="secondcol">
 
-<div class="card h-40">
+<div class="card h-40" ref="secondcard">
     <!-- Product image -->
-    <img class="card-img-top m-auto" :src="secondImageUrl" alt="..." style="width:400px; height: auto;" />
+    <img class="card-img-top m-auto" :src="secondImageUrl" alt="..." style="width:200px; height: auto;" />
     <!-- Product details -->
     <div class="card-body p-4">
       <div class="text-center">
@@ -71,11 +72,11 @@ import thirdImage from '@/assets/img/quality.png'
     </div>
   </div>
 </div>
-<div class="col-4">
+<div class="col-4" id="thirdcol">
 
-<div class="card h-40">
+<div class="card h-40" ref="thirdcard">
     <!-- Product image -->
-    <img class="card-img-top m-auto" :src="thirdImageUrl" alt="..."  style="width:400px; height: auto;" />
+    <img class="card-img-top m-auto" :src="thirdImageUrl" alt="..."  style="width:200px; height: auto;" />
     <!-- Product details -->
     <div class="card-body p-4">
       <div class="text-center">
@@ -103,7 +104,7 @@ import thirdImage from '@/assets/img/quality.png'
       <!-- Container for categories / swiper -->
       <div class="container-fluid d-flex justify-content-between">
         <div v-for="category of categories" :key="category.categoryName" class="border rounded m-3 p-3 d-flex flex-column justify-content-between col-2 align-items-center">
-          <img :src=imageUrl(category.imgLink) style="width:100px"/>
+          <img :src=imageUrl(category.imgLink) style="width:50px"/>
           <p class="mb-0 mt-3">{{ category.categoryName }}</p>
         </div>
       </div>
@@ -207,6 +208,7 @@ export default {
   mounted() {
     // Call the API endpoint when the component is mounted
     this.GetAllPostings();
+    this.animated();
   },
   methods: {
     GetAllPostings() {
@@ -254,6 +256,11 @@ export default {
         }
       }
     },
+    animated(){
+      
+      gsap.from(this.$refs.firstcard, { duration: 2, x: 400 });
+      gsap.from(this.$refs.thirdcard, { duration: 2, x: -400 });
+    }
   },
 };
 </script>
