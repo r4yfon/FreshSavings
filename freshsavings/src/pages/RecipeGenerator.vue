@@ -7,8 +7,9 @@ import "bootstrap";
 
 <template>
   <section class="container" style="padding-top: 50px">
+
     <!-- left sidebar -->
-    <div class="col">
+    <div class="col-4">
       <h3 class="mb-4">Recipe Generator</h3>
       <div class="mb-3">
         <label for="search_input" class="form-label">Select the ingredients you want to use.</label>
@@ -21,7 +22,7 @@ import "bootstrap";
         </div>
       </div>
 
-      <div class="accordion my-3 p-3" :id="'accordion' + index">
+      <div class="accordion my-3 p-3" :id="accordion">
         <div v-for="(category, index) of categories" :key="category.name" class="accordion-item">
           <!-- <div class="accordion-header" :id="'heading' + index" @click="toggleAccordion(index)"> -->
           <div class="accordion-header">
@@ -84,90 +85,21 @@ import "bootstrap";
       </div> -->
     </div>
 
-    <div class="accordion accordion-flush" id="accordionExample">
-      <div class="accordion-item">
-        <h2 class="accordion-header">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-            aria-expanded="true" aria-controls="collapseOne">
-            Accordion Item #1
-          </button>
-        </h2>
-        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-          <div class="accordion-body">
-            <strong>This is the first item's accordion body.</strong> It is shown
-            by default, until the collapse plugin adds the appropriate classes
-            that we use to style each element. These classes control the overall
-            appearance, as well as the showing and hiding via CSS transitions. You
-            can modify any of this with custom CSS or overriding our default
-            variables. It's also worth noting that just about any HTML can go
-            within the <code>.accordion-body</code>, though the transition does
-            limit overflow.
-          </div>
-        </div>
-      </div>
-      <div class="accordion-item">
-        <h2 class="accordion-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
-            aria-expanded="false" aria-controls="collapseTwo">
-            Accordion Item #2
-          </button>
-        </h2>
-        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-          <div class="accordion-body">
-            <strong>This is the second item's accordion body.</strong> It is
-            hidden by default, until the collapse plugin adds the appropriate
-            classes that we use to style each element. These classes control the
-            overall appearance, as well as the showing and hiding via CSS
-            transitions. You can modify any of this with custom CSS or overriding
-            our default variables. It's also worth noting that just about any HTML
-            can go within the <code>.accordion-body</code>, though the transition
-            does limit overflow.
-          </div>
-        </div>
-      </div>
-      <div class="accordion-item">
-        <h2 class="accordion-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-            data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-            Accordion Item #3
-          </button>
-        </h2>
-        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-          <div class="accordion-body">
-            <strong>This is the third item's accordion body.</strong> It is hidden
-            by default, until the collapse plugin adds the appropriate classes
-            that we use to style each element. These classes control the overall
-            appearance, as well as the showing and hiding via CSS transitions. You
-            can modify any of this with custom CSS or overriding our default
-            variables. It's also worth noting that just about any HTML can go
-            within the <code>.accordion-body</code>, though the transition does
-            limit overflow.
-          </div>
-        </div>
-      </div>
-    </div>
+
 
     <!-- recommended recipes -->
     <div class="col-8">
       <div class="row">You can make 124 recipes.</div>
     </div>
 
-    <button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button>
-
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-          <img src="" class="rounded me-2" alt="...">
-          <strong class="me-auto">Bootstrap</strong>
-          <small>11 mins ago</small>
-          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-          Hello, world! This is a toast message.
-        </div>
-      </div>
+    <div class="position-relative">
+      <!-- TODO: add enter animagion for the button -->
+      <a role="button" class="btn btn-primary position-absolute bottom-0 end-0" v-if="ingredientList.length > 0"
+        href="">You
+        have
+        selected {{
+          ingredientList.length }} items</a>
     </div>
-
 
   </section>
 </template>
@@ -232,17 +164,7 @@ export default {
     // }
   }
 }
-const toastElList = document.querySelectorAll('.toast')
-const toastList = [...toastElList].map(toastEl => new bootstrap.Toast(toastEl, option))
-const toastTrigger = document.getElementById('liveToastBtn')
-const toastLiveExample = document.getElementById('liveToast')
 
-if (toastTrigger) {
-  const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
-  toastTrigger.addEventListener('click', () => {
-    toastBootstrap.show()
-  })
-}
 </script>
 
 <style>
