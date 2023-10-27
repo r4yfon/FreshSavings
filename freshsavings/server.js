@@ -76,7 +76,22 @@ app.get("/get_product_description/:pid", (req, res) => {
 app.get("/get_all_ingredients_categories", (req, res) => {
   // Query the database to retrieve ingredients
   connection.query(
-    "select iname, icat from freshsavings.Ingredient order by icat",
+    "select iid, iname, icat from freshsavings.Ingredient order by icat",
+    (err, results) => {
+      if (err) {
+        console.error("Error querying the database:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+        return;
+      }
+      res.json(results);
+    }
+  );
+});
+
+app.get("/get_all_recipes", (req, res) => {
+  // Query the database to retrieve ingredients
+  connection.query(
+    "SELECT r.rid, ri.iid, rname, i.iname FROM freshsavings.RecipeIngredient ri, freshsavings.Recipe r, freshsavings.Ingredient i WHERE ri.rid = r.rid AND i.iid = ri.iid;",
     (err, results) => {
       if (err) {
         console.error("Error querying the database:", err);

@@ -6,10 +6,9 @@ import "bootstrap";
 </script>
 
 <template>
-  <section class="container" style="padding-top: 50px">
-
+  <section class="container row" style="padding-top: 50px">
     <!-- left sidebar -->
-    <div class="col-4">
+    <div class="col">
       <h3 class="mb-4">Recipe Generator</h3>
       <div class="mb-3">
         <label for="search_input" class="form-label">Select the ingredients you want to use.</label>
@@ -18,156 +17,144 @@ import "bootstrap";
             <Icon icon="ph:magnifying-glass" />
           </span>
           <input type="text" id="search_input" class="form-control" placeholder="Search ingredients" />
-          <button class="btn btn-outline-secondary" id="search_input" type="button">Search</button>
+          <button class="btn btn-outline-secondary" id="search_input" type="button">
+            Search
+          </button>
         </div>
       </div>
 
-      <div class="accordion my-3 p-3" :id="accordion">
-        <div v-for="(category, index) of categories" :key="category.name" class="accordion-item">
-          <!-- <div class="accordion-header" :id="'heading' + index" @click="toggleAccordion(index)"> -->
+      <div class="accordion my-3 p-3" id="accordion">
+        <div v-for="(category, index) of accordionCategories" :key="category.name" class="accordion-item">
           <div class="accordion-header">
             <button type="button" class="accordion-button d-flex align-items-center" data-bs-toggle="collapse"
               :data-bs-target="'#collapse' + index" :aria-expanded="true" :aria-controls="'collapse' + index">
-              <img class="category-image" :src="category.img" />
-              <p class="mx-3 my-auto text-capitalize">{{ category.name }}</p>
+              <img class="category-image" :src="category.name.toLowerCase() + '.png'" />
+              <!-- imageUrl(category.name.toLowerCase()) -->
+              <p class="mx-3 my-auto text-capitalize">
+                {{ category.name }}
+              </p>
             </button>
-            <!-- <button type="button" class="accordion-button d-flex align-items-center" data-bs-toggle="collapse"
-              :data-bs-target="'#collapse' + index" :aria-expanded="activeAccordion === index"
-              :aria-controls="'collapse' + index">
-              <img class="rounded category-image" :src="category.img" />
-              <p class="mx-3 my-auto text-capitalize">{{ category.name }}</p>
-            </button> -->
           </div>
-          <!-- <div :id="'collapse' + index" class="accordion-collapse collapse" :class="{ 'show': activeAccordion === index }"
-            :aria-labelledby="'heading' + index"> -->
           <div :id="'collapse' + index" class="accordion-collapse collapse" data-bs-parent="#accordion">
             <div class="accordion-body d-flex flex-wrap">
               <button type="button" class="btn btn-primary m-1 p-2 text-capitalize" v-for="item in category.items"
-                :key="item" @click="modifyIngredientList(item)" data-bs-toggle="button">{{
-                  item
-                }}
+                :key="item" @click="modifyIngredientsIidList(item[1])" data-bs-toggle="button">
+                {{ item[0] }}
               </button>
             </div>
           </div>
         </div>
-
       </div>
-      <!-- <div v-for="(category, index) of categories" :key="category.name" class="accordion my-3 p-3"
-        :id="'accordion' + index">
-        <div class="accordion-item">
-          <div class="accordion-header" :id="'heading' + index" @click="toggleAccordion(index)">
-          <div class="accordion-header">
-            <button type="button" class="accordion-button d-flex align-items-center" data-bs-toggle="collapse"
-              :data-bs-target="'#collapse' + index" :aria-expanded="true" :aria-controls="'collapse' + index">
-              <img class="category-image" :src="category.img" />
-              <p class="mx-3 my-auto text-capitalize">{{ category.name }}</p>
-            </button>
-            <button type="button" class="accordion-button d-flex align-items-center" data-bs-toggle="collapse"
-              :data-bs-target="'#collapse' + index" :aria-expanded="activeAccordion === index"
-              :aria-controls="'collapse' + index">
-              <img class="rounded category-image" :src="category.img" />
-              <p class="mx-3 my-auto text-capitalize">{{ category.name }}</p>
-            </button>
-          </div>
-          <div :id="'collapse' + index" class="accordion-collapse collapse" :class="{ 'show': activeAccordion === index }"
-            :aria-labelledby="'heading' + index">
-          <div :id="'collapse' + index" class="accordion-collapse collapse" :data-bs-parent="'#accordion' + index">
-            <div class="accordion-body d-flex flex-wrap">
-              <button type="button" class="btn btn-primary m-1 p-2 text-capitalize" v-for="item in category.items"
-                :key="item" @click="modifyIngredientList(item)" data-bs-toggle="button">{{
-                  item
-                }}
-              </button>
-            </div>
-          </div>
-        </div>
-
-      </div> -->
     </div>
-
-
 
     <!-- recommended recipes -->
-    <div class="col-8">
-      <div class="row">You can make 124 recipes.</div>
+    <div class="col">
+      <div class="row">{{ ingredientsIidList }}</div>
     </div>
-
-    <div class="position-relative">
-      <!-- TODO: add enter animagion for the button -->
-      <a role="button" class="btn btn-primary position-absolute bottom-0 end-0" v-if="ingredientList.length > 0"
-        href="">You
-        have
-        selected {{
-          ingredientList.length }} items</a>
-    </div>
-
   </section>
 </template>
-
-
 
 <script>
 export default {
   data() {
     return {
-      ingredientList: [],
-      activeAccordion: null,
-      categories: {},
-    }
+      ingredientsIidList: [],
+      accordionCategories: {},
+      compiledRecipeIngredients: {},
+      filteredRecipes: [],
+    };
   },
   components: {
     Icon,
   },
   mounted() {
     this.getIngredientsCategories();
+    this.compileRecipeIngredients();
+    console.log(this.compiledRecipeIngredients);
   },
   methods: {
-    // toggleAccordion(index) {
-    //   if (this.activeAccordion === index) {
-    //     this.activeAccordion = null;
-    //   } else {
-    //     this.activeAccordion = index;
-    //   }
-    //   console.log(this.activeAccordion);
-    // },
-
-    modifyIngredientList(item) {
-      const itemIndex = this.ingredientList.indexOf(item);
-      if (itemIndex !== -1) {
-        this.ingredientList.splice(itemIndex, 1);
-      } else {
-        this.ingredientList.push(item);
-      }
-      console.log(this.ingredientList);
-    },
-
+    // to get the categories and sub-items for accordion
     getIngredientsCategories() {
-      axios.get("http://localhost:3000/get_all_ingredients_categories").then((response) => {
-        let newCategories = {};
-        for (let item of response.data) {
-          if (Object.keys(newCategories).indexOf(item.icat) !== -1) {
-            newCategories[item.icat].items.push(item.iname);
-          } else {
-            newCategories[item.icat] = {
-              name: item.icat,
-              items: [item.iname]
-            };
-          };
-        }
-        this.categories = newCategories;
-      })
+      axios
+        .get("http://localhost:3000/get_all_ingredients_categories")
+        .then((response) => {
+          let newCategories = {};
+          for (let item of response.data) {
+            if (
+              Object.keys(newCategories).indexOf(item.icat) !== -1
+            ) {
+              newCategories[item.icat].items.push([
+                item.iname,
+                item.iid,
+              ]);
+            } else {
+              newCategories[item.icat] = {
+                name: item.icat,
+                items: [[item.iname, item.iid]],
+              };
+            }
+          }
+          this.accordionCategories = newCategories;
+        });
     },
 
-    // inIngredientList(item) {
-    //   console.log(this.ingredientList);
-    //   return this.ingredientList.indexOf(item) !== -1;
-    // }
-  }
-}
+    // add selected sub-items' iid into this.ingredientsList
+    modifyIngredientsIidList(item) {
+      console.log(item);
+      const itemIndex = this.ingredientsIidList.indexOf(item);
+      if (itemIndex !== -1) {
+        this.ingredientsIidList.splice(itemIndex, 1);
+      } else {
+        this.ingredientsIidList.push(item);
+      }
+      console.log(this.ingredientsIidList);
+      this.filterRecipes();
+    },
 
+    // compile recipes according to the ingredients needed
+    compileRecipeIngredients() {
+      // let compiledRecipeIngredients = {};
+      axios
+        .get("http://localhost:3000/get_all_recipes")
+        .then((response) => {
+          for (let item of response.data) {
+            if (item.rname in this.compiledRecipeIngredients) {
+              this.compiledRecipeIngredients[item.rname].ingredients.push([item.iid, item.iname]);
+            } else {
+              this.compiledRecipeIngredients[item.rname] = {
+                rname: item.rname,
+                rid: item.rid,
+                ingredients: [[item.iid, item.iname]],
+              };
+            }
+          }
+        });
+      console.log(this.compiledRecipeIngredients);
+    },
+
+    filterRecipes() {
+      for (let item in this.compiledRecipeIngredients) {
+        console.log(item);
+        console.log(this.ingredientsIidList);
+        for (let ingredient of this.compiledRecipeIngredients[item].ingredients) {
+          console.log(ingredient);
+          if (this.ingredientsIidList.indexOf(ingredient[0])) {
+            console.log("dscdsdsvdsdssvsgewfew")
+            console.log(this.compiledRecipeIngredients[item].rname, ingredient[1]);
+          }
+        }
+      }
+      return;
+    },
+
+    // imageUrl(name) {
+    //   return require(`@/assets/img/${name}.png`);
+    // }
+  },
+};
 </script>
 
-<style>
+<style scoped>
 * {
   text-align: left;
 }
