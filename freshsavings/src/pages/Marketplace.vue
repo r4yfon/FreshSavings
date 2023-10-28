@@ -13,21 +13,14 @@ import thirdImage from '@/assets/img/quality.png'
 
 
 <template>
-  <section style="padding-top: 20px; padding-bottom: 20px; ">
+  <div class="input-group mt-10" id='sticky' style="padding-left: 20px; padding-right: 20px; height: 45px;  padding-top: 20px;">
+    <span id="search_input" class="input-group-text">
+      <Icon icon="ph:magnifying-glass" />
+    </span>
+    <input v-model="searching" type="text" id="search_input" class="form-control" placeholder="Search your grocery products etc..." />
     
-    
-    <!-- Search bar -->
-    <div class="input-group mt-10" style="padding-left: 20px; padding-right: 20px; height: 45px;">
-      <span id="search_input" class="input-group-text">
-        <Icon icon="ph:magnifying-glass" />
-      </span>
-      <input v-model="searching" type="text" id="search_input" class="form-control" placeholder="Search your grocery products etc..." />
-      
-    </div>
-  
-    </section>
-
-  <section>
+  </div>
+  <section style="padding-top: 20px;">
     
     <div class="container-fluid ">
       <div class="row">
@@ -181,7 +174,7 @@ import thirdImage from '@/assets/img/quality.png'
     Added to cart
   </div>
     </div>
-  background-color: #FFCFD3;
+  
     <div v-if="showdel" class="toast-container align-items-center text-white " style="background-color: #FFCFD3;">
       <div class="toast-header">
         <h5 class="mx-auto size-3" style="color:black">Notification!</h5>
@@ -370,5 +363,9 @@ span{
   right: 10px;
   z-index: 9999;
 }
-
+#sticky {
+  position: sticky;
+  top: 53px;
+  z-index:10000000;
+}
 </style>
