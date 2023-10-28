@@ -8,11 +8,16 @@ import { gsap } from 'gsap';
 import firstImage from '@/assets/img/sale.png'
 import secondImage from '@/assets/img/trusted.png'
 import thirdImage from '@/assets/img/quality.png'
+
+
+
+
 </script>
 
 
 <template>
-  <section style="padding-top: 20px; padding-bottom: 20px;">
+  <section style="padding-top: 20px; padding-bottom: 20px; ">
+    
     
     <!-- Search bar -->
     <div class="input-group mt-10" style="padding-left: 20px; padding-right: 20px; height: 45px;">
@@ -26,9 +31,10 @@ import thirdImage from '@/assets/img/quality.png'
     </section>
 
   <section>
+    
     <div class="container-fluid ">
       <div class="row">
-        <h1 class="text-center">OUR PROMISE</h1>
+        <h1 class="text-center fw-bold">OUR PROMISE</h1>
       </div>
       <div class="row justify-content-around">
         <div class="col-4" id="firstcol">
@@ -89,7 +95,7 @@ import thirdImage from '@/assets/img/quality.png'
     <!-- Product actions -->
     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
       <div class="text-center">
-        <button class="btn btn-outline-dark mt-auto">Learn More</button>      </div>
+        <button class="btn btn-outline-dark mt-auto" style=":hover">Learn More</button>      </div>
     </div>
   </div>
 </div>
@@ -99,13 +105,13 @@ import thirdImage from '@/assets/img/quality.png'
   </section>
     <section>
     <div class="m-3">
-      <h3 class="text-start">Categories</h3>
+      <h3 class="text-center fw-bold">Categories</h3>
 
       <!-- Container for categories / swiper -->
       <div class="container-fluid d-flex justify-content-between">
-        <div v-for="category of categories" :key="category.categoryName" class="border rounded m-3 p-3 d-flex flex-column justify-content-between col-2 align-items-center">
+        <div  style="background-color: #FFCFD3;" v-for="category of categories" :key="category.categoryName" class="border rounded m-3 p-3 d-flex flex-column justify-content-between col-2 align-items-center">
           <img :src=imageUrl(category.imgLink) style="width:50px"/>
-          <p class="mb-0 mt-3">{{ category.categoryName }}</p>
+          <p class="mb-0 mt-3 fw-bold" style="color:#83468F">{{ category.categoryName }}</p>
         </div>
       </div>
     </div>
@@ -123,7 +129,7 @@ import thirdImage from '@/assets/img/quality.png'
                 <!-- Product name -->
                 <h5 class="fw-bolder text-center">{{ product.iname }} x{{product.selling_quantity}}</h5>
                 <!-- Product price -->
-                ${{ totalCost(product.selling_price, product.selling_quantity) }} <span style="text-decoration: line-through"> ${{totalCost(product.price, product.selling_quantity) }}</span>
+                <span class="fw-bold" style="font-size:18px"> ${{ totalCost(product.selling_price, product.selling_quantity) }}</span> <span class="text-muted" style="text-decoration: line-through"> ${{totalCost(product.price, product.selling_quantity) }}</span>
               </div>
             </div>
             <!-- Product actions -->
@@ -136,7 +142,7 @@ import thirdImage from '@/assets/img/quality.png'
           </div>
           </div>
           <div v-else-if="product.posting_status == 'Active' && cart.indexOf(product.pid) != -1 && searched(product.iname)" class="col mb-5">
-            <div class="card h-100">
+            <div class="card h-100 carted">
             <!-- Product image -->
             <img class="card-img-top" :src="imageUrl(product.image)" alt="..." />
             <!-- Product details -->
@@ -146,7 +152,7 @@ import thirdImage from '@/assets/img/quality.png'
                 <!-- Product name -->
                 <h5 class="fw-bolder text-center">{{ product.iname }} x{{product.selling_quantity}}</h5>
                 <!-- Product price -->
-                ${{ totalCost(product.selling_price, product.selling_quantity) }} <span style="text-decoration: line-through"> ${{totalCost(product.price, product.selling_quantity) }}</span>
+                <span class="fw-bold "  style="font-size:18px"> ${{ totalCost(product.selling_price, product.selling_quantity) }} </span> <span class="text-muted" style="text-decoration: line-through">${{totalCost(product.price, product.selling_quantity) }}</span>
               </div>
             </div>
             <!-- Product actions -->
@@ -156,12 +162,24 @@ import thirdImage from '@/assets/img/quality.png'
                 
               </div>
             </div>
+
+        
+
           </div>
         </div>
         </template>
       </div>
     </div>
   </section>
+  <div>
+    <!-- Your main content -->
+    
+    <!-- Toast container at the top right -->
+    
+    
+  </div>
+  
+
 </template>
 
 <script>
@@ -169,7 +187,8 @@ export default {
   name: "marketplaceHome",
   data() {
     return {
-      
+      showadd: false,
+      showdel: false,
       firstImageUrl : firstImage,
       secondImageUrl : secondImage,
       thirdImageUrl : thirdImage,
@@ -233,12 +252,17 @@ export default {
     },
     Added(pid){
       this.cart.push(pid);
-      console.log(this.cart);
+      
+    
     },
     Remove(pid){
       let a = this.cart.indexOf(pid);
-      this.cart = this.cart.splice(a, 1);
-      console.log(this.cart);
+      this.cart.splice(a, 1);
+      this.showdel = true;
+      setTimeout(() => {
+        this.showdel = false;
+      }, 2000); // Hide the toast after 2 seconds
+      
       
     },
     searched(productName){
@@ -256,17 +280,78 @@ export default {
         }
       }
     },
-    animated(){
+    animated() {
+      this.$nextTick(() => {
+        const firstCard = this.$refs.firstcard;
+        const secondCard = this.$refs.secondcard;
+        const thirdCard = this.$refs.thirdcard;
+
+        const firstCardRect = firstCard.getBoundingClientRect();
+        const secondCardRect = secondCard.getBoundingClientRect();
+
+        // Animate the third card from first card's position to second card's position
+        gsap.from(secondCard, {
+          duration: 2,
+          x: firstCardRect.left - secondCard.getBoundingClientRect().left,
+          
+        });
+        gsap.fromTo(
+          thirdCard,
+          {
+            x: firstCardRect.left - thirdCard.getBoundingClientRect().left,
+          },
+          {
+            duration: 2,
+            x: secondCardRect.left - thirdCard.getBoundingClientRect().left,
+            onComplete: () => {
+              // Animation from first to second card is complete
+              // Now, animate the third card from second card's position to its final position
+              gsap.fromTo(thirdCard, 
+              {
+            x: firstCardRect.left - thirdCard.getBoundingClientRect().left,
+          },
+          {
+            duration: 2,
+            x: secondCardRect.left - thirdCard.getBoundingClientRect().left,}
+              
+              
+              );
+            },
+          }
+        );
+      });
+      }
       
-      gsap.from(this.$refs.firstcard, { duration: 2, x: 400 });
-      gsap.from(this.$refs.thirdcard, { duration: 2, x: -400 });
     }
-  },
 };
+
+
 </script>
 
 <style>
 input {
   margin-bottom: 0;
 }
+h1,h2,h3,h4,h5{
+  color: #508E46;
+}
+h5{
+  color: #83468F;
+}
+.card{
+  background-color: #D5FFCF;
+}
+.carted{
+  background-color: #FFCFD3;
+}
+span{
+  color: #83468F;
+}
+.toasties {
+  position: fixed;
+  top: 100px;
+  right: 10px;
+  z-index: 9999;
+}
+
 </style>
