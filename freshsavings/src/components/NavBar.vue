@@ -17,7 +17,7 @@ z<template>
                     <a class="nav-link" href="recipe-generator">Recipe Generator</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Inventory</a>
+                    <a class="nav-link" href="inventory-tracker">Inventory</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="marketplace">Marketplace</a>
