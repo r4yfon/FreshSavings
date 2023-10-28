@@ -10,7 +10,7 @@
       ]"
     />
   </main>
-  <Footer v-if="!this.$route.meta.hideNavBar" />
+  <!-- <Footer v-if="!this.$route.meta.hideNavBar" /> -->
 </template>
 
 <script>
@@ -47,7 +47,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 75px;
-  background-color: #f8f9fa;
+  background-color: #FAF9F6;
+
 
 }
 </style>

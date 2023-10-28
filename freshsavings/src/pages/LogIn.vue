@@ -1,83 +1,144 @@
+
+<script setup>
+import GSignInButton from 'vue-google-signin-button'
+import getGoogleUrl from '../utils/getGoogleUrl.js';
+import { ref, onMounted } from 'vue';
+
+
+const from = ref('default'); // Define the from variable here
+
+onMounted(() => {
+	const userSelection = 'example'; // Assume this value comes from some user action
+  from.value = userSelection;
+  const script = document.createElement('script');
+  script.src = 'https://apis.google.com/js/api:client.js';
+  document.head.appendChild(script);
+});
+</script>
+
 <template>
+
+	<header>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	</header>
   <body >
-  <img class="bg" :src="require('@/assets/img/login2.jpg')">
-    <div class="container" >
-      <div class="img">
-        <!-- <img :src="require('@/assets/img/bg.svg')"> -->
-      </div>
-      <div class="login-content" style="margin-top: 10%;">
-        <form action="index.html">
-          <img :src="require('@/assets/img/avatar.svg')">
-          <h2 class="title" >Welcome</h2>
-                <div class="input-div one">
-                  <div class="i">
-                      <i class="fas fa-user"></i>
-                  </div>
-                  <div class="div">
-                      <h5>Username</h5>
-                      <input type="text" class="input">
-                  </div>
-                </div>
-                <div class="input-div pass">
-                  <div class="i"> 
-                      <i class="fas fa-lock"></i>
-                  </div>
-                  <div class="div">
-                      <h5>Password</h5>
-                      <input type="password" class="input">
-                  </div>
-                </div>
-                <a href="#">Forgot Password?</a>
-                <input type="submit" class="btn" value="Login">
-                
-                <div class="line-text" >or</div>
-                <div class="flex items-center justify-center h-screen dark:bg-gray-800">
-                <input type="submit" class="btn" value="Login with Google">
-                <div class="text create" >New here? 
-                  <a href="/signup" class="create-account-link">Create an Account</a>
-                  </div>
-              </div>
+	<img class="bg" :src="require('@/assets/img/bg2.jpg')">
+	<div class="container">
+	<div></div>
+	<div class="login-content" style="margin-top: 10%; margin-left: 100%;">
+		<form>
+		<img :src="require('@/assets/img/avatar.svg')">
+		<h2 class="title">Welcome</h2>
 
-              </form>
-              
-            </div>
+		<div class="input-div one">
+			<div class="i">
+			<i class="fas fa-user"></i>
+			</div>
+			<div class="div">
+			<h5>Username</h5>
+			<input type="text" class="input">
+			</div>
+		</div>
+		<div class="input-div pass">
+			<div class="i">
+			<i class="fas fa-lock"></i>
+			</div>
+			<div class="div">
+			<h5>Password</h5>
+			<input type="password" class="input">
+			</div>
+		</div>
+		<a href="#">Forgot Password?</a>
+		<input type="submit" class="btn" value="Login">
 
+		<div class="line-text">or</div>
+		<div class="social-container">
+			<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+			<!-- <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a> -->
+			<a :href="getGoogleUrl(from)" class="social"
+			:params="signInParams"
+				@success="onSignInSuccess"
+				@error="onSignInError">
+				<!-- Sign in with Google -->
+			
+			<i class="fab fa-google-plus-g"></i></a>
+				
+			
 
-            <div class="mb-5">
-
-              </div>
-          </div>
+		
       
+			<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+		</div>
+		<div class="flex items-center justify-center h-screen dark:bg-gray-800">
+			<div class="text create">New here?
+			<a href="/signup" class="create-account-link">Create an Account</a>
+			</div>
+		</div>
+		</form>
+		
+	</div>
+	<div></div>
+	</div>
   </body>
-
 </template>
+
 
 <script>
 export default {
   name: 'LogIn',
-  methods: {
-    addcl(event) {
+  components: {
+    GSignInButton,
+  },
+  setup() {
+    const googleSignInParams = {
+      clientId: '226755984713-tu2fskd640qob0ih9c686picherkousl.apps.googleusercontent.com',
+    };
+
+    const onSignInSuccess = (googleUser) => {
+      const profile = googleUser.getBasicProfile(); // etc etc
+    };
+
+    const onSignInError = (error) => {
+      console.log('OH NOES', error);
+    };
+
+    const addcl = (event) => {
       let parent = event.target.parentNode.parentNode;
       parent.classList.add('focus');
-    },
-    remcl(event) {
+    };
+
+    const remcl = (event) => {
       let parent = event.target.parentNode.parentNode;
       if (event.target.value === '') {
         parent.classList.remove('focus');
       }
-    }
+    };
+
+    return {
+      googleSignInParams,
+      onSignInSuccess,
+      onSignInError,
+      addcl,
+      remcl,
+      from,
+      getGoogleUrl,
+    };
   },
-  mounted() {
-    const inputs = document.querySelectorAll('.input');
-    inputs.forEach((input) => {
-      input.addEventListener('focus', this.addcl);
-      input.addEventListener('blur', this.remcl);
-    });
-  }
 };
 </script>
 
+
+
 <style scoped lang="scss">
+.g-signin-button {
+  /* This is where you control how the button looks. Be creative! */
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 3px;
+  background-color: #3c82f7;
+  color: #fff;
+  box-shadow: 0 3px 0 #0f69ff;
+}
 
 *{
 	padding: 0;
@@ -114,36 +175,45 @@ body{
 	left: 0;
 	height: 100%;
 	z-index: 0;
+	width: 40%;
+	max-width:50%;
+}
+.social-container {
+	margin: 20px 0;
 }
 
-.container{
+.social-container a {
+	border: 1px solid #DDDDDD;
+	border-radius: 50%;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0 5px;
+	height: 40px;
+	width: 40px;
+}
+.container {
     width: 100vw;
     height: 100vh;
     display: grid;
+    place-items: center; /* Center the content both horizontally and vertically */
     grid-template-columns: repeat(2, 1fr);
-    grid-gap :15rem;
+    grid-gap: 15rem;
     padding: 0 1rem;
 }
 
-.img{
-	display: flex;
-	justify-content: flex-end;
-	align-items: center;
-  /* z-index: 2; */
+
+
+.login-content {
+    display: flex;
+    justify-content: center; /* Change to center to horizontally center the content */
+    align-items: center;
+    text-align: center;
+    width: 100%; /* Ensure the content takes up the full width of the parent container */
 }
 
-.login-content{
-	display: flex;
-	justify-content: flex-start;
-	align-items: center;
-	text-align: center;
-  
 
-}
 
-.img img{
-	width: 500px;
-}
 
 form{
 	width: 360px;
@@ -151,6 +221,7 @@ form{
 
 .login-content img{
     height: 100px;
+	justify-content: center;
 }
 
 .login-content h2{
@@ -305,12 +376,22 @@ a:hover{
   margin-left: 15px;
 }
 
-
+@media screen and (max-width: 1629px){
+	.container{
+		grid-gap: 5rem;
+	}
+	.login-content{
+        margin-right: 60%;
+	}
+}
 
 
 @media screen and (max-width: 1050px){
 	.container{
 		grid-gap: 5rem;
+	}
+	.login-content{
+        margin-right: 100%;
 	}
 }
 
@@ -318,14 +399,8 @@ a:hover{
 	form{
 		width: 290px;
 	}
-
-	.login-content h2{
-        font-size: 2.4rem;
-        margin: 8px 0;
-	}
-
-	.img img{
-		width: 400px;
+	.login-content{
+		margin-right: 100%;
 	}
 }
 
@@ -334,9 +409,6 @@ a:hover{
 		grid-template-columns: 1fr;
 	}
 
-	.img{
-		display: none;
-	}
 
 	.bg{
 		display: none;
@@ -344,6 +416,7 @@ a:hover{
 
 	.login-content{
 		justify-content: center;
+		margin-right: 90%;
 	}
 }
 </style>
