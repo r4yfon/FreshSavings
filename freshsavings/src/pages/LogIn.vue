@@ -91,7 +91,7 @@ export default {
   },
   setup() {
     const googleSignInParams = {
-      clientId: '226755984713-tu2fskd640qob0ih9c686picherkousl.apps.googleusercontent.com',
+      clientId: process.env.VITE_GOOGLE_OAUTH_CLIENT_ID,
     };
 
     const onSignInSuccess = (googleUser) => {
