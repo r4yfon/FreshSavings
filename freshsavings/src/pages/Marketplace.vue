@@ -9,9 +9,6 @@ import firstImage from '@/assets/img/sale.png'
 import secondImage from '@/assets/img/trusted.png'
 import thirdImage from '@/assets/img/quality.png'
 
-
-
-
 </script>
 
 
@@ -175,8 +172,25 @@ import thirdImage from '@/assets/img/quality.png'
     <!-- Your main content -->
     
     <!-- Toast container at the top right -->
+    <div v-if="showadd" class="toast-container align-items-center text-white" style="background-color: #D5FFCF;">
+      <div class="toast-header">
+        <h5 class="mx-auto size-3" style="color:black">Notification!</h5>
     
-    
+  </div>
+  <div class="toast-body" style="color:black">
+    Added to cart
+  </div>
+    </div>
+  background-color: #FFCFD3;
+    <div v-if="showdel" class="toast-container align-items-center text-white " style="background-color: #FFCFD3;">
+      <div class="toast-header">
+        <h5 class="mx-auto size-3" style="color:black">Notification!</h5>
+        
+      </div>
+      <div class="toast-body" style="color:black">
+        Deleted from cart
+      </div>
+    </div>
   </div>
   
 
@@ -252,7 +266,10 @@ export default {
     },
     Added(pid){
       this.cart.push(pid);
-      
+      this.showadd = true;
+      setTimeout(() => {
+        this.showadd = false;
+      }, 2000); // Hide the toast after 2 seconds
     
     },
     Remove(pid){
@@ -347,9 +364,9 @@ h5{
 span{
   color: #83468F;
 }
-.toasties {
+.toast-container {
   position: fixed;
-  top: 100px;
+  bottom: 20px;
   right: 10px;
   z-index: 9999;
 }
