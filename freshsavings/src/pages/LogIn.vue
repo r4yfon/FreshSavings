@@ -1,7 +1,7 @@
 
 <script setup>
 import GSignInButton from 'vue-google-signin-button'
-import getGoogleUrl from '../utils/getGoogleUrl.js';
+import getGoogleUrl from '../auth/getGoogleUrl.js';
 import { ref, onMounted } from 'vue';
 
 
