@@ -4,10 +4,10 @@ import axios from "axios";
 </script>
 
 <template>
-  <section class="container row" style="padding-top: 50px">
+  <section class="container-fluid row m-auto">
     <!-- left sidebar -->
-    <div class="col">
-      <h3 class="mb-4 text-start">Recipe Generator</h3>
+    <div class="col-4 col-lg-3 sidebar pt-4 px-4">
+      <h1 class="mb-4 text-start">Recipe Generator</h1>
       <div class="mb-3">
         <label for="search_input" class="form-label">Select the ingredients you want to use.</label>
         <div class="input-group mb-4">
@@ -21,7 +21,7 @@ import axios from "axios";
         </div>
       </div>
 
-      <div class="accordion my-3 p-3" id="accordion">
+      <div class="accordion my-3" id="accordion">
         <div v-for="(category, index) of accordionCategories" :key="category.name" class="accordion-item">
           <div class="accordion-header">
             <button type="button" class="accordion-button d-flex align-items-center" data-bs-toggle="collapse"
@@ -46,17 +46,25 @@ import axios from "axios";
     </div>
 
     <!-- recommended recipes -->
-    <div class="col">
-      <!-- TODO: change a v-if no ingredient is selected, display something else -->
-      <h1 class="row">You can make {{ Object.keys(suitableRecipes).length }} {{ Object.keys(suitableRecipes).length > 1 ?
+    <div class="col-8 pt-4 container-fluid">
+      <!-- if no ingredient is selected -->
+      <div v-if="Object.keys(suitableRecipes) < 1" class="my-5 d-block">
+        <img :src="imageUrl('add_recipes.webp')" class="mb-3 d-block mx-auto recipe_img" />
+        <h3>Add your ingredients to get started.</h3>
+        <p class="text-center">Every ingredient you add unlocks more recipes.</p>
+      </div>
+
+      <!-- once user selects at least 1 ingredient -->
+      <h3 v-else>You can make {{ Object.keys(suitableRecipes).length }} {{ Object.keys(suitableRecipes).length
+        > 1 ?
         'recipes' :
         'recipe' }}
-      </h1>
+      </h3>
       <!-- <div class="row" style="color: black">{{ ingredientsIidList }}</div> -->
       <!-- <div class="row">{{ suitableRecipes }}</div> -->
-      <div class="row container-fluid">
-        <a class="card mb-3 text-decoration-none m-1 recipe-card px-0" v-for="recipe of suitableRecipes" :key="recipe"
-          role="button" href="../recipes/">
+      <div class="d-flex flex-wrap">
+        <a class="card col-5 mb-3 text-decoration-none m-1 recipe-card px-0" v-for="recipe of suitableRecipes"
+          :key="recipe" role="button" href="../recipes/">
           <div class="row g-0">
             <div class="col-md-4 text-center bg-white">
               <img :src="imageUrl(recipe.img)" class="img-fluid object-fit-contain recipe-img" />
@@ -217,6 +225,17 @@ export default {
 <style scoped>
 * {
   text-align: left;
+}
+
+.sidebar {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  margin-left: -20px;
+
+}
+
+.recipe_img {
+  height: 160px;
+
 }
 
 h3 {
