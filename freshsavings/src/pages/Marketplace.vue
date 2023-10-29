@@ -13,25 +13,22 @@ import thirdImage from '@/assets/img/quality.png'
 
 
 <template>
-  <div class="input-group mt-10" id='sticky' style="padding-left: 20px; padding-right: 20px; height: 45px;  padding-top: 20px;">
-    <span id="search_input" class="input-group-text">
-      <Icon icon="ph:magnifying-glass" />
-    </span>
-    <input v-model="searching" type="text" id="search_input" class="form-control" placeholder="Search your grocery products etc..." />
-    
-  </div>
+  
   <section style="padding-top: 20px;">
     
     <div class="container-fluid ">
       <div class="row">
-        <h1 class="text-center fw-bold">OUR PROMISE</h1>
+        <h1 class="text-center fw-bold mb-4">MARKETPLACE</h1>
+      </div>
+      <div class="row">
+        <h2 class="text-center fw-normal " style="color:#83468F">OUR PROMISE</h2>
       </div>
       <div class="row justify-content-around">
         <div class="col-4" id="firstcol">
 
           <div class="card h-40" ref="firstcard">
               <!-- Product image -->
-              <img class="card-img-top m-auto" style="width:200px; height: auto;" :src="firstImageUrl" alt="..." />
+              <img class="card-img-top m-auto py-3" style="width:200px; height: auto;" :src="firstImageUrl" alt="..." />
               <!-- Product details -->
               <div class="card-body p-4">
                 <div class="text-center">
@@ -52,7 +49,7 @@ import thirdImage from '@/assets/img/quality.png'
 
 <div class="card h-40" ref="secondcard">
     <!-- Product image -->
-    <img class="card-img-top m-auto" :src="secondImageUrl" alt="..." style="width:200px; height: auto;" />
+    <img class="card-img-top m-auto py-3" :src="secondImageUrl" alt="..." style="width:200px; height: auto;" />
     <!-- Product details -->
     <div class="card-body p-4">
       <div class="text-center">
@@ -72,7 +69,7 @@ import thirdImage from '@/assets/img/quality.png'
 
 <div class="card h-40" ref="thirdcard">
     <!-- Product image -->
-    <img class="card-img-top m-auto" :src="thirdImageUrl" alt="..."  style="width:200px; height: auto;" />
+    <img class="card-img-top m-auto py-3" :src="thirdImageUrl" alt="..."  style="width:200px; height: auto;" />
     <!-- Product details -->
     <div class="card-body p-4">
       <div class="text-center">
@@ -94,17 +91,24 @@ import thirdImage from '@/assets/img/quality.png'
     </div>
   </section>
     <section>
-    <div class="m-3">
+      <div class="input-group mx-10 mt-2 mb-5" id='sticky' style="padding-left: 20px; padding-right: 20px; height: 45px;  padding-top: 20px;">
+    <span id="search_input" class="input-group-text">
+      <Icon icon="ph:magnifying-glass" />
+    </span>
+    <input v-model="searching" type="text" id="search_input" class="form-control" placeholder="Search your grocery products etc..." />
+    
+  </div>
+    
       <h3 class="text-center fw-bold">Categories</h3>
 
       <!-- Container for categories / swiper -->
-      <div class="container-fluid d-flex justify-content-between">
-        <div  style="background-color: #FFCFD3;" v-for="category of categories" :key="category.categoryName" class="border rounded m-3 p-3 d-flex flex-column justify-content-between col-2 align-items-center">
+      <div class="container-fluid  d-flex justify-content-between">
+        <div  style="background-color: #FFCFD3;" v-for="category of categories" :key="category.categoryName" class="border rounded  p-3 d-flex flex-column justify-content-between col-2 align-items-center">
           <img :src=imageUrl(category.imgLink) style="width:50px"/>
           <p class="mb-0 mt-3 fw-bold" style="color:#83468F">{{ category.categoryName }}</p>
         </div>
       </div>
-    </div>
+    
 
     <div class="container px-4 px-lg-5 mt-5">
       <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-start">
@@ -338,7 +342,7 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 input {
   margin-bottom: 0;
 }
@@ -365,7 +369,7 @@ span{
 }
 #sticky {
   position: sticky;
-  top: 53px;
-  z-index:10000000;
+  top: 54px;
+  z-index:5;
 }
 </style>
