@@ -91,7 +91,7 @@ app.get("/get_all_ingredients_categories", (req, res) => {
 app.get("/get_all_recipes", (req, res) => {
   // Query the database to retrieve ingredients
   connection.query(
-    "SELECT r.rid, ri.iid, rname, i.iname FROM freshsavings.RecipeIngredient ri, freshsavings.Recipe r, freshsavings.Ingredient i WHERE ri.rid = r.rid AND i.iid = ri.iid;",
+    "SELECT r.rid, ri.iid, rname, i.iname, r.rimg FROM freshsavings.RecipeIngredient ri, freshsavings.Recipe r, freshsavings.Ingredient i WHERE ri.rid = r.rid AND i.iid = ri.iid;",
     (err, results) => {
       if (err) {
         console.error("Error querying the database:", err);
