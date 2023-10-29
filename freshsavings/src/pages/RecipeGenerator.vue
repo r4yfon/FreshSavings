@@ -50,18 +50,32 @@ import { loadRouteLocation } from "vue-router";
     <div class="col">
       <div class="row">You can make {{ suitableRecipes.length }} {{ suitableRecipes.length > 1 ? 'recipes' : 'recipe' }}
       </div>
-      <div class="row">{{ ingredientsIidList }}</div>
+      <div class="row" style="color: black">{{ ingredientsIidList }}</div>
       <div class="row">{{ suitableRecipes }}</div>
       <div class="row container-fluid">
-        <a class="card d-flex flex-row text-decoration-none m-1" v-for="recipe in suitableRecipes" role="button"
-          href="../recipes/">
-          <img :src="imageUrl(recipe[1])" class="card-img-top img-fluid object-fit-contain" />
-          <div class="card-body">
-            <h5 class="card-title">{{ recipe[0] }}</h5>
-            <p class="card-text">{{ recipe[2] }}</p>
+        <a class="card mb-3 text-decoration-none m-1 recipe-card px-0" v-for="recipe in suitableRecipes" :key="recipe"
+          role="button" href="../recipes/">
+          <div class="row g-0">
+            <div class="col-md-4 text-center bg-white">
+              <img :src="imageUrl(recipe[1])" class="img-fluid object-fit-contain recipe-img" />
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">{{ recipe[0] }}</h5>
+                <p class="card-text">{{ recipe[2] }}</p>
+              </div>
+            </div>
           </div>
         </a>
       </div>
+    </div>
+
+    <div style="color: black">
+      {{ compiledRecipeIngredients }}
+    </div>
+    <hr />
+    <div style="color: black">
+      {{ suitableRecipes }}
     </div>
   </section>
 </template>
@@ -112,7 +126,7 @@ export default {
 
     // add selected sub-items' iid into this.ingredientsList
     modifyIngredientsIidList(item) {
-      // console.log("this item's iid: ", item);
+      console.log("this item's iid: ", item);
       const itemIndex = this.ingredientsIidList.indexOf(item);
       if (itemIndex !== -1) {
         this.ingredientsIidList.splice(itemIndex, 1);
@@ -148,27 +162,40 @@ export default {
     filterRecipes() {
       this.suitableRecipes = [];
       for (let item in this.compiledRecipeIngredients) {
-        // console.log(item);
+        console.log(item);
+        let numOfIngredientsOwned = 0;
         // console.log(this.ingredientsIidList);
+        // this returns the ingredient and the iid as an array
         for (let ingredient of this.compiledRecipeIngredients[item].ingredients) {
           if ((this.ingredientsIidList.indexOf(ingredient[0]) !== -1) && (this.ingredientsIidList.length > 0)) {
+            numOfIngredientsOwned++;
             console.log(ingredient);
-            console.log("a suitable recipe is: ", this.compiledRecipeIngredients[item].rname, ingredient);
+            // console.log("a suitable recipe is: ", this.compiledRecipeIngredients[item].rname, ingredient);
             this.suitableRecipes.push([
               this.compiledRecipeIngredients[item].rname,
               this.compiledRecipeIngredients[item].rimg,
-              this.compiledRecipeIngredients[item].ingredients
+              this.compiledRecipeIngredients[item].ingredients,
+              this.compiledRecipeIngredients[item].ingredients.length,
             ])
-            break;
+            // console.log(this.suitableRecipes);
+            // if (!(item in Object.keys(this.suitableRecipes))) {
+            //   this.suitableRecipes[item] = {
+            //     name: item,
+            //     img: this.compiledRecipeIngredients[item].rimg,
+            //     numOfIngredientsNeeded: this.compiledRecipeIngredients[item].ingredients.length
+            //   }
+            // }
           }
         }
+        console.log(this.suitableRecipes);
+        // this.suitableRecipes[item].numOfIngredientsOwned = numOfIngredientsOwned;
       }
 
     },
 
     imageUrl(name) {
       return require(`@/assets/img/${name}`);
-      console.log(name);
+      // sconsole.log(name);
     }
   },
 };
@@ -190,4 +217,15 @@ input {
 .category-image {
   width: 48px;
 }
+
+/* .recipe-card {
+  height: 120px;
+
+  .recipe-img {
+    height: 120px;
+  }
+} */
 </style>
+
+<!-- TODO: should be automatically populated based on user's inventory -->
+<!-- TODO: can be in the form of a button  -->
