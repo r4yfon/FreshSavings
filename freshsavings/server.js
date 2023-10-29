@@ -5,9 +5,16 @@ const cors = require("cors");
 const app = express();
 const port = 3000;
 const mysql = require("mysql2");
+const bodyParser = require('body-parser');
 
 // Enable CORS for all routes
 app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+// app.use('/login', Anyroute)
+// app.use(express.json())
+// app.use('/api', Anyroute)
+
 
 // Create a MySQL connection
 const connection = mysql.createConnection({
@@ -118,6 +125,41 @@ app.get("/get_all_recipes", (req, res) => {
     }
   );
 });
+
+
+
+app.post("/login", (req, res) => {
+  const { email, password } = req.body;
+
+  // Check if the email and password are provided in the request
+  if (!email || !password) {
+    res.status(400).json({ error: "Email and password are required." });
+    return;
+  }
+
+  connection.query(
+    "SELECT * FROM freshsavings.Account WHERE email = ? AND password = ?",
+    [email, password],
+    (err, results) => {
+      if (err) {
+        console.error("Error querying the database:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+        return;
+      }
+      if (results.length > 0) {
+        // Login successful, return the user data
+        res.json(results[0]);
+      } else {
+        // Login failed, return an error message
+        res.status(401).json({ error: "Invalid credentials" });
+      }
+    }
+  );
+});
+
+
+
+
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
