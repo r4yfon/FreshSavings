@@ -1,20 +1,18 @@
 <template>
   <NavBar v-if="!this.$route.meta.hideNavBar" />
   <main>
-    <RouterView
-      :class="[this.$route.meta.hideNavBar ? 'bg-white' : 'bg-light']"
-      :style="[
-        this.$route.meta.hideNavBar
-          ? { 'min-height': `100vh` }
-          : { 'min-height': `calc(100vh - 75px)` },
-      ]"
-    />
+    <RouterView :class="[this.$route.meta.hideNavBar ? 'bg-white' : 'bg-light']" :style="[
+      this.$route.meta.hideNavBar
+        ? { 'min-height': `100vh` }
+        : { 'min-height': `calc(100vh - 75px)` },
+    ]" />
   </main>
   <!-- <Footer v-if="!this.$route.meta.hideNavBar" /> -->
 </template>
 
 <script>
 import HelloWorld from "./components/HelloWorld.vue";
+import "bootstrap";
 import NavBar from "./components/NavBar.vue";
 
 

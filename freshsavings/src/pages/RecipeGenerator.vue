@@ -1,14 +1,13 @@
 <script setup>
 import { Icon } from "@iconify/vue";
 import axios from "axios";
-import { loadRouteLocation } from "vue-router";
 </script>
 
 <template>
   <section class="container row" style="padding-top: 50px">
     <!-- left sidebar -->
     <div class="col">
-      <h3 class="mb-4">Recipe Generator</h3>
+      <h3 class="mb-4 text-start">Recipe Generator</h3>
       <div class="mb-3">
         <label for="search_input" class="form-label">Select the ingredients you want to use.</label>
         <div class="input-group mb-4">
@@ -27,7 +26,7 @@ import { loadRouteLocation } from "vue-router";
           <div class="accordion-header">
             <button type="button" class="accordion-button d-flex align-items-center" data-bs-toggle="collapse"
               :data-bs-target="'#collapse' + index" :aria-expanded="true" :aria-controls="'collapse' + index">
-              <img class="category-image" :src="category.name.toLowerCase() + '.png'" />
+              <img class="category-image" :src="imageUrl(category.imgUrl)" />
               <!-- imageUrl(category.name.toLowerCase()) -->
               <p class="mx-3 my-auto text-capitalize">
                 {{ category.name }}
@@ -48,21 +47,26 @@ import { loadRouteLocation } from "vue-router";
 
     <!-- recommended recipes -->
     <div class="col">
-      <div class="row">You can make {{ suitableRecipes.length }} {{ suitableRecipes.length > 1 ? 'recipes' : 'recipe' }}
-      </div>
-      <div class="row" style="color: black">{{ ingredientsIidList }}</div>
-      <div class="row">{{ suitableRecipes }}</div>
+      <!-- TODO: change a v-if no ingredient is selected, display something else -->
+      <h1 class="row">You can make {{ Object.keys(suitableRecipes).length }} {{ Object.keys(suitableRecipes).length > 1 ?
+        'recipes' :
+        'recipe' }}
+      </h1>
+      <!-- <div class="row" style="color: black">{{ ingredientsIidList }}</div> -->
+      <!-- <div class="row">{{ suitableRecipes }}</div> -->
       <div class="row container-fluid">
-        <a class="card mb-3 text-decoration-none m-1 recipe-card px-0" v-for="recipe in suitableRecipes" :key="recipe"
+        <a class="card mb-3 text-decoration-none m-1 recipe-card px-0" v-for="recipe of suitableRecipes" :key="recipe"
           role="button" href="../recipes/">
           <div class="row g-0">
             <div class="col-md-4 text-center bg-white">
-              <img :src="imageUrl(recipe[1])" class="img-fluid object-fit-contain recipe-img" />
+              <img :src="imageUrl(recipe.img)" class="img-fluid object-fit-contain recipe-img" />
             </div>
             <div class="col-md-8">
               <div class="card-body">
-                <h5 class="card-title">{{ recipe[0] }}</h5>
-                <p class="card-text">{{ recipe[2] }}</p>
+                <h5 class="card-title">{{ recipe.name }}</h5>
+                <p class="card-text">You have {{ recipe.numOfIngredientsOwned }} out of {{ recipe.numOfIngredientsNeeded
+                }} ingredients needed.</p>
+                <!-- <p>{{ recipe.ingredientsNeeded }}</p> -->
               </div>
             </div>
           </div>
@@ -70,13 +74,13 @@ import { loadRouteLocation } from "vue-router";
       </div>
     </div>
 
-    <div style="color: black">
+    <!-- <div style="color: black">
       {{ compiledRecipeIngredients }}
     </div>
     <hr />
     <div style="color: black">
       {{ suitableRecipes }}
-    </div>
+    </div> -->
   </section>
 </template>
 
@@ -87,7 +91,7 @@ export default {
       ingredientsIidList: [],
       accordionCategories: {},
       compiledRecipeIngredients: {},
-      suitableRecipes: [],
+      suitableRecipes: {},
     };
   },
   components: {
@@ -117,16 +121,18 @@ export default {
               newCategories[item.icat] = {
                 name: item.icat,
                 items: [[item.iname, item.iid]],
+                imgUrl: item.img
               };
             }
           }
           this.accordionCategories = newCategories;
+          // console.log(this.accordionCategories);
         });
     },
 
     // add selected sub-items' iid into this.ingredientsList
     modifyIngredientsIidList(item) {
-      console.log("this item's iid: ", item);
+      // console.log("this item's iid: ", item);
       const itemIndex = this.ingredientsIidList.indexOf(item);
       if (itemIndex !== -1) {
         this.ingredientsIidList.splice(itemIndex, 1);
@@ -160,34 +166,41 @@ export default {
 
     // based on user's ingredient selection, filter and display the recipes they can follow
     filterRecipes() {
-      this.suitableRecipes = [];
+      // this.suitableRecipes = [];
+      this.suitableRecipes = {};
       for (let item in this.compiledRecipeIngredients) {
-        console.log(item);
+        // console.log(item);
         let numOfIngredientsOwned = 0;
         // console.log(this.ingredientsIidList);
         // this returns the ingredient and the iid as an array
         for (let ingredient of this.compiledRecipeIngredients[item].ingredients) {
           if ((this.ingredientsIidList.indexOf(ingredient[0]) !== -1) && (this.ingredientsIidList.length > 0)) {
+
+            this.suitableRecipes[item] = {};
             numOfIngredientsOwned++;
-            console.log(ingredient);
+
+            // this was for implementing suitableRecipes as an array, but i changed that to an Object to count the number of missing ingredients the user needs
+            // console.log(ingredient);
             // console.log("a suitable recipe is: ", this.compiledRecipeIngredients[item].rname, ingredient);
-            this.suitableRecipes.push([
-              this.compiledRecipeIngredients[item].rname,
-              this.compiledRecipeIngredients[item].rimg,
-              this.compiledRecipeIngredients[item].ingredients,
-              this.compiledRecipeIngredients[item].ingredients.length,
-            ])
-            // console.log(this.suitableRecipes);
+            // this.suitableRecipes.push([
+            //   this.compiledRecipeIngredients[item].rname,
+            //   this.compiledRecipeIngredients[item].rimg,
+            //   this.compiledRecipeIngredients[item].ingredients,
+            //   this.compiledRecipeIngredients[item].ingredients.length,
+            // ])
+            // console.log(item, numOfIngredientsOwned);
             // if (!(item in Object.keys(this.suitableRecipes))) {
-            //   this.suitableRecipes[item] = {
-            //     name: item,
-            //     img: this.compiledRecipeIngredients[item].rimg,
-            //     numOfIngredientsNeeded: this.compiledRecipeIngredients[item].ingredients.length
-            //   }
+            this.suitableRecipes[item] = {
+              name: item,
+              img: this.compiledRecipeIngredients[item].rimg,
+              numOfIngredientsNeeded: this.compiledRecipeIngredients[item].ingredients.length,
+              ingredientsNeeded: this.compiledRecipeIngredients[item].ingredients,
+              numOfIngredientsOwned: numOfIngredientsOwned
+            }
             // }
           }
         }
-        console.log(this.suitableRecipes);
+        // console.log(this.suitableRecipes);
         // this.suitableRecipes[item].numOfIngredientsOwned = numOfIngredientsOwned;
       }
 

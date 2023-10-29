@@ -76,7 +76,7 @@ app.get("/get_product_description/:pid", (req, res) => {
 app.get("/get_all_ingredients_categories", (req, res) => {
   // Query the database to retrieve ingredients
   connection.query(
-    "select iid, iname, icat from freshsavings.Ingredient order by icat",
+    "select iid, iname, icat, img from freshsavings.Ingredient order by icat",
     (err, results) => {
       if (err) {
         console.error("Error querying the database:", err);
