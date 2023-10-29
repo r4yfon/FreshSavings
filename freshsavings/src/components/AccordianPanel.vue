@@ -1,13 +1,13 @@
 <script setup>
-  // import { ref } from 'vue';
-  // const props = defineProps({
-  //   title: { type: String, required: true },
-  //   ariaTitle: { type: String, required: true }
-  // });
-  // const showPanel = ref(false);
-  // const togglePanel = (event) => {
-  //   showPanel.value = !showPanel.value;
-  // }
+  import { ref } from 'vue';
+  const props = defineProps({
+    title: { type: String, required: true },
+    ariaTitle: { type: String, required: true }
+  });
+  const showPanel = ref(false);
+  const togglePanel = (event) => {
+    showPanel.value = !showPanel.value;
+  }
 </script>
 
 <template>
@@ -32,6 +32,10 @@
 </template>
 
 <style>
+div {
+  color:black; 
+}
+
   button{
     padding: 4;
     width: auto; 

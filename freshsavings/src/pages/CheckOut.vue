@@ -1,9 +1,6 @@
 <script setup>
   import AccordionPanel from '../components/AccordianPanel.vue';
   import { ref } from 'vue';
-  import VueDatePicker from '@vuepic/vue-datepicker';
-  import '@vuepic/vue-datepicker/dist/main.css'
-  const date = ref(new Date());
 
 </script>
 
@@ -198,8 +195,15 @@
                       </div>
                       <!-- Calendar -->
                       <section>
-                        <VueDatePicker v-model:value="date" inline auto-apply value-type="format" @change="onChange()"/>
-                        <p> Your selected day is {{date}} </p>
+                        <input type="date" v-model="date" inline auto-apply value-type="format"/>
+                        <select required name="timing" id="timing" v-model="timing">
+                          <option value="9am-12pm">9am-12pm</option>
+                          <option value="12pm-3pm">12pm-3pm</option>
+                          <option value="3pm-6pm">3pm-6pm</option>
+                          <option value="6pm-9pm">6pm-9pm</option>
+                          <option value="9pm-11pm">9pm-11pm</option>
+                        </select>
+                        <p> Your selected day is {{date}} and selected timeslot is {{timing}}</p>
                       </section>
                     </AccordionPanel>
                   </main>
@@ -207,7 +211,7 @@
 
                 <div class="card mb-3">
                   <main>
-                    <AccordionPanel aria-title="incidents" title="Delivery ($20)">
+                    <AccordionPanel aria-title="incidents" title="Delivery ($20)" @click="chargeDelivery">
                       <h5> Contact Details </h5>
                       <div class="input">
                         <label
@@ -346,6 +350,8 @@ export default {
   },
   data: () => ({
     loading: false,
+    timing:"", 
+    date:"",
   }),
   methods: {
     deleteCard(cardNumber) {
