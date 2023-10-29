@@ -1,4 +1,3 @@
-
 <script setup>
 import GSignInButton from 'vue-google-signin-button'
 import getGoogleUrl from '../auth/getGoogleUrl.js';
@@ -8,6 +7,26 @@ import { ref, onMounted } from 'vue';
 const from = ref('default'); // Define the from variable here
 
 onMounted(() => {
+	const inputs = document.querySelectorAll(".input");
+
+const addcl = (event) => {
+  let parent = event.target.parentNode.parentNode;
+  parent.classList.add("focus");
+};
+
+const remcl = (event) => {
+  let parent = event.target.parentNode.parentNode;
+  if (event.target.value === "") {
+	parent.classList.remove("focus");
+  }
+};
+
+inputs.forEach(input => {
+  input.addEventListener("focus", addcl);
+  input.addEventListener("blur", remcl);
+});
+
+
 	const userSelection = 'example'; // Assume this value comes from some user action
   from.value = userSelection;
   const script = document.createElement('script');
@@ -102,24 +121,10 @@ export default {
       console.log('OH NOES', error);
     };
 
-    const addcl = (event) => {
-      let parent = event.target.parentNode.parentNode;
-      parent.classList.add('focus');
-    };
-
-    const remcl = (event) => {
-      let parent = event.target.parentNode.parentNode;
-      if (event.target.value === '') {
-        parent.classList.remove('focus');
-      }
-    };
-
     return {
       googleSignInParams,
       onSignInSuccess,
       onSignInError,
-      addcl,
-      remcl,
       from,
       getGoogleUrl,
     };
@@ -180,6 +185,19 @@ body{
 }
 .social-container {
 	margin: 20px 0;
+}
+
+a{
+	display: block;
+	text-align: right;
+	text-decoration: none;
+	color: #999;
+	font-size: 0.9rem;
+	transition: .3s;
+}
+
+a:hover{
+	color: #38d39f;
 }
 
 .social-container a {
@@ -275,7 +293,7 @@ form{
 	bottom: -2px;
 	width: 0%;
 	height: 2px;
-	background-color: #508E46;
+	background-color: #38d39f;
 	transition: .4s;
 }
 
