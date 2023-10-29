@@ -2,7 +2,6 @@
 import { Icon } from "@iconify/vue";
 import axios from "axios";
 import { loadRouteLocation } from "vue-router";
-import "bootstrap";
 </script>
 
 <template>
@@ -49,7 +48,20 @@ import "bootstrap";
 
     <!-- recommended recipes -->
     <div class="col">
+      <div class="row">You can make {{ suitableRecipes.length }} {{ suitableRecipes.length > 1 ? 'recipes' : 'recipe' }}
+      </div>
       <div class="row">{{ ingredientsIidList }}</div>
+      <div class="row">{{ suitableRecipes }}</div>
+      <div class="row container-fluid">
+        <a class="card d-flex flex-row text-decoration-none m-1" v-for="recipe in suitableRecipes" role="button"
+          href="../recipes/">
+          <img :src="imageUrl(recipe[1])" class="card-img-top img-fluid object-fit-contain" />
+          <div class="card-body">
+            <h5 class="card-title">{{ recipe[0] }}</h5>
+            <p class="card-text">{{ recipe[2] }}</p>
+          </div>
+        </a>
+      </div>
     </div>
   </section>
 </template>
@@ -61,7 +73,7 @@ export default {
       ingredientsIidList: [],
       accordionCategories: {},
       compiledRecipeIngredients: {},
-      filteredRecipes: [],
+      suitableRecipes: [],
     };
   },
   components: {
@@ -70,7 +82,7 @@ export default {
   mounted() {
     this.getIngredientsCategories();
     this.compileRecipeIngredients();
-    console.log(this.compiledRecipeIngredients);
+    // console.log(this.compiledRecipeIngredients);
   },
   methods: {
     // to get the categories and sub-items for accordion
@@ -100,20 +112,19 @@ export default {
 
     // add selected sub-items' iid into this.ingredientsList
     modifyIngredientsIidList(item) {
-      console.log(item);
+      // console.log("this item's iid: ", item);
       const itemIndex = this.ingredientsIidList.indexOf(item);
       if (itemIndex !== -1) {
         this.ingredientsIidList.splice(itemIndex, 1);
       } else {
         this.ingredientsIidList.push(item);
       }
-      console.log(this.ingredientsIidList);
+      // console.log(this.ingredientsIidList);
       this.filterRecipes();
     },
 
     // compile recipes according to the ingredients needed
     compileRecipeIngredients() {
-      // let compiledRecipeIngredients = {};
       axios
         .get("http://localhost:3000/get_all_recipes")
         .then((response) => {
@@ -125,31 +136,40 @@ export default {
                 rname: item.rname,
                 rid: item.rid,
                 ingredients: [[item.iid, item.iname]],
+                rimg: item.rimg
               };
             }
           }
         });
-      console.log(this.compiledRecipeIngredients);
+      // console.log(this.compiledRecipeIngredients);
     },
 
+    // based on user's ingredient selection, filter and display the recipes they can follow
     filterRecipes() {
+      this.suitableRecipes = [];
       for (let item in this.compiledRecipeIngredients) {
-        console.log(item);
-        console.log(this.ingredientsIidList);
+        // console.log(item);
+        // console.log(this.ingredientsIidList);
         for (let ingredient of this.compiledRecipeIngredients[item].ingredients) {
-          console.log(ingredient);
-          if (this.ingredientsIidList.indexOf(ingredient[0])) {
-            console.log("dscdsdsvdsdssvsgewfew")
-            console.log(this.compiledRecipeIngredients[item].rname, ingredient[1]);
+          if ((this.ingredientsIidList.indexOf(ingredient[0]) !== -1) && (this.ingredientsIidList.length > 0)) {
+            console.log(ingredient);
+            console.log("a suitable recipe is: ", this.compiledRecipeIngredients[item].rname, ingredient);
+            this.suitableRecipes.push([
+              this.compiledRecipeIngredients[item].rname,
+              this.compiledRecipeIngredients[item].rimg,
+              this.compiledRecipeIngredients[item].ingredients
+            ])
+            break;
           }
         }
       }
-      return;
+
     },
 
-    // imageUrl(name) {
-    //   return require(`@/assets/img/${name}.png`);
-    // }
+    imageUrl(name) {
+      return require(`@/assets/img/${name}`);
+      console.log(name);
+    }
   },
 };
 </script>
