@@ -21,8 +21,9 @@ import axios from "axios";
         </div>
       </div>
 
-      <div class="accordion my-3" id="accordion">
-        <div v-for="(category, index) of accordionCategories" :key="category.name" class="accordion-item">
+      <div v-for="(category, index) of accordionCategories" :key="category.name" class="accordion my-3"
+        :id="'accordion' + index">
+        <div class="accordion-item">
           <div class="accordion-header">
             <button type="button" class="accordion-button d-flex align-items-center" data-bs-toggle="collapse"
               :data-bs-target="'#collapse' + index" :aria-expanded="true" :aria-controls="'collapse' + index">
@@ -33,7 +34,7 @@ import axios from "axios";
               </p>
             </button>
           </div>
-          <div :id="'collapse' + index" class="accordion-collapse collapse" data-bs-parent="#accordion">
+          <div :id="'collapse' + index" class="accordion-collapse collapse">
             <div class="accordion-body d-flex flex-wrap">
               <button type="button" class="btn btn-primary m-1 p-2 text-capitalize" v-for="item in category.items"
                 :key="item" @click="modifyIngredientsIidList(item[1])" data-bs-toggle="button">
@@ -45,11 +46,12 @@ import axios from "axios";
       </div>
     </div>
 
+    <!-- right panel -->
     <!-- recommended recipes -->
     <div class="col-8 pt-4 container-fluid">
       <!-- if no ingredient is selected -->
       <div v-if="Object.keys(suitableRecipes) < 1" class="my-5 d-block">
-        <img :src="imageUrl('add_recipes.webp')" class="mb-3 d-block mx-auto recipe_img" />
+        <img :src="imageUrl('add_recipes.webp')" class="mb-3 d-block mx-auto w-25" />
         <h3>Add your ingredients to get started.</h3>
         <p class="text-center">Every ingredient you add unlocks more recipes.</p>
       </div>
@@ -63,17 +65,18 @@ import axios from "axios";
       <!-- <div class="row" style="color: black">{{ ingredientsIidList }}</div> -->
       <!-- <div class="row">{{ suitableRecipes }}</div> -->
       <div class="d-flex flex-wrap">
-        <a class="card col-5 mb-3 text-decoration-none m-1 recipe-card px-0" v-for="recipe of suitableRecipes"
-          :key="recipe" role="button" href="../recipes/">
+        <a class="card col-5 m-2 text-decoration-none recipe-card px-0" v-for="recipe of suitableRecipes" :key="recipe"
+          role="button" href="../recipes/">
           <div class="row g-0">
-            <div class="col-md-4 text-center bg-white">
-              <img :src="imageUrl(recipe.img)" class="img-fluid object-fit-contain recipe-img" />
+            <div class="col-md-4 text-center bg-white h-100">
+              <img :src="imageUrl(recipe.img)" class="img-fluid object-fit-contain recipe-img h-75" />
             </div>
             <div class="col-md-8">
               <div class="card-body">
                 <h5 class="card-title">{{ recipe.name }}</h5>
-                <p class="card-text">You have {{ recipe.numOfIngredientsOwned }} out of {{ recipe.numOfIngredientsNeeded
-                }} ingredients needed.</p>
+                <p class="card-text" v-if="recipe.numOfIngredientsNeeded !== recipe.numOfIngredientsOwned">You have {{
+                  recipe.numOfIngredientsOwned }} out of {{ recipe.numOfIngredientsNeeded }} ingredients needed.</p>
+                <p v-else>You have all the required {{ recipe.numOfIngredientsNeeded }} ingredients to make thie dish.</p>
                 <!-- <p>{{ recipe.ingredientsNeeded }}</p> -->
               </div>
             </div>
@@ -230,12 +233,6 @@ export default {
 .sidebar {
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   margin-left: -20px;
-
-}
-
-.recipe_img {
-  height: 160px;
-
 }
 
 h3 {
@@ -246,17 +243,13 @@ input {
   margin-bottom: 0;
 }
 
+.recipe-card {
+  height: 140px;
+}
+
 .category-image {
   width: 48px;
 }
-
-/* .recipe-card {
-  height: 120px;
-
-  .recipe-img {
-    height: 120px;
-  }
-} */
 </style>
 
 <!-- TODO: should be automatically populated based on user's inventory -->
