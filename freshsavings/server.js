@@ -111,8 +111,7 @@ app.get("/get_all_ingredients_categories", (req, res) => {
   );
 });
 
-app.get("/get_all_recipes", (req, res) => {
-  // Query the database to retrieve ingredients
+app.get("/get_all_recipes", (req, res) => {   // Query the database to retrieve ingredients
   connection.query(
     "SELECT r.rid, ri.iid, rname, i.iname, r.rimg FROM freshsavings.RecipeIngredient ri, freshsavings.Recipe r, freshsavings.Ingredient i WHERE ri.rid = r.rid AND i.iid = ri.iid;",
     (err, results) => {
@@ -148,7 +147,7 @@ app.post("/login", (req, res) => {
       }
       if (results.length > 0) {
         // Login successful, return the user data
-        res.json(results[0]);
+        res.json({ message: "Login successful", user: results[0] });
       } else {
         // Login failed, return an error message
         res.status(401).json({ error: "Invalid credentials" });
@@ -156,6 +155,7 @@ app.post("/login", (req, res) => {
     }
   );
 });
+
 
 
 

@@ -1,10 +1,61 @@
 <script setup>
+import axios from 'axios';
 import GSignInButton from 'vue-google-signin-button'
 import getGoogleUrl from '../auth/getGoogleUrl.js';
 import { ref, onMounted } from 'vue';
-
+import { createRouter, createWebHistory } from 'vue-router';
+import router from '../router/index.js';
 
 const from = ref('default'); // Define the from variable here
+
+const loginUser = async (email, password) => {
+  try {
+	axios.defaults.baseURL = 'http://localhost:3000';
+	const response = await axios.post('/login', {
+		email: email,
+		password: password,
+	});
+    // Handle the successful login response here
+    if (response.status === 200) {
+      const user = response.data.user;
+      console.log('Login successful. User details:', user);
+      // You can handle the user details as needed
+    }
+  } catch (error) {
+    // Handle login error
+    console.error('Login error:', error.response.data.error);
+  }
+};
+
+const handleLogin = async () => {
+  console.log('Login button clicked.');
+  // Extract the values of the email and password fields from the form
+  const email = document.querySelector("input[type='text']").value;
+  const password = document.querySelector("input[type='password']").value;
+
+  try {
+    const response = await axios.post('http://localhost:3000/login', {
+      email: email,
+      password: password,
+    });
+
+	if (response && response.data && response.status === 200) {
+      const user = response.data.user;
+      console.log('Login successful. User details:', user);
+      // Redirect to the inventory page on successful login
+      router.push('/inventory-tracker');
+    } else {
+      errorMessage.value = 'Invalid credentials';
+    }
+  } catch (error) {
+    // Handle login error
+    console.error('Login error:', error.response ? error.response.data.error : error);
+    errorMessage.value = 'Invalid credentials';
+  }
+};
+
+const errorMessage = ref('');
+
 
 onMounted(() => {
 	const inputs = document.querySelectorAll(".input");
@@ -45,7 +96,7 @@ inputs.forEach(input => {
 	<div class="container">
 	<div></div>
 	<div class="login-content" style="margin-top: 10%; margin-left: 100%;">
-		<form>
+		<form @submit.prevent="handleLogin"> 
 		<img :src="require('@/assets/img/avatar.svg')">
 		<h2 class="title">Welcome</h2>
 
@@ -67,24 +118,28 @@ inputs.forEach(input => {
 			<input type="password" class="input">
 			</div>
 		</div>
-		<a href="#">Forgot Password?</a>
-		<input type="submit" class="btn" value="Login">
+		<div class="login-container">
+    <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+    <div class="link-and-button">
+      <a href="#" class="forgot-password">Forgot Password?</a>
+      <input type="submit" class="btn" value="Login" @click="handleLogin">
+    </div>
+  </div>
+		<!-- <a href="#">Forgot Password?</a>
+		<input type="submit" class="btn" value="Login" @click="handleLogin"> -->
 
 		<div class="line-text">or</div>
 		<div class="social-container">
 			<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
 			<!-- <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a> -->
 			<a :href="getGoogleUrl(from)" class="social"
-			:params="signInParams"
+			:params="googleSignInParams"
 				@success="onSignInSuccess"
 				@error="onSignInError">
 				<!-- Sign in with Google -->
 			
 			<i class="fab fa-google-plus-g"></i></a>
-				
-			
 
-		
       
 			<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
 		</div>
@@ -93,6 +148,7 @@ inputs.forEach(input => {
 			<a href="/signup" class="create-account-link">Create an Account</a>
 			</div>
 		</div>
+		
 		</form>
 		
 	</div>
@@ -121,12 +177,40 @@ export default {
       console.log('OH NOES', error);
     };
 
+    const handleLogin = async () => {
+      const email = document.querySelector("input[type='text']").value;
+      const password = document.querySelector("input[type='password']").value;
+
+      try {
+        const response = await axios.post('http://localhost:3000/login', {
+          email: email,
+          password: password,
+        });
+
+        if (response.status === 200) {
+          const user = response.data.user;
+          console.log('Login successful. User details:', user);
+          // Redirect to the inventory page on successful login
+          router.push('/inventory-tracker');
+        }
+      } catch (error) {
+        // Handle login error
+        console.error('Login error:', error.response.data.error);
+        // Display the error message on the login page
+        // You can use a ref here to show the error message in the template
+        errorMessage.value = 'Invalid credentials';
+      }
+    };
+
+    const errorMessage = ref('');
+
     return {
       googleSignInParams,
       onSignInSuccess,
       onSignInError,
       from,
       getGoogleUrl,
+	handleLogin
     };
   },
 };
@@ -135,6 +219,13 @@ export default {
 
 
 <style scoped lang="scss">
+
+.error-message {
+  color: red;
+  display: inline-block;
+  margin-left: 10px; /* Adjust the margin as needed */
+  font-size: 14px; /* Adjust the font size as needed */
+}
 .g-signin-button {
   /* This is where you control how the button looks. Be creative! */
   display: inline-block;
