@@ -113,7 +113,7 @@ import thirdImage from '@/assets/img/quality.png'
     <div class="container px-4 px-lg-5 mt-5">
       <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-start">
         <template v-for="product of groceryItems" :key="product.iname">
-          <div v-if="product.posting_status == 'Active' && cart.indexOf(product.pid) == -1 && searched(product.iname)" class="col mb-5">
+          <div v-if="product.posting_status == 'Active' && cart.indexOf(product.pid) == -1 && searched(product.iname) && isClose(product.address, product.lat, product.long)" class="col mb-5">
           <div class="card h-100">
             <!-- Product image -->
             <img class="card-img-top" :src="imageUrl(product.image)" alt="..." />
@@ -135,7 +135,7 @@ import thirdImage from '@/assets/img/quality.png'
             </div>
           </div>
           </div>
-          <div v-else-if="product.posting_status == 'Active' && cart.indexOf(product.pid) != -1 && searched(product.iname)" class="col mb-5">
+          <div v-else-if="product.posting_status == 'Active' && cart.indexOf(product.pid) != -1 && searched(product.iname) && isClose(product.address, product.lat, product.long)" class="col mb-5">
             <div class="card h-100 carted">
             <!-- Product image -->
             <img class="card-img-top" :src="imageUrl(product.image)" alt="..." />
@@ -198,6 +198,10 @@ export default {
   name: "marketplaceHome",
   data() {
     return {
+      Buyer: '3',
+      buyerLat: undefined,
+      buyerLong: undefined,
+      buyerPostalCode: undefined,
       showadd: false,
       showdel: false,
       firstImageUrl : firstImage,
@@ -237,10 +241,27 @@ export default {
   },
   mounted() {
     // Call the API endpoint when the component is mounted
+    this.GetBuyerAddress();
     this.GetAllPostings();
     this.animated();
   },
+  computed: {
+
+  },
   methods: {
+    GetBuyerAddress(){
+      axios
+        .get("http://localhost:3000/get_address/" + this.Buyer)
+        .then((response) => {
+          console.log(response.data);
+          this.buyerLat = response.data.a_lat;
+          this.buyerLong = response.data.a_long;
+          this.buyerPostalCode = response.data.postalcode;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     GetAllPostings() {
       axios
         .get("http://localhost:3000/get_all_products")
@@ -334,6 +355,9 @@ export default {
           }
         );
       });
+      },
+      isClose(seller_address, seller_lat, seller_long){
+        return true;
       }
       
     }
