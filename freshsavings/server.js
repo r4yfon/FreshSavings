@@ -137,8 +137,8 @@ app.post("/login", (req, res) => {
   }
 
   connection.query(
-    "SELECT * FROM freshsavings.Account WHERE email = ? AND password = ?",
-    [email, password],
+    "SELECT * FROM freshsavings.Account WHERE email = ?",
+    [email],
     (err, results) => {
       if (err) {
         console.error("Error querying the database:", err);
@@ -146,15 +146,21 @@ app.post("/login", (req, res) => {
         return;
       }
       if (results.length > 0) {
-        // Login successful, return the user data
-        res.json({ message: "Login successful", user: results[0] });
+        if (results[0].password === password) {
+          // Login successful, return the user data
+          res.json({ message: "Login successful", user: results[0] });
+        } else {
+          // Incorrect password, return an error message
+          res.status(401).json({ error: "Invalid credentials" });
+        }
       } else {
-        // Login failed, return an error message
-        res.status(401).json({ error: "Invalid credentials" });
+        // User not found, return an error message
+        res.status(404).json({ error: "User not found" });
       }
     }
   );
 });
+
 
 
 app.post("/signup", (req, res) => {

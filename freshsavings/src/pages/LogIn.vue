@@ -8,27 +8,9 @@ import router from '../router/index.js';
 
 const from = ref('default'); // Define the from variable here
 
-const loginUser = async (email, password) => {
-  try {
-	axios.defaults.baseURL = 'http://localhost:3000';
-	const response = await axios.post('/login', {
-		email: email,
-		password: password,
-	});
-    // Handle the successful login response here
-    if (response.status === 200) {
-      const user = response.data.user;
-      console.log('Login successful. User details:', user);
-      // You can handle the user details as needed
-    }
-  } catch (error) {
-    // Handle login error
-    console.error('Login error:', error.response.data.error);
-  }
-};
-
 const handleLogin = async () => {
-  console.log('Login button clicked.');
+  errorMessage.value = '';
+
   // Extract the values of the email and password fields from the form
   const email = document.querySelector("input[type='text']").value;
   const password = document.querySelector("input[type='password']").value;
@@ -39,18 +21,21 @@ const handleLogin = async () => {
       password: password,
     });
 
-	if (response && response.data && response.status === 200) {
+    if (response && response.data && response.status === 200) {
       const user = response.data.user;
       console.log('Login successful. User details:', user);
-      // Redirect to the inventory page on successful login
       router.push('/inventory-tracker');
     } else {
-      errorMessage.value = 'Invalid credentials';
+      errorMessage.value = 'Invalid credentials'; // Update error message
     }
   } catch (error) {
     // Handle login error
-    console.error('Login error:', error.response ? error.response.data.error : error);
-    errorMessage.value = 'Invalid credentials';
+    if (error.response && error.response.data.error) {
+      errorMessage.value = error.response.data.error;
+    } else {
+      errorMessage.value = 'Login request failed';
+    }
+    console.error('Login error:', error);
   }
 };
 
@@ -98,14 +83,15 @@ inputs.forEach(input => {
 	<div class="login-content" style="margin-top: 10%; margin-left: 100%;">
 		<form @submit.prevent="handleLogin"> 
 		<img :src="require('@/assets/img/avatar.svg')">
-		<h2 class="title">Welcome</h2>
+		<h2 class="title">Login</h2>
+		<div class="text subtitle">Welcome back to FreshSavings!</div>
 
 		<div class="input-div one">
 			<div class="i">
 			<i class="fas fa-user"></i>
 			</div>
 			<div class="div">
-			<h5>Username</h5>
+			<h5>Email Address</h5>
 			<input type="text" class="input">
 			</div>
 		</div>
@@ -177,33 +163,6 @@ export default {
       console.log('OH NOES', error);
     };
 
-    const handleLogin = async () => {
-      const email = document.querySelector("input[type='text']").value;
-      const password = document.querySelector("input[type='password']").value;
-
-      try {
-        const response = await axios.post('http://localhost:3000/login', {
-          email: email,
-          password: password,
-        });
-
-        if (response.status === 200) {
-          const user = response.data.user;
-          console.log('Login successful. User details:', user);
-          // Redirect to the inventory page on successful login
-          router.push('/inventory-tracker');
-        }
-      } catch (error) {
-        // Handle login error
-        console.error('Login error:', error.response.data.error);
-        // Display the error message on the login page
-        // You can use a ref here to show the error message in the template
-        errorMessage.value = 'Invalid credentials';
-      }
-    };
-
-    const errorMessage = ref('');
-
     return {
       googleSignInParams,
       onSignInSuccess,
@@ -262,6 +221,14 @@ body{
   margin-top: 10%;
   text-align: center;
   color: #b7bdbf;
+  font-weight: bold;
+}
+
+.subtitle {
+  margin-top: 0%;
+  margin-bottom: 8%;
+  text-align: center;
+  color: #9ea4a6;
   font-weight: bold;
 }
 
