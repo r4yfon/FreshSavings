@@ -14,13 +14,15 @@ import axios from "axios";
           <span id="search_input" class="input-group-text">
             <Icon icon="ph:magnifying-glass" />
           </span>
-          <input type="text" id="search_input" class="form-control" placeholder="Search ingredients" />
+          <input type="text" id="search_input" class="form-control" placeholder="Search ingredients"
+            v-model="searchedIngredient" />
           <button class="btn btn-outline-secondary" id="search_input" type="button">
             Search
           </button>
         </div>
       </div>
 
+      <!-- accordion for the categories  -->
       <div v-for="(category, index) of accordionCategories" :key="category.name" class="accordion my-3"
         :id="'accordion' + index">
         <div class="accordion-item">
@@ -28,7 +30,6 @@ import axios from "axios";
             <button type="button" class="accordion-button d-flex align-items-center" data-bs-toggle="collapse"
               :data-bs-target="'#collapse' + index" :aria-expanded="true" :aria-controls="'collapse' + index">
               <img class="category-image" :src="imageUrl(category.imgUrl)" />
-              <!-- imageUrl(category.name.toLowerCase()) -->
               <p class="mx-3 my-auto text-capitalize">
                 {{ category.name }}
               </p>
@@ -51,32 +52,39 @@ import axios from "axios";
     <div class="col-8 pt-4 container-fluid">
       <!-- if no ingredient is selected -->
       <div v-if="Object.keys(suitableRecipes) < 1" class="my-5 d-block">
-        <img :src="imageUrl('add_recipes.webp')" class="mb-3 d-block mx-auto w-25" />
-        <h3>Add your ingredients to get started.</h3>
+        <img :src="imageUrl('add_recipes.webp')" class="mb-4 d-block mx-auto w-25" />
+        <h3 class="text-center">Add your ingredients to get started.</h3>
         <p class="text-center">Every ingredient you add unlocks more recipes.</p>
       </div>
 
       <!-- once user selects at least 1 ingredient -->
-      <h3 v-else>You can make {{ Object.keys(suitableRecipes).length }} {{ Object.keys(suitableRecipes).length
+      <h3 v-else class="text-start">You can make {{ Object.keys(suitableRecipes).length }} {{
+        Object.keys(suitableRecipes).length
         > 1 ?
         'recipes' :
         'recipe' }}
       </h3>
       <!-- <div class="row" style="color: black">{{ ingredientsIidList }}</div> -->
       <!-- <div class="row">{{ suitableRecipes }}</div> -->
-      <div class="d-flex flex-wrap">
-        <a class="card col-5 m-2 text-decoration-none recipe-card px-0" v-for="recipe of suitableRecipes" :key="recipe"
+      <div class="row row-cols-2">
+        <a class="card col-6 text-decoration-none recipe-card px-0" v-for="recipe of suitableRecipes" :key="recipe"
           role="button" href="../recipes/">
-          <div class="row g-0">
-            <div class="col-md-4 text-center bg-white h-100">
+          <div class="row g-0 h-100">
+            <div class="col-md-4 text-center bg-white h-100 d-flex align-items-center justify-content-center">
               <img :src="imageUrl(recipe.img)" class="img-fluid object-fit-contain recipe-img h-75" />
             </div>
             <div class="col-md-8">
               <div class="card-body">
                 <h5 class="card-title">{{ recipe.name }}</h5>
-                <p class="card-text" v-if="recipe.numOfIngredientsNeeded !== recipe.numOfIngredientsOwned">You have {{
-                  recipe.numOfIngredientsOwned }} out of {{ recipe.numOfIngredientsNeeded }} ingredients needed.</p>
-                <p v-else>You have all the required {{ recipe.numOfIngredientsNeeded }} ingredients to make thie dish.</p>
+                <p class="card-text" v-if="recipe.missingIngredients.length !== 0">You have {{
+                  recipe.ingredientsNeeded.length - recipe.missingIngredients.length }} out of
+                  {{ recipe.ingredientsNeeded.length }} ingredients needed.</p>
+                <p v-else>
+                  You have all the required {{ recipe.ingredientsNeeded.length }} ingredients to make thie dish.
+                </p>
+                <p v-if="0 < recipe.missingIngredients.length < 2" class="text-danger">You are missing {{
+                  recipe.missingIngredients[0][1] }}
+                </p>
                 <!-- <p>{{ recipe.ingredientsNeeded }}</p> -->
               </div>
             </div>
@@ -85,13 +93,14 @@ import axios from "axios";
       </div>
     </div>
 
-    <!-- <div style="color: black">
-      {{ compiledRecipeIngredients }}
-    </div>
-    <hr />
-    <div style="color: black">
-      {{ suitableRecipes }}
-    </div> -->
+    <!-- <div style="color: black"> -->
+    <!-- {{ compiledRecipeIngredients }} -->
+    <!-- </div> -->
+    <!-- <div class="bg-black"> -->
+    <!-- </div> -->
+    <!-- <div style="color: black"> -->
+    <!-- {{ suitableRecipes }} -->
+    <!-- </div> -->
   </section>
 </template>
 
@@ -103,6 +112,7 @@ export default {
       accordionCategories: {},
       compiledRecipeIngredients: {},
       suitableRecipes: {},
+      searchedIngredient: ''
     };
   },
   components: {
@@ -181,15 +191,18 @@ export default {
       this.suitableRecipes = {};
       for (let item in this.compiledRecipeIngredients) {
         // console.log(item);
-        let numOfIngredientsOwned = 0;
+        // let numOfIngredientsOwned = 0;
+        let ingredientsOwned = [];
+        let missingIngredients = [];
         // console.log(this.ingredientsIidList);
         // this returns the ingredient and the iid as an array
         for (let ingredient of this.compiledRecipeIngredients[item].ingredients) {
+          // console.log(ingredient);
           if ((this.ingredientsIidList.indexOf(ingredient[0]) !== -1) && (this.ingredientsIidList.length > 0)) {
 
             this.suitableRecipes[item] = {};
-            numOfIngredientsOwned++;
-
+            // numOfIngredientsOwned++;
+            ingredientsOwned.push(ingredient);
             // this was for implementing suitableRecipes as an array, but i changed that to an Object to count the number of missing ingredients the user needs
             // console.log(ingredient);
             // console.log("a suitable recipe is: ", this.compiledRecipeIngredients[item].rname, ingredient);
@@ -201,15 +214,19 @@ export default {
             // ])
             // console.log(item, numOfIngredientsOwned);
             // if (!(item in Object.keys(this.suitableRecipes))) {
+            // }
+            missingIngredients = (this.compiledRecipeIngredients[item].ingredients).filter((ingredient) => !ingredientsOwned.includes(ingredient));
+            // missingIngredients = ingredientsOwned.filter((ingredient) => { !(this.compiledRecipeIngredients[item].ingredients).includes(ingredient) });
             this.suitableRecipes[item] = {
               name: item,
               img: this.compiledRecipeIngredients[item].rimg,
-              numOfIngredientsNeeded: this.compiledRecipeIngredients[item].ingredients.length,
+              // numOfIngredientsNeeded: this.compiledRecipeIngredients[item].ingredients.length,
               ingredientsNeeded: this.compiledRecipeIngredients[item].ingredients,
-              numOfIngredientsOwned: numOfIngredientsOwned
+              // numOfIngredientsOwned: numOfIngredientsOwned,
+              missingIngredients: missingIngredients
             }
-            // }
           }
+
         }
         // console.log(this.suitableRecipes);
         // this.suitableRecipes[item].numOfIngredientsOwned = numOfIngredientsOwned;
@@ -235,9 +252,9 @@ export default {
   margin-left: -20px;
 }
 
-h3 {
-  text-align: center;
-}
+/* h3 {
+  text-align: left;
+} */
 
 input {
   margin-bottom: 0;
