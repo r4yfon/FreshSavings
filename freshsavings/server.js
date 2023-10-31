@@ -6,6 +6,7 @@ const app = express();
 const port = 3000;
 const mysql = require("mysql2");
 const bodyParser = require('body-parser');
+const axios = require('axios');
 
 // Enable CORS for all routes
 app.use(cors());
@@ -130,7 +131,6 @@ app.get("/get_all_recipes", (req, res) => {   // Query the database to retrieve 
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
 
-  // Check if the email and password are provided in the request
   if (!email || !password) {
     res.status(400).json({ error: "Email and password are required." });
     return;
@@ -157,8 +157,67 @@ app.post("/login", (req, res) => {
 });
 
 
+app.post("/signup", (req, res) => {
+  const { email, password } = req.body;
+  const errors = [];
 
+  // Check if the email and password are provided in the request
+  if (!email) {
+    errors.push("Email is required.");
+  }
 
+  // Check if the password is provided in the request
+  if (!password) {
+    errors.push("Password is required.");
+  } else if (password.length < 8) {
+    errors.push("Password should be at least 8 characters long.");
+  }
+
+  // Check if the email format is valid
+  const emailFormat = /^\S+@\S+\.\S+$/;
+  if (email && !email.match(emailFormat)) {
+    errors.push("Invalid email format.");
+  }
+
+  // Return errors array if any errors are found
+  if (errors.length > 0) {
+    return res.status(400).json({ errors });
+  }
+
+  // Hardcode the postal code and retrieve its latitude and longitude
+  connection.query(
+    "SELECT * FROM freshsavings.Account WHERE email = ?",
+    [email],
+    (err, results) => {
+      if (err) {
+        console.error("Error querying the database:", err);
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+
+      if (results.length > 0) {
+        return res.status(400).json({ errors: ["Email already exists."] });
+      }
+
+      // Hardcode the postal code and retrieve its latitude and longitude
+      const postalCode = '670641';
+      const latitude = "1.38765766146094";
+      const longitude = "103.76208975109";
+
+      // Insert the new user record with the postal code and its coordinates
+      connection.query(
+        "INSERT INTO freshsavings.Account (email, password, postalcode, a_lat, a_long) VALUES (?, ?, ?, ?, ?)",
+        [email, password, postalCode, latitude, longitude],
+        (err, results) => {
+          if (err) {
+            console.error("Error inserting into the database:", err);
+            return res.status(500).json({ error: "Internal Server Error" });
+          }
+          res.json({ message: 'User created successfully.' });
+        }
+      );
+    }
+  );
+});
 
 
 app.listen(port, () => {
