@@ -12,7 +12,7 @@
 
 <template>
   <div class="panel container mb-4 border-2 rounded-lg shadow-sm">
-      <button 
+      <span 
         :arial-controls="'accordion-content-' + ariaTitle"
         :id="'accordion-control-' + ariaTitle"
         @click.prevent="togglePanel" >
@@ -20,7 +20,7 @@
           <input type="radio" name="option" value="option">
         {{ title }}
         </label>
-    </button>
+      </span>
     <div
       :aria-hidden="!showPanel"
       :id="'content-' + ariaTitle"
