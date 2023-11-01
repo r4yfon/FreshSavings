@@ -293,7 +293,7 @@ export default {
       this.showadd = true;
       setTimeout(() => {
         this.showadd = false;
-      }, 2000); // Hide the toast after 2 seconds
+      }, 700); // Hide the toast after 2 seconds
     
     },
     Remove(pid){
@@ -302,7 +302,7 @@ export default {
       this.showdel = true;
       setTimeout(() => {
         this.showdel = false;
-      }, 2000); // Hide the toast after 2 seconds
+      }, 700); // Hide the toast after 2 seconds
       
       
     },
