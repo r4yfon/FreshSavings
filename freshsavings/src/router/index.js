@@ -6,6 +6,7 @@ import LogIn from "../pages/LogIn.vue";
 import SignUp from "../pages/SignUp.vue";
 import RecipeGenerator from "../pages/RecipeGenerator.vue";
 import InventoryTracker from "../pages/InventoryTracker.vue";
+import PageNotFound from "../pages/PageNotFound.vue";
 
 const routes = [
   {
@@ -48,6 +49,14 @@ const routes = [
     path: "/inventory-tracker",
     name: "InventoryTracker",
     component: InventoryTracker,
+  },
+  {
+    path: "/404-page-not-found",
+    name: "PageNotFound",
+    component: PageNotFound,
+    meta: {
+      hideNavBar: true,
+    },
   },
 ];
 
