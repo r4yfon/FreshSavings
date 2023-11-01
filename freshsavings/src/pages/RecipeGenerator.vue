@@ -4,13 +4,13 @@ import axios from "axios";
 </script>
 
 <template>
-  <section class="container-fluid row m-auto">
+  <section class="container row m-auto">
     <!-- left sidebar -->
-    <div class="col-4 col-lg-3 sidebar pt-4 px-4">
-      <h1 class="mb-4 text-start">Recipe Generator</h1>
+    <div class="col-md-4 sidebar pt-3 mt-3 rounded border">
+      <h2 class="mb-4 text-start">Recipe Generator</h2>
       <div class="mb-3">
         <label for="search_input" class="form-label">Select the ingredients you want to use.</label>
-        <div class="input-group mb-4">
+        <!-- <div class="input-group mb-4">
           <span id="search_input" class="input-group-text">
             <Icon icon="ph:magnifying-glass" />
           </span>
@@ -19,7 +19,7 @@ import axios from "axios";
           <button class="btn btn-outline-secondary" id="search_input" type="button">
             Search
           </button>
-        </div>
+        </div> -->
       </div>
 
       <!-- accordion for the categories  -->
@@ -49,7 +49,8 @@ import axios from "axios";
 
     <!-- right panel -->
     <!-- recommended recipes -->
-    <div class="col-8 pt-4 container-fluid">
+    <div class="col-md-8 pt-4">
+
       <!-- if no ingredient is selected -->
       <div v-if="Object.keys(suitableRecipes) < 1" class="my-5 d-block">
         <img :src="imageUrl('add_recipes.webp')" class="mb-4 d-block mx-auto w-25" />
@@ -58,32 +59,33 @@ import axios from "axios";
       </div>
 
       <!-- once user selects at least 1 ingredient -->
-      <h3 v-else class="text-start">You can make {{ Object.keys(suitableRecipes).length }} {{
+      <h3 v-else class="text-start">You can make the below {{ Object.keys(suitableRecipes).length }} {{
         Object.keys(suitableRecipes).length
         > 1 ?
         'recipes' :
-        'recipe' }}
+        'recipe' }}:
       </h3>
       <!-- <div class="row" style="color: black">{{ ingredientsIidList }}</div> -->
       <!-- <div class="row">{{ suitableRecipes }}</div> -->
-      <div class="row row-cols-2">
-        <a class="card col-6 text-decoration-none recipe-card px-0" v-for="recipe of suitableRecipes" :key="recipe"
+      <div class="row m-1">
+        <a class="card col-5 text-decoration-none recipe-card px-0 m-1" v-for="recipe of suitableRecipes" :key="recipe"
           role="button" href="../recipes/">
-          <div class="row g-0 h-100">
-            <div class="col-md-4 text-center bg-white h-100 d-flex align-items-center justify-content-center">
+          <div class="row g-0 align-items-center">
+            <div class=" ps-1 col-md-4 text-center bg-white d-flex align-items-center justify-content-center recipe-img">
               <img :src="imageUrl(recipe.img)" class="img-fluid object-fit-contain recipe-img h-75" />
             </div>
             <div class="col-md-8">
               <div class="card-body">
-                <h5 class="card-title">{{ recipe.name }}</h5>
+                <p class="card-title fw-semibold">{{ recipe.name }}</p>
                 <p class="card-text" v-if="recipe.missingIngredients.length !== 0">You have {{
-                  recipe.ingredientsNeeded.length - recipe.missingIngredients.length }} out of
+                  recipe.ingredientsNeeded.length - recipe.missingIngredients.length }} /
                   {{ recipe.ingredientsNeeded.length }} ingredients needed.</p>
                 <p v-else>
                   You have all the required {{ recipe.ingredientsNeeded.length }} ingredients to make thie dish.
                 </p>
-                <p v-if="0 < recipe.missingIngredients.length < 2" class="text-danger">You are missing {{
-                  recipe.missingIngredients[0][1] }}
+                <p v-if="recipe.missingIngredients.length > 0 && recipe.missingIngredients.length < 2"
+                  class="text-danger">You are missing {{
+                    recipe.missingIngredients[0][1] }}
                 </p>
                 <!-- <p>{{ recipe.ingredientsNeeded }}</p> -->
               </div>
@@ -190,14 +192,14 @@ export default {
       // this.suitableRecipes = [];
       this.suitableRecipes = {};
       for (let item in this.compiledRecipeIngredients) {
-        // console.log(item);
+        console.log(item);
         // let numOfIngredientsOwned = 0;
         let ingredientsOwned = [];
         let missingIngredients = [];
         // console.log(this.ingredientsIidList);
         // this returns the ingredient and the iid as an array
         for (let ingredient of this.compiledRecipeIngredients[item].ingredients) {
-          // console.log(ingredient);
+          console.log(ingredient);
           if ((this.ingredientsIidList.indexOf(ingredient[0]) !== -1) && (this.ingredientsIidList.length > 0)) {
 
             this.suitableRecipes[item] = {};
@@ -249,7 +251,7 @@ export default {
 
 .sidebar {
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  margin-left: -20px;
+  height: fit-content;
 }
 
 /* h3 {
@@ -260,12 +262,16 @@ input {
   margin-bottom: 0;
 }
 
-.recipe-card {
+.recipe-img {
   height: 140px;
 }
 
 .category-image {
-  width: 48px;
+  width: 36px;
+}
+
+p {
+  margin-bottom: 8px;
 }
 </style>
 
