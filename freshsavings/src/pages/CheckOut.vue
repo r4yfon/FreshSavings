@@ -181,10 +181,10 @@
                 <div class="header-container">
                   <p class="mb-1 custom-text">Delivery Options</p>
                 </div>
-
+                
                 <div class="card mb-3">
                   <main>
-                    <AccordionPanel aria-title="incidents" title="Self Pickup">
+                    <AccordionPanel aria-title="incidents" title="Self Pickup" @click="shippingfee = false">
                       <div>
                         <p> Store Name, Address, Opening Hours </p>
                       </div>
@@ -195,7 +195,7 @@
                       </div>
                       <!-- Calendar -->
                       <section>
-                        <input type="date" v-model="date" inline auto-apply value-type="format"/>
+                        <input type="date" v-model="date" inline auto-apply/>
                         <select required name="timing" id="timing" v-model="timing">
                           <option value="9am-12pm">9am-12pm</option>
                           <option value="12pm-3pm">12pm-3pm</option>
@@ -203,7 +203,7 @@
                           <option value="6pm-9pm">6pm-9pm</option>
                           <option value="9pm-11pm">9pm-11pm</option>
                         </select>
-                        <p> Your selected day is {{date}} and selected timeslot is {{timing}}</p>
+                        <p> Your selected day is {{date}} <br/> and selected timeslot is {{timing}}</p>
                       </section>
                     </AccordionPanel>
                   </main>
@@ -211,7 +211,7 @@
 
                 <div class="card mb-3">
                   <main>
-                    <AccordionPanel aria-title="incidents" title="Delivery ($20)" @click="chargeDelivery">
+                    <AccordionPanel aria-title="incidents" title="Delivery ($20)" @click="shippingfee = true">
                       <h5> Contact Details </h5>
                       <div class="input">
                         <label
@@ -317,7 +317,7 @@
                   </div>
                   <hr class="line">
                   <div class="d-flex justify-content-between information"><span>Subtotal</span><span>$3000.00</span></div>
-                  <div class="d-flex justify-content-between information"><span>Shipping</span><span>$20.00</span></div>
+                  <div class="d-flex justify-content-between information" v-if="shippingfee"><span>Shipping</span><span>$20.00</span></div>
                   <div class="d-flex justify-content-between information">
                     <span>Total(Incl. taxes)</span>
                     <span>$3020.00</span>
@@ -352,6 +352,7 @@ export default {
     loading: false,
     timing:"", 
     date:"",
+    shippingfee: false, 
   }),
   methods: {
     deleteCard(cardNumber) {
@@ -361,8 +362,8 @@ export default {
       if (card) {
         card.remove();
       }
-    }
-  },
+    }, 
+  }
 }
 
 
