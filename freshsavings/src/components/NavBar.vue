@@ -62,7 +62,7 @@ export default {
 
 
 
-<style>
+<style scoped>
 img {
     max-width: 100%;
     padding-left: 10%;

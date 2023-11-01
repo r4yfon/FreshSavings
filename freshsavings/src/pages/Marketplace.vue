@@ -253,7 +253,6 @@ export default {
       axios
         .get("http://localhost:3000/get_address/" + this.Buyer)
         .then((response) => {
-          console.log(response.data);
           this.buyerLat = response.data.a_lat;
           this.buyerLong = response.data.a_long;
           this.buyerPostalCode = response.data.postalcode;
@@ -358,6 +357,7 @@ export default {
       },
       isClose(seller_address, seller_lat, seller_long){
         return true;
+        //GOOGLE MAPS API DISTANCE
       }
       
     }
