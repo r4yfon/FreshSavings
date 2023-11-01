@@ -378,6 +378,9 @@ export default {
       if (card) {
         card.remove();
       }
+    },
+    deleteProduct(){
+      //REMOVE PRODUCT POSTING NOT DONE YET
     }
   },
 }
