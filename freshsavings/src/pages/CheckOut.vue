@@ -1,7 +1,8 @@
 <script setup>
   import AccordionPanel from '../components/AccordianPanel.vue';
   import { ref } from 'vue';
-
+  import { createApp } from 'vue'
+  import  VueGoogleMaps from '@fawmi/vue-google-maps';
 </script>
 
 <template>
@@ -204,6 +205,7 @@
                           <option value="9pm-11pm">9pm-11pm</option>
                         </select>
                         <p> Your selected day is {{date}} and selected timeslot is {{timing}}</p>
+
                       </section>
                     </AccordionPanel>
                   </main>
@@ -334,6 +336,20 @@
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-12">
+            <template>
+  <GMapMap
+      :center="center"
+      :zoom="7"
+      map-type-id="terrain"
+      style="width: 100vw; height: 900px"
+  >
+  </GMapMap>
+</template>
+          </div>
+          
+        </div>
       </div>
     </section>
 
@@ -352,6 +368,7 @@ export default {
     loading: false,
     timing:"", 
     date:"",
+    center: {lat: 51.093048, lng: 6.842120},
   }),
   methods: {
     deleteCard(cardNumber) {
@@ -361,6 +378,9 @@ export default {
       if (card) {
         card.remove();
       }
+    },
+    deleteProduct(){
+      //REMOVE PRODUCT POSTING NOT DONE YET
     }
   },
 }
@@ -456,6 +476,7 @@ a:hover {
   color: #343a40;
   text-decoration: underline;
 }
+
 
 
 .quantity-field {
