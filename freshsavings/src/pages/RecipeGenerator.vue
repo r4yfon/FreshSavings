@@ -4,12 +4,21 @@ import axios from "axios";
 </script>
 
 <template>
-  <section class="container row m-auto">
+  <section class="container-fluid row m-auto">
     <!-- left sidebar -->
-    <div class="col-md-4 sidebar pt-3 mt-3 rounded border">
-      <h2 class="mb-4 text-start">Recipe Generator</h2>
+    <div class="col-xl-3 col-md-4 sidebar pt-3 mt-3 rounded border">
+      <h2 class="text-start">Recipe Generator</h2>
       <div class="mb-3">
-        <label for="search_input" class="form-label">Select the ingredients you want to use.</label>
+        <div class="d-flex flex-wrap gap-2 align-items-center">
+          <p class="mb-0">Have items in your inventory?</p>
+          <button type="button" class="btn btn-success d-flex" @click="loadInventory()"
+            :class="{ disabled: alreadyPopuatedFromInventory }">
+            <span class="me-2">Use Inventory items</span>
+            <Icon icon="solar:download-minimalistic-outline" />
+          </button>
+        </div>
+        <hr />
+        <p>Select the ingredients you want to use.</p>
         <!-- <div class="input-group mb-4">
           <span id="search_input" class="input-group-text">
             <Icon icon="ph:magnifying-glass" />
@@ -28,7 +37,7 @@ import axios from "axios";
         <div class="accordion-item">
           <div class="accordion-header">
             <button type="button" class="accordion-button d-flex align-items-center" data-bs-toggle="collapse"
-              :data-bs-target="'#collapse' + index" :aria-expanded="true" :aria-controls="'collapse' + index">
+              :data-bs-target="'#collapse' + index" aria-expanded="false" :aria-controls="'collapse' + index">
               <img class="category-image" :src="imageUrl(category.imgUrl)" />
               <p class="mx-3 my-auto text-capitalize">
                 {{ category.name }}
@@ -37,7 +46,8 @@ import axios from "axios";
           </div>
           <div :id="'collapse' + index" class="accordion-collapse collapse">
             <div class="accordion-body d-flex flex-wrap">
-              <button type="button" class="btn btn-primary m-1 p-2 text-capitalize" v-for="item in category.items"
+              <button type="button" class="btn btn-outline-success m-1 p-2 text-capitalize"
+                :class="{ 'active': ingredientsIidList.indexOf(item[1]) !== -1 }" v-for="item in category.items"
                 :key="item" @click="modifyIngredientsIidList(item[1])" data-bs-toggle="button">
                 {{ item[0] }}
               </button>
@@ -49,14 +59,21 @@ import axios from "axios";
 
     <!-- right panel -->
     <!-- recommended recipes -->
-    <div class="col-md-8 pt-4">
+    <div class="col-xl-9 col-md-8 pt-4">
+
+      <div class="d-flex justify-content-center" v-if="showLoadingIndicator">
+        <div class="spinner-grow text-success" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
 
       <!-- if no ingredient is selected -->
-      <div v-if="Object.keys(suitableRecipes) < 1" class="my-5 d-block">
+      <div v-else-if="Object.keys(suitableRecipes) < 1" class="my-5 d-block">
         <img :src="imageUrl('add_recipes.webp')" class="mb-4 d-block mx-auto w-25" />
         <h3 class="text-center">Add your ingredients to get started.</h3>
         <p class="text-center">Every ingredient you add unlocks more recipes.</p>
       </div>
+
 
       <!-- once user selects at least 1 ingredient -->
       <h3 v-else class="text-start">You can make the below {{ Object.keys(suitableRecipes).length }} {{
@@ -114,7 +131,9 @@ export default {
       accordionCategories: {},
       compiledRecipeIngredients: {},
       suitableRecipes: {},
-      searchedIngredient: ''
+      searchedIngredient: '',
+      showLoadingIndicator: false,
+      alreadyPopuatedFromInventory: false,
     };
   },
   components: {
@@ -239,6 +258,33 @@ export default {
     imageUrl(name) {
       return require(`@/assets/img/${name}`);
       // sconsole.log(name);
+    },
+
+    // upon clicking "Populate Inventory" button, selects items in user's inventory and filters suitable recipes
+    loadInventory() {
+      if (!(this.alreadyPopuatedFromInventory)) {
+        this.showLoadingIndicator = true;
+        const duration = 1500;
+        setTimeout(() => {
+          this.showLoadingIndicator = false;
+          axios.get("http://localhost:3000/get_user_inventory_items").then((response) => {
+            for (let ingredient of response.data) {
+              // this.ingredientsIidList.push(ingredient.iid);
+              this.modifyIngredientsIidList(ingredient.iid);
+              this.filterRecipes();
+            };
+          });
+        }, duration);
+      } else {
+        axios.get("http://localhost:3000/get_user_inventory_items").then((response) => {
+          for (let ingredient of response.data) {
+            // this.ingredientsIidList.push(ingredient.iid);
+            this.modifyIngredientsIidList(ingredient.iid);
+            this.filterRecipes();
+          };
+        });
+      }
+      this.alreadyPopuatedFromInventory = !this.alreadyPopuatedFromInventory;
     }
   },
 };
