@@ -1,4 +1,4 @@
-z<template>
+<template>
     <nav class="navbar navbar-expand-lg p-2 fixed-top" id="navbarContent">
         <a class="navbar-brand" href="#">
             <img src="../assets/img/logo.jpg" alt="Your Logo" width="250" height="45" class="d-inline-block align-text-top">
@@ -10,16 +10,16 @@ z<template>
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav text-center" style="width: 100%;">
-                <li class="nav-item">
+                <li class="nav-item align-self-center">
                     <a class="nav-link" href="#">Home</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item align-self-center">
                     <a class="nav-link" href="recipe-generator">Recipe Generator</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item align-self-center">
                     <a class="nav-link" href="inventory-tracker">Inventory</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item align-self-center">
                     <a class="nav-link" href="marketplace">Marketplace</a>
                 </li>
             </ul>
