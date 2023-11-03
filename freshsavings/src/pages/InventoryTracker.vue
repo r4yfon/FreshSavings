@@ -1,34 +1,41 @@
+<script setup>
+	import { Icon } from "@iconify/vue";
+</script>
+
 <template>
-	<section class="container" style="padding-top: 30px">
+	<section class="container" style="padding-top: 20px">
+
+		<!-- Welcome Message -->
+		<div class="container-fluid ">
+			<div class="row">
+				<h1 class="text-center fw-bold mb-4">
+					{{user}}'s Food Inventory <Icon icon="mdi:human-welcome"/>
+				</h1>
+			</div>
+		</div>
 
 		<!-- Search Bar -->
-		<!-- <div class="input-group mb-4">
-          <span id="search_input" class="input-group-text">
-            <Icon icon="ph:magnifying-glass" />
-          </span>
-          <input type="text" id="search_input" class="form-control" placeholder="Search" />
-          <button class="btn btn-outline-secondary" id="search_input" type="button">Search</button>
-        </div> -->
+		<div class="input-group mx-10 mt-2 mb-5" id='sticky' style="padding-left: 20px; padding-right: 20px; height: 45px;  padding-top: 5px;">
+			<span id="search_input" class="input-group-text">
+				<Icon icon="ph:magnifying-glass" />
+			</span>
+			<input v-model="searching" type="text" id="search_input" class="form-control" placeholder="Search for ingredients" />
+		</div>
 
+		<!-- TODO: Fix category button width-->
 		<div id="category">
-			<div class="title-container">
-				<div class="filters">
-					<span class="filter" v-bind:class="{ active: currentFilter === 'All' }"
-						v-on:click="setFilter('All')">All</span>
-					<span class="filter" v-bind:class="{ active: currentFilter === 'Fruits' }"
-						v-on:click="setFilter('Fruits')">Fruits</span>
-					<span class="filter" v-bind:class="{ active: currentFilter === 'Dairy' }"
-						v-on:click="setFilter('Dairy')">Dairy</span>
-					<span class="filter" v-bind:class="{ active: currentFilter === 'Meat' }"
-						v-on:click="setFilter('Meat')">Meat</span>
-					<span class="filter" v-bind:class="{ active: currentFilter === 'Fish' }"
-						v-on:click="setFilter('Fish')">Fish</span>
+			<div class="container-fluid justify-content-center d-flex">
+				<div v-for="category in categories" :key="category.categoryName" class="border rounded d-flex flex-column justify-content-between align-items-center">
+					<div class="filter" :class="{active: currentFilter === category.categoryName}" @click="setFilter(category.categoryName)">
+						<img :src=imageUrl(category.imgLink) style="width:30px"/>
+						<p class="mb-0 fw-bold">{{ category.categoryName }}</p>
+					</div>
 				</div>
 				<button class="open-button" @click="openForm()"> + New item</button>
 			</div>
 		</div>
 
-		<!-- The form -->
+		<!-- Add form -->
 		<div class="form-popup" id="myForm">
 			<form action="/action_page.php" class="form-container">
 				<h3>Item Tracking</h3>
@@ -80,28 +87,39 @@
 			</form>
 		</div>
 		
-
-		<div class="row justify-content-center">
-			<div class="col">
+		<!-- Product card  -->
+		<div class="row justify-content-center container">
+			<div class="col d-flex">
 				<div class="projects" name="projects">
 					<TransitionGroup class="project" v-bind:key="item.title" v-for="item in items">
-						<div class="project-image-wrapper"
+						<div class="w3-card-4"
 							v-if="currentFilter === item.category || currentFilter === 'All'">
-							<div class="card h-10 container">
-								<img class="project-image" v-bind:src="item.image">
-								<div class="bottom-left">
-									{{ item.name }} <br>
-									{{ item.freshness }}
+							<div class="card">
+								
+								<div class="card-title">
+									<img :src=imageUrl(item.emoji) style="width:50px; padding-top: 6px; padding-left: 6px">
+									<span class="circle">
+										x {{ item.quantity }}
+									</span>
 								</div>
-								<div class="top-right">
-									<div class="circle">
-										<span class="project-title"> x {{ item.quantity }}</span>
+								<div class="card-body" >
+									<p>
+										{{ item.name }} <br/>
+										{{ item.freshness }} 
+									</p>
+								</div>
+								
+								<!-- TOFIX: Modal doesnt work -> for selling items  -->
+								<!-- Trigger/Open The Modal -->
+								<button type="button" class="btn btn-primary" id="myBtn">Sell</button>
+								<!-- The Modal -->
+								<div id="myModal" class="modal">
+									<!-- Modal content -->
+									<div class="modal-content">
+										<span class="close">&times;</span>
+										<p>Some text in the Modal..</p>
 									</div>
 								</div>
-								<!-- <div class="container">
-									<p>Expiration Date:</p>
-									<p>Expiration Date:</p>
-								</div> -->
 
 							</div>
 						</div>
@@ -118,24 +136,58 @@ export default {
 	data() {
 		return {
 			currentFilter: 'All',
+			user: 'Ben', 
 			items: [
-				{ name: "Artwork", image: "https://picsum.photos/g/200?image=122", category: 'Fruits', freshness: 'Fresh for Today', quantity: '3' },
-				{ name: "Charcoal", image: "https://picsum.photos/g/200?image=116", category: 'Dairy', freshness: 'Fresh for Today', quantity: '3' },
-				{ name: "Sketching", image: "https://picsum.photos/g/200?image=121", category: 'Meat', freshness: 'Fresh for Today', quantity: '3' },
-				{ name: "Acrillic", image: "https://picsum.photos/g/200?image=133", category: 'Fish', freshness: 'Fresh for Today', quantity: '3' },
-				{ name: "Pencil", image: "https://picsum.photos/g/200?image=134", category: 'Fruits', freshness: 'Fresh for Today', quantity: '3' },
-				{ name: "Pen", image: "https://picsum.photos/g/200?image=115", category: 'Dairy', freshness: 'Fresh for Today', quantity: '3' },
-				{ name: "Inking", image: "https://picsum.photos/g/200", category: 'Meat', freshness: 'Fresh for Today', quantity: '3' },
+				{ name: "Artwork", image: "https://picsum.photos/g/200?image=122", category: 'Fruits', freshness: 'Fresh for Today', quantity: '3', emoji:'kitchen.png' },
+				{ name: "Charcoal", image: "https://picsum.photos/g/200?image=116", category: 'Dairy', freshness: 'Fresh for Today', quantity: '3' , emoji:'kitchen.png'},
+				{ name: "Sketching", image: "https://picsum.photos/g/200?image=121", category: 'Meat', freshness: 'Fresh for Today', quantity: '3' , emoji:'kitchen.png'},
+				{ name: "Acrillic", image: "https://picsum.photos/g/200?image=133", category: 'Fish', freshness: 'Fresh for Today', quantity: '3' , emoji:'kitchen.png'},
+				{ name: "Pencil", image: "https://picsum.photos/g/200?image=134", category: 'Fruits', freshness: 'Fresh for Today', quantity: '3' , emoji:'kitchen.png'},
+				{ name: "Pen", image: "https://picsum.photos/g/200?image=115", category: 'Dairy', freshness: 'Fresh for Today', quantity: '3' , emoji:'kitchen.png'},
+				{ name: "Inking", image: "https://picsum.photos/g/200", category: 'Meat', freshness: 'Fresh for Today', quantity: '3' , emoji:'kitchen.png'},
 			],
 			ingredient_name: '',
 			ingredient_quantity: '',
 			ingredient_purchase_date: '',
 			ingredient_expiry_date: '',
-			category: "",
+			categories: [
+				{
+				categoryName: "All",
+				imgLink: "kitchen.png",
+				},
+				{
+				categoryName: "Due Soon",
+				imgLink: "duesoon.png",
+				},
+				{
+				categoryName: "Past Due",
+				imgLink: "pastdue.png",
+				},
+				{
+				categoryName: "Fruits",
+				imgLink: "fruits.png",
+				},
+				{
+				categoryName: "Vegetables",
+				imgLink: "vegetable.png",
+				},
+				{
+				categoryName: "Dairy",
+				imgLink: "milk.png",
+				},
+				{
+				categoryName: "Meat",
+				
+				imgLink: "barbecue.png",
+				},
+			],
 
 		}
 	},
 	methods: {
+		imageUrl(img) {
+			return require(`@/assets/img/${img}`);
+		},
 		setFilter: function (filter) {
 			this.currentFilter = filter;
 		},
@@ -161,6 +213,9 @@ export default {
 
 		closeForm() {
 			document.getElementById("myForm").style.display = "none";
+		},
+		sell(){
+
 		}
 	}
 }
@@ -170,57 +225,29 @@ export default {
 
 <style scoped>
 .container {
-	position: relative;
+	/* position: relative; */
 	text-align: left;
 	color: white;
 }
 
-/* Bottom left text */
-.bottom-left {
-	position: absolute;
-	bottom: 2px;
-	left: 25px;
-}
-
-/* Top left text */
-.top-left {
-	position: absolute;
-	top: 8px;
-	left: 16px;
-}
-
-/* Top right text */
-.top-right {
-	position: absolute;
-	top: 8px;
-	right: 16px;
-}
-
-.title-container {
+#category {
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: center;
-}
-
-
-.project-title {
-	font-size: 16pt;
-	color: black
 }
 
 .filter {
 	padding: 6px 6px;
 	font-size:20px; 
 	cursor: pointer;
-	background-color: white;
-	color: black;
-	border-radius: 6px;
 	transition: all 0.35s;
+	justify-content: center;
+	
 }
 
 .filter.active {
-	box-shadow: 0px 1px 3px 0px #00000026;
+	box-shadow: 0px 1px 3px 0px #508E46;
 	background-color: gray;
 	color: white
 }
@@ -251,6 +278,18 @@ export default {
 	z-index: -1;
 }
 
+
+.card-body{
+	height: 150px;
+	width:200px; 
+}
+
+.card-body p {
+	position: relative;
+	top: 70px;
+	left: 2px;
+}
+
 .circle {
 	text-align: center;
 	position: relative;
@@ -262,10 +301,14 @@ export default {
 	/* box-shadow: 0px -4px 3px 0px #494d3257; */
 	justify-content: center;
 	align-items: center;
-	background-color: #fff;
+	background-color: lightgrey;
 	/* 	box-shadow:0px -3px 3px #484848a6; */
 	z-index: 2;
+	font-size: 16pt;
+	top: -40px;
+	left: 140px;
 }
+
 
 .project body {
 	z-index: 3
@@ -283,30 +326,11 @@ export default {
 	align-items: center;
 }
 
-.project-image-wrapper {
-	position: relative;
-	padding-left: 3px;
-	padding-right: 3px;
-	padding-top: 3px;
-	padding-bottom: 3px;
-}
-
-.project-image {
-	width: 100%;
-	height: 200px;
-	border-bottom-left-radius: 5px;
-	border-bottom-right-radius: 5px;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-}
-
-
 /* Button used to open the contact form - fixed at the bottom of the page */
 .open-button {
   background-color: #508E46;
   color: white;
   padding: 16px 20px;
-  border: none;
   cursor: pointer;
   opacity: 0.8;
   position: fixed;
@@ -368,6 +392,44 @@ export default {
 /* Add some hover effects to buttons */
 .form-container .btn:hover, .open-button:hover {
   opacity: 1;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 </style>
