@@ -5,8 +5,8 @@ const cors = require("cors");
 const app = express();
 const port = 3000;
 const mysql = require("mysql2");
-const bodyParser = require('body-parser');
-const axios = require('axios');
+const bodyParser = require("body-parser");
+const axios = require("axios");
 
 // Enable CORS for all routes
 app.use(cors());
@@ -15,7 +15,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // app.use('/login', Anyroute)
 // app.use(express.json())
 // app.use('/api', Anyroute)
-
 
 // Create a MySQL connection
 const connection = mysql.createConnection({
@@ -112,7 +111,8 @@ app.get("/get_all_ingredients_categories", (req, res) => {
   );
 });
 
-app.get("/get_all_recipes", (req, res) => {   // Query the database to retrieve ingredients
+app.get("/get_all_recipes", (req, res) => {
+  // Query the database to retrieve ingredients
   connection.query(
     "SELECT r.rid, ri.iid, rname, i.iname, r.rimg FROM freshsavings.RecipeIngredient ri, freshsavings.Recipe r, freshsavings.Ingredient i WHERE ri.rid = r.rid AND i.iid = ri.iid;",
     (err, results) => {
@@ -126,7 +126,21 @@ app.get("/get_all_recipes", (req, res) => {   // Query the database to retrieve 
   );
 });
 
-
+app.get("/get_user_inventory_items", (req, res) => {
+  const userid = 1; // aid of currently logged-in user
+  connection.query(
+    // TODO: make query more specific after finalising the data to fetch
+    "SELECT * FROM freshsavings.AccountInventory WHERE aid = ?",
+    [userid],
+    (err, results) => {
+      if (err) {
+        console.error("Error querying the database:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+      }
+      res.json(results);
+    }
+  );
+});
 
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
@@ -160,8 +174,6 @@ app.post("/login", (req, res) => {
     }
   );
 });
-
-
 
 app.post("/signup", (req, res) => {
   const { email, password } = req.body;
@@ -205,7 +217,7 @@ app.post("/signup", (req, res) => {
       }
 
       // Hardcode the postal code and retrieve its latitude and longitude
-      const postalCode = '670641';
+      const postalCode = "670641";
       const latitude = "1.38765766146094";
       const longitude = "103.76208975109";
 
@@ -218,13 +230,12 @@ app.post("/signup", (req, res) => {
             console.error("Error inserting into the database:", err);
             return res.status(500).json({ error: "Internal Server Error" });
           }
-          res.json({ message: 'User created successfully.' });
+          res.json({ message: "User created successfully." });
         }
       );
     }
   );
 });
-
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

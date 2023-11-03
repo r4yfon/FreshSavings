@@ -96,7 +96,13 @@ import thirdImage from '@/assets/img/quality.png'
       <Icon icon="ph:magnifying-glass" />
     </span>
     <input v-model="searching" type="text" id="search_input" class="form-control" placeholder="Search your grocery products etc..." />
-    
+    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Within {{ distanceAway }} metres</button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li><button class="dropdown-item" @click="changeDistance(500)">Within 500 metres</button></li>
+        <li><button class="dropdown-item" @click="changeDistance(1000)">Within 1000 metres</button></li>
+        <li><button class="dropdown-item" @click="changeDistance(1500)">Within 1500 metres</button></li>
+        <li><button class="dropdown-item" @click="changeDistance(2000)">Within 2000 metres</button></li>
+      </ul>
   </div>
     
       <h3 class="text-center fw-bold">Categories</h3>
@@ -116,7 +122,7 @@ import thirdImage from '@/assets/img/quality.png'
           <div v-if="product.posting_status == 'Active' && cart.indexOf(product.pid) == -1 && searched(product.iname) && isClose(product.address, product.lat, product.long)" class="col mb-5">
           <div class="card h-100">
             <!-- Product image -->
-            <img class="card-img-top" :src="imageUrl(product.image)" alt="..." />
+            <img class="card-img-top h-100" :src="imageUrl(product.image)" alt="..."  />
             <!-- Product details -->
             <div class="card-body p-4">
               <div class="text-center">
@@ -138,7 +144,7 @@ import thirdImage from '@/assets/img/quality.png'
           <div v-else-if="product.posting_status == 'Active' && cart.indexOf(product.pid) != -1 && searched(product.iname) && isClose(product.address, product.lat, product.long)" class="col mb-5">
             <div class="card h-100 carted">
             <!-- Product image -->
-            <img class="card-img-top" :src="imageUrl(product.image)" alt="..." />
+            <img class="card-img-top h-100" :src="imageUrl(product.image)" alt="..." />
             <!-- Product details -->
             <div class="card-body p-4">
 
@@ -198,6 +204,7 @@ export default {
   name: "marketplaceHome",
   data() {
     return {
+      distanceAway : 2000,
       Buyer: '3',
       buyerLat: undefined,
       buyerLong: undefined,
@@ -286,7 +293,7 @@ export default {
       this.showadd = true;
       setTimeout(() => {
         this.showadd = false;
-      }, 2000); // Hide the toast after 2 seconds
+      }, 700); // Hide the toast after 2 seconds
     
     },
     Remove(pid){
@@ -295,7 +302,7 @@ export default {
       this.showdel = true;
       setTimeout(() => {
         this.showdel = false;
-      }, 2000); // Hide the toast after 2 seconds
+      }, 700); // Hide the toast after 2 seconds
       
       
     },
@@ -358,6 +365,9 @@ export default {
       isClose(seller_address, seller_lat, seller_long){
         return true;
         //GOOGLE MAPS API DISTANCE
+      },
+      changeDistance(Newdistance){
+        this.distanceAway = Newdistance
       }
       
     }
