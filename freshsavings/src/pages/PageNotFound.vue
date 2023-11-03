@@ -5,7 +5,7 @@
         id="mainImage_create svgStyle"
         data-name="mainImage"
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 171.2 81.5"
+        viewBox="0 0 171.5 81.5"
       >
         <!-- SVG content here -->
         <path id="c-1" class="changeColor cls-1" d="M46.62,52.5c5.78,4.9,21.14,8.4,39.19,8.4s33.41-3.5,39.19-8.4c-5.78-4.9-21.14-8.4-39.19-8.4S52.41,47.6,46.62,52.5Z" style="fill: rgb(0, 156, 29);"></path>
@@ -72,13 +72,21 @@
         <path class="cls-12" d="M88.15,60.27s1.7.95,1.7,2.22"></path>
         <path class="cls-5" d="M101.81,61a6.68,6.68,0,0,0,8.51,0Z"></path>
         <polygon class="cls-5" points="90.92 30.25 77.46 29.69 77.46 28.64 90.92 29.22 90.92 30.25"></polygon>
-        <text id="title" transform="matrix(1 0 0 1 44.7249 78)">404 Page not found</text>
+        <text id="title" transform="matrix(1 0 0 1 85.6 78)" style="text-anchor: middle; font-size: 40%;">
+          <tspan x="0" dy="-1.2em">404</tspan>
+          <tspan x="0" dy="1.3em">This page is gone</tspan>
+        </text>
+        
     </svg>
-
-  
-      <h1 id="title">404 Page not found</h1>
-      <button id="newBtn" class="btn" disabled>&#8594; &nbsp;Back to Home</button>
+    
+      <text id="subtitle" style="text-anchor: middle; font-size: 100%;">Before our Planet is too, make a change.</text>
+      <br>
+      <router-link to="/homepage">
+        <button type="button"><span></span>Back to Home</button>
+      </router-link>
+      
     </div>
+
   </template>
   
   <script>
@@ -87,17 +95,69 @@
 
   
   <style scoped>
-    /* SVG Styles */
-    /* ... */
-    
+
       @import url('https://fonts.googleapis.com/css?family=Merriweather');
       .changeColor {
         fill: #4f86ed;
       }
 
+      button{
+          font-family: 'Merriweather', serif;
+          width: 200px;
+          padding: 15px 0;
+          text-align: center;
+          margin: 20px 10px;
+          border-radius: 25px;
+          font-weight: bold;
+          border: 2px solid #009688;
+          background: transparent;
+          color: #009688;
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+          transform: translateY(-50%);
+          margin-top: 3%;
+      }
+
+      span{
+          background: #009688;
+          height: 100%;
+          width: 0;
+          border-radius: 25 px;
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          z-index: -1;
+          transition: 0.5s;
+      }
+
+      button:hover span{
+          width: 100%;
+
+      }
+
+      button:hover{
+          border: none;
+          color: #FFF;
+      }
+
+      svg {
+        width: 100%;
+        height: 100%;
+        margin-top: -5%;
+      }
+
       #title {
-        font-size: 50%;
+        margin-top: 0%;
+        font-size: 40%;
         font-family: 'Merriweather', serif;
+      }
+
+      #subtitle {
+        font-size: 100%;
+        font-family: 'Merriweather', serif;
+        text-align: center;
+        padding-top: 50px;
       }
 
       .cls-1 {

@@ -11,8 +11,7 @@ import axios from "axios";
       <div class="mb-3">
         <div class="d-flex flex-wrap gap-2 align-items-center">
           <p class="mb-0">Have items in your inventory?</p>
-          <button type="button" class="btn btn-success d-flex" @click="loadInventory()"
-            :class="{ disabled: alreadyPopuatedFromInventory }">
+          <button type="button" class="btn btn-success d-flex" @click="loadInventory()">
             <span class="me-2">Use Inventory items</span>
             <Icon icon="solar:download-minimalistic-outline" />
           </button>
@@ -61,8 +60,8 @@ import axios from "axios";
     <!-- recommended recipes -->
     <div class="col-xl-9 col-md-8 pt-4">
 
-      <div class="d-flex justify-content-center" v-if="showLoadingIndicator">
-        <div class="spinner-grow text-success" role="status">
+      <div class="d-flex justify-content-center mt-4" v-if="showLoadingIndicator">
+        <div class="spinner-grow text-success mt-4" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
       </div>
@@ -76,39 +75,47 @@ import axios from "axios";
 
 
       <!-- once user selects at least 1 ingredient -->
-      <h3 v-else class="text-start">You can make the below {{ Object.keys(suitableRecipes).length }} {{
-        Object.keys(suitableRecipes).length
-        > 1 ?
-        'recipes' :
-        'recipe' }}:
-      </h3>
-      <!-- <div class="row" style="color: black">{{ ingredientsIidList }}</div> -->
-      <!-- <div class="row">{{ suitableRecipes }}</div> -->
-      <div class="row m-1">
-        <a class="card col-5 text-decoration-none recipe-card px-0 m-1" v-for="recipe of suitableRecipes" :key="recipe"
-          role="button" href="../recipes/">
-          <div class="row g-0 align-items-center">
-            <div class=" ps-1 col-md-4 text-center bg-white d-flex align-items-center justify-content-center recipe-img">
-              <img :src="imageUrl(recipe.img)" class="img-fluid object-fit-contain recipe-img h-75" />
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <p class="card-title fw-semibold">{{ recipe.name }}</p>
-                <p class="card-text" v-if="recipe.missingIngredients.length !== 0">You have {{
-                  recipe.ingredientsNeeded.length - recipe.missingIngredients.length }} /
-                  {{ recipe.ingredientsNeeded.length }} ingredients needed.</p>
-                <p v-else>
-                  You have all the required {{ recipe.ingredientsNeeded.length }} ingredients to make thie dish.
-                </p>
-                <p v-if="recipe.missingIngredients.length > 0 && recipe.missingIngredients.length < 2"
-                  class="text-danger">You are missing {{
-                    recipe.missingIngredients[0][1] }}
-                </p>
-                <!-- <p>{{ recipe.ingredientsNeeded }}</p> -->
+      <div v-else>
+        <!-- button to clear selected inventory items -->
+        <div class="d-flex justify-content-end mb-3">
+          <button class="btn btn-danger" @click="clearIngredientsIidLisit()">Unselect all items</button>
+        </div>
+        <h3 class="text-start mb-3">You can make the below {{ Object.keys(suitableRecipes).length }} {{
+          Object.keys(suitableRecipes).length
+          > 1 ?
+          'recipes' :
+          'recipe' }}:
+        </h3>
+        <!-- <div class="row" style="color: black">{{ ingredientsIidList }}</div> -->
+        <!-- <div class="row">{{ suitableRecipes }}</div> -->
+        <div class="row m-1">
+          <div class="p-1 col col-md-6 col-xl-4" v-for="recipe of suitableRecipes" :key="recipe">
+            <a class="card text-decoration-none recipe-card px-0" role="button" href="../recipes/">
+              <div class="row g-0 align-items-center">
+                <div
+                  class=" ps-1 col-md-4 text-center bg-white d-flex align-items-center justify-content-center recipe-img">
+                  <img :src="imageUrl(recipe.img)" class="img-fluid object-fit-contain recipe-img h-75" />
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <p class="card-title fw-semibold">{{ recipe.name }}</p>
+                    <p class="card-text" v-if="recipe.missingIngredients.length !== 0">You have {{
+                      recipe.ingredientsNeeded.length - recipe.missingIngredients.length }} /
+                      {{ recipe.ingredientsNeeded.length }} ingredients.</p>
+                    <p v-else>
+                      You have all the required {{ recipe.ingredientsNeeded.length }} ingredients to make thie dish.
+                    </p>
+                    <p v-if="recipe.missingIngredients.length > 0 && recipe.missingIngredients.length < 2"
+                      class="text-danger">You are missing {{
+                        recipe.missingIngredients[0][1] }}
+                    </p>
+                    <!-- <p>{{ recipe.ingredientsNeeded }}</p> -->
+                  </div>
+                </div>
               </div>
-            </div>
+            </a>
           </div>
-        </a>
+        </div>
       </div>
     </div>
 
@@ -257,7 +264,7 @@ export default {
 
     imageUrl(name) {
       return require(`@/assets/img/${name}`);
-      // sconsole.log(name);
+      // console.log(name);
     },
 
     // upon clicking "Populate Inventory" button, selects items in user's inventory and filters suitable recipes
@@ -284,7 +291,14 @@ export default {
           };
         });
       }
-      this.alreadyPopuatedFromInventory = !this.alreadyPopuatedFromInventory;
+      // this.alreadyPopuatedFromInventory = !this.alreadyPopuatedFromInventory;
+    },
+
+    
+
+    clearIngredientsIidLisit() {
+      this.ingredientsIidList = [];
+      this.filterRecipes();
     }
   },
 };
