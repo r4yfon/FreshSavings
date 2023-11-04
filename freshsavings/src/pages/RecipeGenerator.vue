@@ -35,7 +35,7 @@ import axios from "axios";
         :id="'accordion' + index">
         <div class="accordion-item">
           <div class="accordion-header">
-            <button type="button" class="accordion-button d-flex align-items-center" data-bs-toggle="collapse"
+            <button type="button" class="accordion-button d-flex align-items-center collapsed" data-bs-toggle="collapse"
               :data-bs-target="'#collapse' + index" aria-expanded="false" :aria-controls="'collapse' + index">
               <img class="category-image" :src="imageUrl(category.imgUrl)" />
               <p class="mx-3 my-auto text-capitalize">

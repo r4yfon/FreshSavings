@@ -36,13 +36,13 @@
                     <div class="accordion-header">
                       <button type="button" class="accordion-button d-flex align-items-center" data-bs-toggle="collapse"
                         :data-bs-target="'#product'" aria-expanded="false" :aria-controls="'collapse'">
-                        <img class="category-image" style="width:70px" :src="imageUrl('shoppingcartgif.gif')" />
+                        <img class="category-image" style="width:100px;height:100px" :src="imageUrl('shoppingcartgif.gif')" />
                         <p class="mx-3 my-auto text-capitalize">
                           Products
                         </p>
                       </button>
                     </div>
-                    <div :id="'product'" class="accordion-collapse collapse">
+                    <div :id="'product'" class="accordion-collapse collapse show">
                       <div class="accordion-body d-flex flex-wrap">
                         <div class="container">
                           <div class="header-container">
@@ -208,9 +208,9 @@
                 <div class="accordion my-3" :id="'accordianSelf'">
                   <div class="accordion-item">
                     <div class="accordion-header">
-                      <button type="button" class="accordion-button d-flex align-items-center" data-bs-toggle="collapse"
+                      <button type="button" class="accordion-button d-flex align-items-center collapsed" data-bs-toggle="collapse"
                         :data-bs-target="'#self'" aria-expanded="false" :aria-controls="'collapse'">
-                        <img class="category-image" style="width:100px" :src="imageUrl('pickup.gif')" />
+                        <img class="category-image" style="width:100px;height:100px" :src="imageUrl('pickup.gif')" />
                         <p class="mx-3 my-auto text-capitalize">
                           Self Pick Up
                         </p>
@@ -248,9 +248,9 @@
                 <div class="accordion my-3" :id="'accordionDelivery'">
                   <div class="accordion-item">
                     <div class="accordion-header">
-                      <button type="button" class="accordion-button d-flex align-items-center" data-bs-toggle="collapse"
+                      <button type="button" class="accordion-button d-flex align-items-center collapsed" data-bs-toggle="collapse"
                         :data-bs-target="'#delivery'" aria-expanded="false" :aria-controls="'collapse'">
-                        <img class="category-image" style="width:100px" :src="imageUrl('cycling.gif')" />
+                        <img class="category-image" style="width:100px;height:100px" :src="imageUrl('cycling.gif')" />
                         <p class="mx-3 my-auto text-capitalize">
                           Delivery
                         </p>
@@ -323,12 +323,15 @@
                     </div>
                   </div>
                 </div>
+                <div class="header-container">
+                  <p class="mb-1 custom-text">Show on Map</p>
+                </div>
                 <div class="accordion my-3" :id="'accordionMap'">
                   <div class="accordion-item">
                     <div class="accordion-header">
-                      <button type="button" class="accordion-button d-flex align-items-center" data-bs-toggle="collapse"
+                      <button type="button" class="accordion-button d-flex align-items-center collapsed" data-bs-toggle="collapse"
                         :data-bs-target="'#collapseMap'" aria-expanded="false" :aria-controls="'collapse'">
-                        <img class="category-image" style="width:100px" :src="imageUrl('maps.gif')" />
+                        <img class="category-image" style="width:100px;height:100px" :src="imageUrl('maps.gif')" />
                         <p class="mx-3 my-auto text-capitalize">
                           Display Locations on Maps
                         </p>
@@ -344,7 +347,7 @@
 
 
               </div>
-              <div class="col-lg-5">
+              <div id="sticky" class="col-lg-5" >
                 <div class="payment-info">
                   <div class="d-flex justify-content-between align-items-center">
                     <span>Card details</span>
@@ -567,7 +570,10 @@ a:hover {
   border: none !important;
   /* Remove the border */
 }
-
+#sticky {
+  position: sticky;
+  z-index:5;
+}
 .payment-info {
   background: #508E46;
   padding: 30px;
