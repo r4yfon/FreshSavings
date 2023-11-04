@@ -15,12 +15,12 @@
 		</div>
 
 		<!-- Search Bar -->
-		<div class="input-group mx-10 mt-2 mb-5" id='sticky' style="padding-left: 20px; padding-right: 20px; height: 45px;  padding-top: 5px;">
+		<!-- <div class="input-group mx-10 mt-2 mb-5" id='sticky' style="padding-left: 20px; padding-right: 20px; height: 45px;  padding-top: 5px;">
 			<span id="search_input" class="input-group-text">
 				<Icon icon="ph:magnifying-glass" />
 			</span>
 			<input v-model="searching" type="text" id="search_input" class="form-control" placeholder="Search for ingredients" />
-		</div>
+		</div> -->
 
 		<!-- TODO: Fix category button width-->
 		<div id="category">
@@ -38,47 +38,37 @@
 		<!-- Add form -->
 		<div class="form-popup" id="myForm">
 			<form action="/action_page.php" class="form-container">
-				<h3>Item Tracking</h3>
-				<label for="name" style="color:black"><b> Item Name</b></label>
-				<input type="text" placeholder="Enter Name" v-model="ingredient_name" required>
-
-				<label for="qty" style="color:black"><b> Item Quantity</b></label>
-				<br/>
-				<input type="number" v-model="ingredient_quantity" required>
-
-				<div>
-					<label for="qty" style="color:black"><b> Item Category</b></label>
-					<div>
-						<select v-model="category">
-							<option value="Fruits">Fruits</option>
-							<option value="Dairy">Dairy</option>
-							<option value="Meat">Meat</option>
-							<option value="Fish">Fish</option>
-						</select>
-					</div>
+				<h3 class="fw-bold" style="text-align: center">Item Tracking</h3>
+				<div class="mb-3 py-2">
+					<label for="name" class="form-label">Item Name</label>
+					<input type="text" class="form-control" placeholder="Enter product name" v-model="ingredient_name" required>
 				</div>
-
-				<div>
-					<label for="pdate" style="color:black"><b>Purchased Date</b></label>
-					<div>
-						<input type="date" v-model="ingredient_purchase_date">
-					</div>
+				<div class="mb-3">
+					<label for="qty" class="form-label">Item Quantity</label>
+					<input type="number" class="form-control" placeholder="0" v-model="ingredient_quantity" required>
 				</div>
-
-				<div>
-					<label for="edate" style="color:black"><b>Expiry Date</b></label>
-					<div>
-						<input type="date" v-model="ingredient_expiry_date">
-					</div>
+				<div class="mb-3">
+					<label for="category" class="form-label">Item Category</label>
+					<select class="form-select" v-model="category" aria-label="Default select example">
+						<option value="Fruits" selected>Fruits</option>
+						<option value="Dairy">Dairy</option>
+						<option value="Meat">Meat</option>
+						<option value="Fish">Fish</option>
+					</select>
 				</div>
-
-				<div>
-					<label for="img" style="color:black"><b>Upload image</b></label>
-					<input class="justify-content-center" type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" />
+				<div class="mb-3">
+					<label for="pdate" class="form-label">Purchased Date</label>
+					<input type="date" class="form-control" v-model="ingredient_purchase_date" required>
 				</div>
-
-				<br/>
-
+				<div class="mb-3">
+					<label for="edate" class="form-label">Expiry Date</label>
+					<input type="date" class="form-control" v-model="ingredient_expiry_date" required>
+				</div>
+				<div class="mb-3">
+					<label for="emoji" class="form-label">Choose Emoji</label>
+					<input type="emoji" class="form-control" v-model="emoji">
+				</div>
+	
 				<div>
 					<button type="button" class="btn add" @click="add()">Add</button>
 					<button type="button" class="btn cancel" @click="closeForm()">Clear</button>
@@ -88,12 +78,13 @@
 		</div>
 		
 		<!-- Product card  -->
-		<div class="row justify-content-center container">
-			<div class="col d-flex">
+		<!-- <div class="row justify-content-center container"> -->
+			<div class="row justify-content-start container">
+				<div class="col" style="column-fill: balance; column-gap: 1em;">
 				<div class="projects" name="projects">
 					<TransitionGroup class="project" v-bind:key="item.title" v-for="item in items">
 						<div class="w3-card-4"
-							v-if="currentFilter === item.category || currentFilter === 'All'">
+						v-if="currentFilter === item.category || currentFilter === 'All'">
 							<div class="card">
 								
 								<div class="card-title">
@@ -109,20 +100,40 @@
 									</p>
 								</div>
 								
-								<!-- TOFIX: Modal doesnt work -> for selling items  -->
-								<!-- Trigger/Open The Modal -->
-								<button type="button" class="btn btn-primary" id="myBtn">Sell</button>
-								<!-- The Modal -->
-								<div id="myModal" class="modal">
-									<!-- Modal content -->
-									<div class="modal-content">
-										<span class="close">&times;</span>
-										<p>Some text in the Modal..</p>
+								<!-- Modal ->
+								<!- Button trigger modal -->
+								<button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+									Sell in Marketplace
+								</button>
+
+								<!-- Modal -->
+								<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h1 class="modal-title fs-5" id="exampleModalLabel">Listing Details</h1>
+												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+											</div>
+											<div class="modal-body">
+												<label for="FormControlInput1" class="form-label">Selling Price</label>
+												<div class="input-group mb-3">
+													<span class="input-group-text" id="addon-wrapping">$</span>
+													<input type="number" class="form-control" id="FormControlInput1" placeholder="3.00">
+												</div>
+												<div class="mb-3">
+													<label for="FormControlInput2" class="form-label">Upload photo of product</label>
+													<input type="file" class="form-control" id="FormControlInput2">
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-primary" @click="post()">Post</button>
+											</div>
+										</div>
 									</div>
 								</div>
-
 							</div>
 						</div>
+					
 					</TransitionGroup>
 				</div>
 			</div>
@@ -133,10 +144,11 @@
 
 <script>
 export default {
+	components: { },
 	data() {
 		return {
 			currentFilter: 'All',
-			user: 'Ben', 
+			user: 'John', 
 			items: [
 				{ name: "Artwork", image: "https://picsum.photos/g/200?image=122", category: 'Fruits', freshness: 'Fresh for Today', quantity: '3', emoji:'kitchen.png' },
 				{ name: "Charcoal", image: "https://picsum.photos/g/200?image=116", category: 'Dairy', freshness: 'Fresh for Today', quantity: '3' , emoji:'kitchen.png'},
@@ -150,6 +162,7 @@ export default {
 			ingredient_quantity: '',
 			ingredient_purchase_date: '',
 			ingredient_expiry_date: '',
+			posting_status:'',
 			categories: [
 				{
 				categoryName: "All",
@@ -181,9 +194,9 @@ export default {
 				imgLink: "barbecue.png",
 				},
 			],
-
+			
 		}
-	},
+	}, 
 	methods: {
 		imageUrl(img) {
 			return require(`@/assets/img/${img}`);
@@ -214,8 +227,8 @@ export default {
 		closeForm() {
 			document.getElementById("myForm").style.display = "none";
 		},
-		sell(){
-
+		post(){
+			this.posting_status = 'Active';
 		}
 	}
 }
@@ -227,7 +240,6 @@ export default {
 .container {
 	/* position: relative; */
 	text-align: left;
-	color: white;
 }
 
 #category {
@@ -282,6 +294,8 @@ export default {
 .card-body{
 	height: 150px;
 	width:200px; 
+	padding-left: 6px;
+	padding-right: 6px;
 }
 
 .card-body p {
@@ -330,14 +344,16 @@ export default {
 .open-button {
   background-color: #508E46;
   color: white;
-  padding: 16px 20px;
+  padding: 15px;
   cursor: pointer;
   opacity: 0.8;
   position: fixed;
-  /* top: 100px; */
-  bottom: 10px;
+  bottom: 15px;
   right: 28px;
   width: 150px;
+  z-index: 4;
+  border:none; 
+  border-radius:10px; 
   z-index: 4;
 }
 
@@ -345,7 +361,7 @@ export default {
 .form-popup {
   display: none;
   position: fixed;
-  top: 70px;
+  bottom: 10px;
   right: 15px;
   border: 3px solid #f1f1f1;
   z-index: 9;
@@ -353,25 +369,12 @@ export default {
 
 /* Add styles to the form container */
 .form-container {
-  max-width: 300px;
-  padding: 10px;
-  background-color: white;
-}
-
-/* Full-width input fields */
-/* .form-container input[type=text] {
-  width: 100%;
+  width: 300px;
   padding: 15px;
-  margin: 5px 0 22px 0;
-  border: none;
-  background: #f1f1f1;
-} */
-
-/* When the inputs get focus, do something */
-/* .form-container input[type=text]:focus, .form-container input[type=password]:focus {
-  background-color: #ddd;
-  outline: none;
-} */
+  background-color: white;
+  height: 600px; 
+  overflow-y: auto;
+}
 
 /* Set a style for the add/clear button */
 .form-container .btn {
@@ -392,44 +395,6 @@ export default {
 /* Add some hover effects to buttons */
 .form-container .btn:hover, .open-button:hover {
   opacity: 1;
-}
-
-/* The Modal (background) */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-/* Modal Content/Box */
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
-}
-
-/* The Close Button */
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
 }
 
 </style>
