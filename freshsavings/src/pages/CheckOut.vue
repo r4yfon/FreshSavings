@@ -28,7 +28,24 @@
                     <p class="mb-1 text-center">Price</p>
                   </div>
                 </div> -->
-                <div class="header-container">
+                
+
+                <!-- 2.Delivery Options -->
+                <div class="accordion mb-3" :id="'accordianSelf'">
+                  <div class="accordion-item">
+                    <div class="accordion-header">
+                      <button type="button" class="accordion-button d-flex align-items-center" data-bs-toggle="collapse"
+                        :data-bs-target="'#product'" aria-expanded="false" :aria-controls="'collapse'">
+                        <img class="category-image" style="width:70px" :src="imageUrl('shoppingcartgif.gif')" />
+                        <p class="mx-3 my-auto text-capitalize">
+                          Products
+                        </p>
+                      </button>
+                    </div>
+                    <div :id="'product'" class="accordion-collapse collapse">
+                      <div class="accordion-body d-flex flex-wrap">
+                        <div class="container">
+                          <div class="header-container">
                   <p class="mb-1 custom-text">Product</p>
                   <p class="mb-1 custom-text">Quantity</p>
                   <p class="mb-1 custom-text">Price</p>
@@ -177,16 +194,32 @@
                     </div>
                   </div>
                 </div>
-
-                <!-- 2.Delivery Options -->
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                </div>
                 <div class="header-container">
                   <p class="mb-1 custom-text">Delivery Options</p>
                 </div>
+
                 
-                <div class="card mb-3">
-                  <main>
-                    <AccordionPanel aria-title="incidents" title="Self Pickup" @click="shippingfee = false">
-                      <div>
+                  
+                <div class="accordion my-3" :id="'accordianSelf'">
+                  <div class="accordion-item">
+                    <div class="accordion-header">
+                      <button type="button" class="accordion-button d-flex align-items-center" data-bs-toggle="collapse"
+                        :data-bs-target="'#self'" aria-expanded="false" :aria-controls="'collapse'">
+                        <img class="category-image" style="width:100px" :src="imageUrl('pickup.gif')" />
+                        <p class="mx-3 my-auto text-capitalize">
+                          Self Pick Up
+                        </p>
+                      </button>
+                    </div>
+                    <div :id="'self'" class="accordion-collapse collapse">
+                      <div class="accordion-body d-flex flex-wrap">
+                        <div class="container">
+                          <div>
                         <p> Store Name, Address, Opening Hours </p>
                       </div>
                       <div>
@@ -207,15 +240,27 @@
                         <p> Your selected day is {{date}} and selected timeslot is {{timing}}</p>
 
                       </section>
-                    </AccordionPanel>
-                  </main>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
                 </div>
-
-                <div class="card mb-3">
-                  <main>
-                    <AccordionPanel aria-title="incidents" title="Delivery ($20)" @click="shippingfee = true">
-                      <h5> Contact Details </h5>
-                      <div class="input">
+                <div class="accordion my-3" :id="'accordionDelivery'">
+                  <div class="accordion-item">
+                    <div class="accordion-header">
+                      <button type="button" class="accordion-button d-flex align-items-center" data-bs-toggle="collapse"
+                        :data-bs-target="'#delivery'" aria-expanded="false" :aria-controls="'collapse'">
+                        <img class="category-image" style="width:100px" :src="imageUrl('cycling.gif')" />
+                        <p class="mx-3 my-auto text-capitalize">
+                          Delivery
+                        </p>
+                      </button>
+                    </div>
+                    <div :id="'delivery'" class="accordion-collapse collapse">
+                      <div class="accordion-body d-flex flex-wrap">
+                        <div class="container">
+                        <h5> Contact Details </h5>
+                      <div class=" col input">
                         <label
                           class="font-semibold"
                           for="fullName">Full Name</label>
@@ -273,27 +318,29 @@
                           name="state"
                         />
                       </div>
-                    </AccordionPanel>
-                  </main>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="accordion my-3" :id="'accordionMap'">
-        <div class="accordion-item">
-          <div class="accordion-header">
-            <button type="button" class="accordion-button d-flex align-items-center" data-bs-toggle="collapse"
-              :data-bs-target="'#collapse' + index" aria-expanded="false" :aria-controls="'collapse' + index">
-              <img class="category-image" style="width:100px" :src="imageUrl('mapsgif.gif')" />
-              <p class="mx-3 my-auto text-capitalize">
-                Display Maps
-              </p>
-            </button>
-          </div>
-          <div :id="'collapse' + index" class="accordion-collapse collapse">
-            <div class="accordion-body d-flex flex-wrap">
-              
-            </div>
-          </div>
-        </div>
-      </div>
+                  <div class="accordion-item">
+                    <div class="accordion-header">
+                      <button type="button" class="accordion-button d-flex align-items-center" data-bs-toggle="collapse"
+                        :data-bs-target="'#collapseMap'" aria-expanded="false" :aria-controls="'collapse'">
+                        <img class="category-image" style="width:100px" :src="imageUrl('maps.gif')" />
+                        <p class="mx-3 my-auto text-capitalize">
+                          Display Locations on Maps
+                        </p>
+                      </button>
+                    </div>
+                    <div :id="'collapseMap'" class="accordion-collapse collapse">
+                      <div class="accordion-body d-flex flex-wrap">
+                        Maps
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
 
               </div>
