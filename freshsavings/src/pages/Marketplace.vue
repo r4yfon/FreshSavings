@@ -120,6 +120,8 @@ import thirdImage from '@/assets/img/quality.png'
       <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-start">
         <template v-for="product of groceryItems" :key="product.iname">
           <div v-if="product.posting_status == 'Active' && cart.indexOf(product.pid) == -1 && searched(product.iname)" class="col mb-5">
+          <!--<div v-if="product.posting_status == 'Active' && cart.indexOf(product.pid) == -1 && searched(product.iname) && checkDistance(product.a_lat, product.a_long)" class="col mb-5">-->
+
           <div class="card h-100">
             <!-- Product image -->
             <img class="card-img-top h-100" :src="imageUrl(product.image)" alt="..."  />
@@ -141,6 +143,7 @@ import thirdImage from '@/assets/img/quality.png'
             </div>
           </div>
           </div>
+          
           <div v-else-if="product.posting_status == 'Active' && cart.indexOf(product.pid) != -1 && searched(product.iname)" class="col mb-5">
             <div class="card h-100 carted">
             <!-- Product image -->
@@ -260,43 +263,47 @@ export default {
 
   },
   methods: {
-    GetDistanceAPI(destLat, destLng){
+    async GetDistanceAPI(destLat, destLng) {
+  try {
+    const response = await axios.get('http://localhost:3000/get-distance', {
+      params: {
+        originLat: this.buyerLat, // Replace with your origin's latitude
+        originLng: this.buyerLong, // Replace with your origin's longitude
+        destLat: destLat,    // Replace with your destination's latitude
+        destLng: destLng,   // Replace with your destination's longitude
+        units: 'metric',
+        apiKey: '',
+      },
+    });
+
+    let data = response.data.rows[0].elements[0].distance.text;
+    let distance = data.split(" ");
+    let dist = parseFloat(distance[0]); // Convert to a number
+    let awayfrom = parseFloat(dist * 1000);
+    console.log(awayfrom)
+
+    if (awayfrom <= this.distanceAway) {
       
-      axios
-      .get('http://localhost:3000/get-distance', {
-        params: {
-          originLat: this.buyerLat, // Replace with your origin's latitude
-          originLng: this.buyerLong, // Replace with your origin's longitude
-          destLat: destLat,    // Replace with your destination's latitude
-          destLng: destLng,   // Replace with your destination's longitude
-          units: 'metric',
-          apiKey: 'AIzaSyDtULaQCVU5AsKaNZa1efI9p8Lstrq6MNY',
-          
-        },
-      })
-      .then((response) => {
-         // Handle the API response data
-        
-        let data = response.data.rows[0].elements[0].distance.text
-        let distance = data.split(" ")
-        let dist = distance[0]
-        let awayfrom = dist * 1000
-        console.log(awayfrom)
-        if(awayfrom <= this.distanceAway){
-          console.log("hello")
-          resolve(true);
-        }
-        else{
-          console.log("bye")
-          resolve(false);
-        }
-        
-        
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-    },
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error(error);
+    return false; // Handle the error and return false
+  }
+},
+async checkDistance(destLat, destLng) {
+    try {
+      
+      const result = await this.GetDistanceAPI(destLat, destLng);
+      
+      return true;
+    } catch (error) {
+      console.error("An error occurred:", error);
+      return false;
+    }
+  },
     GetBuyerAddress(){
       
       axios
