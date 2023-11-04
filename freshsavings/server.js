@@ -4,6 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const port = 3000;
+
 const mysql = require("mysql2");
 const bodyParser = require("body-parser");
 const axios = require("axios");
@@ -12,6 +13,7 @@ const axios = require("axios");
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
 // app.use('/login', Anyroute)
 // app.use(express.json())
 // app.use('/api', Anyroute)
@@ -235,6 +237,29 @@ app.post("/signup", (req, res) => {
       );
     }
   );
+});
+
+app.get('/get-distance', async (req, res) => {
+  try {
+    const originLat = req.query.originLat;
+    const originLng = req.query.originLng;
+    const destLat = req.query.destLat;
+    const destLng = req.query.destLng;
+    const units = req.query.units;
+    const apiKey = req.query.apiKey;
+
+    // Construct the API URL using latitude and longitude
+    const apiUrl = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${originLat},${originLng}&destinations=${destLat},${destLng}&units=${units}&key=${apiKey}`;
+
+    // Make the API request to Google Maps
+    const response = await axios.get(apiUrl);
+
+    // Return the response data to the client
+    res.json(response.data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred' });
+  }
 });
 
 app.listen(port, () => {

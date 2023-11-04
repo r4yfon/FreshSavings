@@ -15,9 +15,9 @@ import thirdImage from '@/assets/img/quality.png'
 <template>
   
   <section style="padding-top: 20px;">
-    
     <div class="container-fluid ">
       <div class="row">
+        
         <h1 class="text-center fw-bold mb-4">MARKETPLACE</h1>
       </div>
       <div class="row">
@@ -119,7 +119,7 @@ import thirdImage from '@/assets/img/quality.png'
     <div class="container px-4 px-lg-5 mt-5">
       <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-start">
         <template v-for="product of groceryItems" :key="product.iname">
-          <div v-if="product.posting_status == 'Active' && cart.indexOf(product.pid) == -1 && searched(product.iname) && isClose(product.address, product.lat, product.long)" class="col mb-5">
+          <div v-if="product.posting_status == 'Active' && cart.indexOf(product.pid) == -1 && searched(product.iname)" class="col mb-5">
           <div class="card h-100">
             <!-- Product image -->
             <img class="card-img-top h-100" :src="imageUrl(product.image)" alt="..."  />
@@ -141,7 +141,7 @@ import thirdImage from '@/assets/img/quality.png'
             </div>
           </div>
           </div>
-          <div v-else-if="product.posting_status == 'Active' && cart.indexOf(product.pid) != -1 && searched(product.iname) && isClose(product.address, product.lat, product.long)" class="col mb-5">
+          <div v-else-if="product.posting_status == 'Active' && cart.indexOf(product.pid) != -1 && searched(product.iname)" class="col mb-5">
             <div class="card h-100 carted">
             <!-- Product image -->
             <img class="card-img-top h-100" :src="imageUrl(product.image)" alt="..." />
@@ -204,8 +204,9 @@ export default {
   name: "marketplaceHome",
   data() {
     return {
+      awayfrom: undefined,
       distanceAway : 2000,
-      Buyer: '3',
+      Buyer: 1,
       buyerLat: undefined,
       buyerLong: undefined,
       buyerPostalCode: undefined,
@@ -246,6 +247,9 @@ export default {
   components: {
     Icon,
   },
+  created(){
+    
+  },
   mounted() {
     // Call the API endpoint when the component is mounted
     this.GetBuyerAddress();
@@ -256,13 +260,53 @@ export default {
 
   },
   methods: {
+    GetDistanceAPI(destLat, destLng){
+      
+      axios
+      .get('http://localhost:3000/get-distance', {
+        params: {
+          originLat: this.buyerLat, // Replace with your origin's latitude
+          originLng: this.buyerLong, // Replace with your origin's longitude
+          destLat: destLat,    // Replace with your destination's latitude
+          destLng: destLng,   // Replace with your destination's longitude
+          units: 'metric',
+          apiKey: 'AIzaSyDtULaQCVU5AsKaNZa1efI9p8Lstrq6MNY',
+          
+        },
+      })
+      .then((response) => {
+         // Handle the API response data
+        
+        let data = response.data.rows[0].elements[0].distance.text
+        let distance = data.split(" ")
+        let dist = distance[0]
+        let awayfrom = dist * 1000
+        console.log(awayfrom)
+        if(awayfrom <= this.distanceAway){
+          console.log("hello")
+          resolve(true);
+        }
+        else{
+          console.log("bye")
+          resolve(false);
+        }
+        
+        
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    },
     GetBuyerAddress(){
+      
       axios
         .get("http://localhost:3000/get_address/" + this.Buyer)
         .then((response) => {
-          this.buyerLat = response.data.a_lat;
-          this.buyerLong = response.data.a_long;
-          this.buyerPostalCode = response.data.postalcode;
+          
+          this.buyerLat = response.data[0].a_lat;
+          this.buyerLong = response.data[0].a_long;
+          this.buyerPostalCode = response.data[0].postalcode;
+          
         })
         .catch(function (error) {
           console.log(error);
@@ -362,10 +406,7 @@ export default {
         );
       });
       },
-      isClose(seller_address, seller_lat, seller_long){
-        return true;
-        //GOOGLE MAPS API DISTANCE
-      },
+      
       changeDistance(Newdistance){
         this.distanceAway = Newdistance
       }
