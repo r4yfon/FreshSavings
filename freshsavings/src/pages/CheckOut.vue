@@ -276,10 +276,28 @@
                     </AccordionPanel>
                   </main>
                 </div>
+                <div class="accordion my-3" :id="'accordionMap'">
+        <div class="accordion-item">
+          <div class="accordion-header">
+            <button type="button" class="accordion-button d-flex align-items-center" data-bs-toggle="collapse"
+              :data-bs-target="'#collapse' + index" aria-expanded="false" :aria-controls="'collapse' + index">
+              <img class="category-image" style="width:100px" :src="imageUrl('mapsgif.gif')" />
+              <p class="mx-3 my-auto text-capitalize">
+                Display Maps
+              </p>
+            </button>
+          </div>
+          <div :id="'collapse' + index" class="accordion-collapse collapse">
+            <div class="accordion-body d-flex flex-wrap">
+              
+            </div>
+          </div>
+        </div>
+      </div>
 
 
               </div>
-              <div class="col-md-5">
+              <div class="col-lg-5">
                 <div class="payment-info">
                   <div class="d-flex justify-content-between align-items-center">
                     <span>Card details</span>
@@ -381,7 +399,11 @@ export default {
     },
     deleteProduct(){
       //REMOVE PRODUCT POSTING NOT DONE YET
-    }
+    },
+    imageUrl(name) {
+      return require(`@/assets/img/${name}`);
+      // console.log(name);
+    },
   },
 }
 
