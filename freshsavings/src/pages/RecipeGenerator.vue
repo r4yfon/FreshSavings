@@ -11,7 +11,7 @@ import axios from "axios";
       <div class="mb-3">
         <div class="d-flex flex-wrap gap-2 align-items-center">
           <p class="mb-0">Have items in your inventory?</p>
-          <button type="button" class="btn btn-success d-flex" @click="loadInventory()">
+          <button type="button" class="btn btn-success d-flex" @click="selectInventoryItems()">
             <span class="me-2">Use Inventory items</span>
             <Icon icon="solar:download-minimalistic-outline" />
           </button>
@@ -192,6 +192,13 @@ export default {
       this.filterRecipes();
     },
 
+    selectIngredient(item) {
+      const itemIndex = this.ingredientsIidList.indexOf(item);
+      if (itemIndex === -1) {
+        this.ingredientsIidList.push(item);
+      }
+    },
+
     // compile recipes according to the ingredients needed
     compileRecipeIngredients() {
       axios
@@ -268,7 +275,7 @@ export default {
     },
 
     // upon clicking "Populate Inventory" button, selects items in user's inventory and filters suitable recipes
-    loadInventory() {
+    selectInventoryItems() {
       if (!(this.alreadyPopuatedFromInventory)) {
         this.showLoadingIndicator = true;
         const duration = 1500;
@@ -277,24 +284,25 @@ export default {
           axios.get("http://localhost:3000/get_user_inventory_items").then((response) => {
             for (let ingredient of response.data) {
               // this.ingredientsIidList.push(ingredient.iid);
-              this.modifyIngredientsIidList(ingredient.iid);
+              this.selectIngredient(ingredient.iid);
               this.filterRecipes();
             };
           });
         }, duration);
-      } else {
-        axios.get("http://localhost:3000/get_user_inventory_items").then((response) => {
-          for (let ingredient of response.data) {
-            // this.ingredientsIidList.push(ingredient.iid);
-            this.modifyIngredientsIidList(ingredient.iid);
-            this.filterRecipes();
-          };
-        });
       }
+      // else {
+      //   axios.get("http://localhost:3000/get_user_inventory_items").then((response) => {
+      //     for (let ingredient of response.data) {
+      //       // this.ingredientsIidList.push(ingredient.iid);
+      //       this.modifyIngredientsIidList(ingredient.iid);
+      //       this.filterRecipes();
+      //     };
+      //   });
+      // }
       // this.alreadyPopuatedFromInventory = !this.alreadyPopuatedFromInventory;
     },
 
-    
+
 
     clearIngredientsIidLisit() {
       this.ingredientsIidList = [];
