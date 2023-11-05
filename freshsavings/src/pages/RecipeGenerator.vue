@@ -88,8 +88,8 @@ import axios from "axios";
         </h3>
         <!-- <div class="row" style="color: black">{{ ingredientsIidList }}</div> -->
         <!-- <div class="row">{{ suitableRecipes }}</div> -->
-        <div class="row m-1">
-          <div class="p-1 col col-md-6 col-xl-4" v-for="recipe of suitableRecipes" :key="recipe">
+        <div class="row m-1 recipe-container">
+          <div class="recipe p-1" v-for="recipe of suitableRecipes" :key="recipe">
             <a class="card text-decoration-none recipe-card px-0" role="button" href="../recipes/">
               <div class="row g-0 align-items-center">
                 <div
@@ -192,6 +192,7 @@ export default {
       this.filterRecipes();
     },
 
+    // this is only used by the "Select Inventory items" button
     selectIngredient(item) {
       const itemIndex = this.ingredientsIidList.indexOf(item);
       if (itemIndex === -1) {
@@ -212,7 +213,8 @@ export default {
                 rname: item.rname,
                 rid: item.rid,
                 ingredients: [[item.iid, item.iname]],
-                rimg: item.rimg
+                rimg: item.rimg,
+                qty: item.qty
               };
             }
           }
@@ -340,6 +342,17 @@ input {
 
 p {
   margin-bottom: 8px;
+}
+
+.recipe-container {
+  display: grid;
+  grid-template-columns: repeat(6, auto);
+  gap: 8px;
+}
+
+.recipe {
+  grid-column-start: span 2;
+
 }
 </style>
 
