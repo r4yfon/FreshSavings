@@ -11,6 +11,19 @@ const axios = require("axios");
 const session = require('express-session');
 axios.defaults.withCredentials = true;
 
+const url = 'http://localhost:3000/test_session';
+
+// Make a GET request to the test_session endpoint
+axios.get(url, {
+  withCredentials: true, // Ensure that credentials are included in the request
+})
+  .then(response => {
+    console.log('Response data:', response.data);
+  })
+  .catch(error => {
+    console.error('Error occurred:', error);
+  });
+
 // Enable CORS for all routes
 
 
@@ -196,6 +209,7 @@ app.post("/login", (req, res) => {
           req.session.user = results[0]; // Make sure the user data is being set in the session
           console.log("User data stored in session:", req.session.user); // Log the user data in the session
           res.json({ message: "Login successful", user: results[0] });
+          console.log(req.session);
         } else {
           // Incorrect password, return an error message
           res.status(401).json({ error: "Invalid credentials" });
@@ -208,35 +222,60 @@ app.post("/login", (req, res) => {
   );
 });
 
-
-const checkAuth = (req, res, next) => {
-  console.log('Checking authentication...');
-  console.log('Session data:', req.session);
-
-  if (req.session && req.session.user) { // Verify the presence of req.session.user
-    // User is logged in, proceed to the next middleware
-    next();
+app.get("/test_session", (req, res) => {
+  if (req.session && req.session.user) {
+    const user = req.session.user;
+    console.log("User data from session:", user);
+    res.status(200).json({ message: "User is logged in", user });
   } else {
-    // User is not logged in, return an error message
-    res.status(401).json({ error: "Unauthorized access" });
+    res.status(401).json({ message: "User is not logged in" });
   }
-};
-
-
-app.get("/protected_route", checkAuth, (req, res) => {
-  // If the middleware passes, the user is authorized to access this route
-  res.json({ message: "User is logged in", user: req.session.user });
 });
 
 
 
-app.get("/test_session", (req, res) => {
-  if (req.session.user) {
-    res.send(`Welcome, ${req.session.user.email}!`);
+app.get("/profile", (req, res) => {
+  // Access user data from the session
+  const user = req.session.user;
+  console.log("User data from session:", user);
+
+  // Use the user data as needed
+  if (user) {
+    res.send(`Welcome, ${user.email}!`);
   } else {
     res.send("You are not logged in.");
   }
 });
+
+
+// const checkAuth = (req, res, next) => {
+//   console.log('Checking authentication...');
+//   console.log('Session data:', req.session);
+
+//   if (req.session && req.session.user) { // Verify the presence of req.session.user
+//     // User is logged in, proceed to the next middleware
+//     next();
+//   } else {
+//     // User is not logged in, return an error message
+//     res.status(401).json({ error: "Unauthorized access" });
+//   }
+// };
+
+
+// app.get("/protected_route", checkAuth, (req, res) => {
+//   // If the middleware passes, the user is authorized to access this route
+//   res.json({ message: "User is logged in", user: req.session.user });
+// });
+
+
+
+// app.get("/test_session", (req, res) => {
+//   if (req.session.user) {
+//     res.send(`Welcome, ${req.session.user.email}!`);
+//   } else {
+//     res.send("You are not logged in.");
+//   }
+// });
 
 
 app.post("/signup", (req, res) => {

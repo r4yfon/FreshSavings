@@ -12,7 +12,6 @@ const from = ref('default'); // Define the from variable here
 const handleLogin = async () => {
   errorMessage.value = '';
 
-  // Extract the values of the email and password fields from the form
   const email = document.querySelector("input[type='text']").value;
   const password = document.querySelector("input[type='password']").value;
 
@@ -24,14 +23,16 @@ const handleLogin = async () => {
 
     if (response && response.data && response.status === 200) {
       const user = response.data.user;
-      console.log('Login successful. User details:', user);
-      localStorage.setItem('user', JSON.stringify(user)); // Store user data in local storage
+
+      // Store user data in the local storage
+      localStorage.setItem('user', JSON.stringify(user));
+
+      // Redirect to the inventory-tracker page
       router.push('/inventory-tracker');
     } else {
-      errorMessage.value = 'Invalid credentials'; // Update error message
+      errorMessage.value = 'Invalid credentials';
     }
   } catch (error) {
-    // Handle login error
     if (error.response && error.response.data.error) {
       errorMessage.value = error.response.data.error;
     } else {
