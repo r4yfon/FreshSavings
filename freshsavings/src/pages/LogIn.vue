@@ -6,6 +6,7 @@ import { ref, onMounted } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import router from '../router/index.js';
 
+
 const from = ref('default'); // Define the from variable here
 
 const handleLogin = async () => {
@@ -24,6 +25,7 @@ const handleLogin = async () => {
     if (response && response.data && response.status === 200) {
       const user = response.data.user;
       console.log('Login successful. User details:', user);
+      localStorage.setItem('user', JSON.stringify(user)); // Store user data in local storage
       router.push('/inventory-tracker');
     } else {
       errorMessage.value = 'Invalid credentials'; // Update error message

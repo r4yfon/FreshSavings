@@ -8,9 +8,25 @@ const port = 3000;
 const mysql = require("mysql2");
 const bodyParser = require("body-parser");
 const axios = require("axios");
+const session = require('express-session');
+axios.defaults.withCredentials = true;
 
 // Enable CORS for all routes
-app.use(cors());
+
+
+app.use(cors({
+  credentials: true,
+  origin: true,
+  exposedHeaders: 'Set-Cookie',
+}));
+
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Expose-Headers', 'Set-Cookie');
+  next();
+});
+
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -25,6 +41,19 @@ const connection = mysql.createConnection({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
 });
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: true,
+      httpOnly: true,
+      sameSite: 'none',
+    },
+  })
+);
 
 console.log(process.env.DB_HOST);
 console.log(process.env.DB_USER);
@@ -163,7 +192,9 @@ app.post("/login", (req, res) => {
       }
       if (results.length > 0) {
         if (results[0].password === password) {
-          // Login successful, return the user data
+          // Login successful, store the user data in the session
+          req.session.user = results[0]; // Make sure the user data is being set in the session
+          console.log("User data stored in session:", req.session.user); // Log the user data in the session
           res.json({ message: "Login successful", user: results[0] });
         } else {
           // Incorrect password, return an error message
@@ -176,6 +207,37 @@ app.post("/login", (req, res) => {
     }
   );
 });
+
+
+const checkAuth = (req, res, next) => {
+  console.log('Checking authentication...');
+  console.log('Session data:', req.session);
+
+  if (req.session && req.session.user) { // Verify the presence of req.session.user
+    // User is logged in, proceed to the next middleware
+    next();
+  } else {
+    // User is not logged in, return an error message
+    res.status(401).json({ error: "Unauthorized access" });
+  }
+};
+
+
+app.get("/protected_route", checkAuth, (req, res) => {
+  // If the middleware passes, the user is authorized to access this route
+  res.json({ message: "User is logged in", user: req.session.user });
+});
+
+
+
+app.get("/test_session", (req, res) => {
+  if (req.session.user) {
+    res.send(`Welcome, ${req.session.user.email}!`);
+  } else {
+    res.send("You are not logged in.");
+  }
+});
+
 
 app.post("/signup", (req, res) => {
   const { email, password } = req.body;
