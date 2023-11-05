@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import HomePage from "./pages/HomePage.vue";
 import "bootstrap";
 import NavBar from "./components/NavBar.vue";
 
@@ -19,7 +19,7 @@ import NavBar from "./components/NavBar.vue";
 export default {
   name: "App",
   components: {
-    HelloWorld,
+    HomePage,
     NavBar
   },
   data() {
@@ -48,5 +48,9 @@ export default {
   background-color: #FAF9F6;
 
 
+}
+
+img {
+  object-fit: contain;
 }
 </style>

@@ -7,12 +7,18 @@ import SignUp from "../pages/SignUp.vue";
 import RecipeGenerator from "../pages/RecipeGenerator.vue";
 import InventoryTracker from "../pages/InventoryTracker.vue";
 import PageNotFound from "../pages/PageNotFound.vue";
+import HomePage from "../pages/HomePage.vue";
 
 const routes = [
   {
     path: "/",
     name: "App",
     component: App,
+  },
+  {
+    path: "/home",
+    name: "HomePage",
+    component: HomePage,
   },
   {
     path: "/marketplace",
@@ -64,6 +70,5 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
-
 
 export default router;
