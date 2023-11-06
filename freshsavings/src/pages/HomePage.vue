@@ -1,6 +1,6 @@
 <template>
   <section class="container-fluid row row-cols-1 row-cols-md-2">
-    <div class="col col-md-6 pt-3 d-flex flex-column justify-content-center align-tems-center">
+    <div class="col col-md-6 pt-3 d-flex flex-column justify-content-center align-items-center">
       <h1 class="mb-4">
         Save food, save money, save the planet.
       </h1>
