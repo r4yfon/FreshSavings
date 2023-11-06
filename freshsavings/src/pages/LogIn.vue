@@ -24,22 +24,22 @@ const handleLogin = async () => {
 		if (response && response.data && response.status === 200) {
 			const user = response.data.user;
 
-			// Store user data in the local storage
-			localStorage.setItem('user', JSON.stringify(user));
-
-			// Redirect to the inventory-tracker page
-			router.push('/inventory-tracker');
-		} else {
-			errorMessage.value = 'Invalid credentials';
-		}
-	} catch (error) {
-		if (error.response && error.response.data.error) {
-			errorMessage.value = error.response.data.error;
-		} else {
-			errorMessage.value = 'Login request failed';
-		}
-		console.error('Login error:', error);
-	}
+      // Store user data in the local storage
+    localStorage.setItem('user', JSON.stringify(user));
+	console.log("User data stored in local storage:", user);
+	console.log("Session data from the response:", response.data.session);
+		router.push('/inventory-tracker');
+    } else {
+      errorMessage.value = 'Invalid credentials';
+    }
+  } catch (error) {
+    if (error.response && error.response.data.error) {
+      errorMessage.value = error.response.data.error;
+    } else {
+      errorMessage.value = 'Login request failed';
+    }
+    console.error('Login error:', error);
+  }
 };
 
 const errorMessage = ref('');

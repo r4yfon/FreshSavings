@@ -24,8 +24,6 @@ axios.get(url, {
     console.error('Error occurred:', error);
   });
 
-// Enable CORS for all routes
-
 
 app.use(cors({
   credentials: true,
@@ -186,41 +184,50 @@ app.get("/get_user_inventory_items", (req, res) => {
   );
 });
 
-app.post("/login", (req, res) => {
-  const { email, password } = req.body;
+app.all("/login", (req, res) => {
+  if (req.method === "GET") {
 
-  if (!email || !password) {
-    res.status(400).json({ error: "Email and password are required." });
-    return;
-  }
+    res.send("Login form");
+  } else if (req.method === "POST") {
+    const { email, password } = req.body;
 
-  connection.query(
-    "SELECT * FROM freshsavings.Account WHERE email = ?",
-    [email],
-    (err, results) => {
-      if (err) {
-        console.error("Error querying the database:", err);
-        res.status(500).json({ error: "Internal Server Error" });
-        return;
-      }
-      if (results.length > 0) {
-        if (results[0].password === password) {
-          // Login successful, store the user data in the session
-          req.session.user = results[0]; // Make sure the user data is being set in the session
-          console.log("User data stored in session:", req.session.user); // Log the user data in the session
-          res.json({ message: "Login successful", user: results[0] });
-          console.log(req.session);
-        } else {
-          // Incorrect password, return an error message
-          res.status(401).json({ error: "Invalid credentials" });
-        }
-      } else {
-        // User not found, return an error message
-        res.status(404).json({ error: "User not found" });
-      }
+    if (!email || !password) {
+      res.status(400).json({ error: "Email and password are required." });
+      return;
     }
-  );
+
+    connection.query(
+      "SELECT * FROM freshsavings.Account WHERE email = ?",
+      [email],
+      (err, results) => {
+        if (err) {
+          console.error("Error querying the database:", err);
+          res.status(500).json({ error: "Internal Server Error" });
+          return;
+        }
+        if (results.length > 0) {
+          if (results[0].password === password) {
+            // Login successful, store the user data in the session
+            req.session.user = results[0];
+            console.log("User data stored in session:", req.session.user); // Log the user data in the session
+            res.json({ message: "Login successful", user: results[0], session: req.session });
+
+          } else {
+            // Incorrect password, return an error message
+            res.status(401).json({ error: "Invalid credentials" });
+          }
+        } else {
+          // User not found, return an error message
+          res.status(404).json({ error: "User not found" });
+        }
+      }
+    );
+  } else {
+    // Handle other HTTP methods
+    res.status(405).send("Method Not Allowed");
+  }
 });
+
 
 app.get("/test_session", (req, res) => {
   if (req.session && req.session.user) {
@@ -233,49 +240,6 @@ app.get("/test_session", (req, res) => {
 });
 
 
-
-app.get("/profile", (req, res) => {
-  // Access user data from the session
-  const user = req.session.user;
-  console.log("User data from session:", user);
-
-  // Use the user data as needed
-  if (user) {
-    res.send(`Welcome, ${user.email}!`);
-  } else {
-    res.send("You are not logged in.");
-  }
-});
-
-
-// const checkAuth = (req, res, next) => {
-//   console.log('Checking authentication...');
-//   console.log('Session data:', req.session);
-
-//   if (req.session && req.session.user) { // Verify the presence of req.session.user
-//     // User is logged in, proceed to the next middleware
-//     next();
-//   } else {
-//     // User is not logged in, return an error message
-//     res.status(401).json({ error: "Unauthorized access" });
-//   }
-// };
-
-
-// app.get("/protected_route", checkAuth, (req, res) => {
-//   // If the middleware passes, the user is authorized to access this route
-//   res.json({ message: "User is logged in", user: req.session.user });
-// });
-
-
-
-// app.get("/test_session", (req, res) => {
-//   if (req.session.user) {
-//     res.send(`Welcome, ${req.session.user.email}!`);
-//   } else {
-//     res.send("You are not logged in.");
-//   }
-// });
 
 
 app.post("/signup", (req, res) => {
