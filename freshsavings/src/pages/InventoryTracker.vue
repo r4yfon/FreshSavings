@@ -42,7 +42,11 @@ import { Icon } from "@iconify/vue";
 		<div class="form-popup" id="myForm">
 			<form class="form-container">
 
-				<h3 class="fw-bold" style="text-align: center">Item Tracking</h3>
+				<h3 class="fw-bold" style="text-align: center">
+					Item Tracking 
+					<button id='close' @click="closeForm()">close</button>
+				</h3>
+				
 
 				<div class="mb-3 py-2">
 					<label for="formName" class="form-label">Item Name</label>
@@ -87,7 +91,7 @@ import { Icon } from "@iconify/vue";
 
 				<div>
 					<button type="button" class="btn add" @click="add()">Add</button>
-					<button type="button" class="btn cancel" @click="closeForm()">Clear</button>
+					<button type="button" class="btn cancel" @click="clearForm()">Clear</button>
 				</div>
 
 			</form>
@@ -267,9 +271,12 @@ export default {
 
 		closeForm() {
 			document.getElementById("myForm").style.display = "none";
+		},
+
+		clearForm() {
 			this.ingredient_name = '';
 			this.ingredient_quantity = '';
-			this.selectedCategory = "";
+			this.selectedCategory = "Fruits";
 			this.ingredient_expiry_date = "";
 			this.selectedEmoji = "";
 		},
@@ -421,7 +428,7 @@ export default {
 	width: 300px;
 	padding: 15px;
 	background-color: white;
-	height: 700px;
+	height: auto;
 	overflow-y: auto;
 }
 
@@ -480,5 +487,50 @@ input[type="radio"]+span {
 input[type="radio"]:checked+span {
 	color: #D9E7FD;
 	background-color: #B3CEFB;
-}</style>
+}
+
+#close {
+	overflow: hidden;
+	position: relative;
+	border: 1px;
+	padding: 0;
+	width: 2em; 
+	border-radius: 50%;
+	background: transparent;
+	color: #1da1f2;
+	text-indent: 100%;
+	cursor: pointer;
+	left:2rem;
+	bottom:0.5rem; 
+}
+	
+#close:focus {
+	outline: solid 0 transparent;
+	box-shadow: 0 0 0 2px #8ed0f9
+}
+	
+#close:hover {
+	background: rgba(29, 161, 142, .1)
+}
+	
+#close:before, #close:after {
+	position: absolute;
+	top: 15%; left: calc(50% - .0625em);
+	width: .125em; height: 70%;
+	border-radius: .125em;
+	transform: rotate(45deg);
+	background: currentcolor;
+	content: ''
+}
+	
+#close:after { 
+	transform: rotate(-45deg); 
+}
+
+
+
+
+
+
+</style>
 
