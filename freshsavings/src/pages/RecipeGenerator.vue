@@ -88,9 +88,10 @@ import axios from "axios";
         </h3>
         <!-- <div class="row" style="color: black">{{ ingredientsIidList }}</div> -->
         <!-- <div class="row">{{ suitableRecipes }}</div> -->
-        <div class="row m-1 recipe-container">
+        <div class="row m-1 recipe-container row-cols-sm-2 row-cols-xxl-3">
           <div class="recipe p-1" v-for="recipe of suitableRecipes" :key="recipe">
-            <a class="card text-decoration-none recipe-card px-0" role="button" href="../recipes/">
+            <a class="card text-decoration-none recipe-card px-0 h-100 justify-content-center" role="button"
+              href="../recipes/">
               <div class="row g-0 align-items-center">
                 <div
                   class=" ps-1 col-md-4 text-center bg-white d-flex align-items-center justify-content-center recipe-img">
@@ -344,7 +345,7 @@ p {
   margin-bottom: 8px;
 }
 
-.recipe-container {
+/* .recipe-container {
   display: grid;
   grid-template-columns: repeat(6, auto);
   gap: 8px;
@@ -352,8 +353,10 @@ p {
 
 .recipe {
   grid-column-start: span 2;
+  height: 100%;
 
-}
+
+} */
 </style>
 
 <!-- TODO: should be automatically populated based on user's inventory -->
