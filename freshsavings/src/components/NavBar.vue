@@ -17,7 +17,8 @@
                     <a class="nav-link" href="recipe-generator">Recipe Generator</a>
                 </li>
                 <li class="nav-item align-self-center">
-                    <a class="nav-link" href="inventory-tracker">Inventory</a>
+                    <router-link v-if="isLoggedIn" to="/inventory-tracker" class="nav-link">Inventory</router-link>
+                    <router-link v-else to="/login" class="nav-link">Inventory</router-link>
                 </li>
                 <li class="nav-item align-self-center">
                     <a class="nav-link" href="marketplace">Marketplace</a>
@@ -27,7 +28,14 @@
 
             <ul class=" navbar-nav ms-auto" style="padding-right: 30px; display: flex; align-items: center;">
                 <li class="nav-item" style="margin-right: 0px; margin-top: 1px;">
-                    <a class="nav-link" href="checkout">
+                    <a v-if="isLoggedIn" class="nav-link" href="/checkout">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="green" class="bi bi-cart"
+                            viewBox="0 0 16 16">
+                            <path
+                                d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                        </svg>
+                    </a>
+                    <a v-else class="nav-link" href="/login">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="green" class="bi bi-cart"
                             viewBox="0 0 16 16">
                             <path
@@ -35,6 +43,7 @@
                         </svg>
                     </a>
                 </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="login">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="green" class="bi bi-person"
@@ -55,9 +64,32 @@
 export default {
     name: "NavBar",
     data() {
-        return {};
+        return {
+            isLoggedIn: false,
+        };
+    },
+
+    created() {
+        this.checkLoginStatus();
+    },
+    methods: {
+        checkLoginStatus() {
+        const sessionData = JSON.parse(localStorage.getItem('session'));
+        if (sessionData && sessionData.user && sessionData.user.email) {
+            // Assuming that the presence of the user's email indicates a valid login session
+            this.isLoggedIn = true;
+        } else {
+            this.isLoggedIn = false;
+        }
+        }
     }
 };
+
+
+
+
+
+
 </script>
 
 

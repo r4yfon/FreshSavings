@@ -11,7 +11,11 @@ import axios from "axios";
       <div class="mb-3">
         <div class="d-flex flex-wrap gap-2 align-items-center">
           <p class="mb-0">Have items in your inventory?</p>
-          <button type="button" class="btn btn-success d-flex" @click="selectInventoryItems()">
+          <button v-if="isLoggedIn" type="button" class="btn btn-success d-flex" @click="selectInventoryItems()">
+            <span class="me-2">Use Inventory items</span>
+            <Icon icon="solar:download-minimalistic-outline" />
+          </button>
+          <button v-else @click="redirectToLogin()" class="btn btn-success d-flex">
             <span class="me-2">Use Inventory items</span>
             <Icon icon="solar:download-minimalistic-outline" />
           </button>
@@ -133,8 +137,10 @@ import axios from "axios";
 
 <script>
 export default {
+  name: 'RecipeGenerator',
   data() {
     return {
+      isLoggedIn: false,
       ingredientsIidList: [],
       accordionCategories: {},
       compiledRecipeIngredients: {},
@@ -148,11 +154,19 @@ export default {
     Icon,
   },
   mounted() {
+    this.isLoggedIn = this.checkLoggedIn();
     this.getIngredientsCategories();
     this.compileRecipeIngredients();
     // console.log(this.compiledRecipeIngredients);
   },
   methods: {
+    checkLoggedIn() {
+      const sessionData = JSON.parse(localStorage.getItem('session'));
+      return sessionData !== null;
+    },
+    redirectToLogin() {
+      this.$router.push('/login');
+    },
     // to get the categories and sub-items for accordion
     getIngredientsCategories() {
       axios

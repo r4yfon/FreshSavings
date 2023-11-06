@@ -433,12 +433,25 @@ export default {
     NavBar,
   },
   data: () => ({
+    isLoggedIn: false,
     loading: false,
     timing:"", 
     date:"",
     center: {lat: 51.093048, lng: 6.842120},
   }),
+  created() {
+		this.checkLoginStatus();
+	},
   methods: {
+    checkLoginStatus() {
+			const sessionData = JSON.parse(localStorage.getItem('session'));
+			if (sessionData && sessionData.user && sessionData.user.email) {
+			// Assuming that the presence of the user's email indicates a valid login session
+			this.isLoggedIn = true;
+			} else {
+			this.isLoggedIn = false;
+			}
+		},
     deleteCard(cardNumber) {
       // Use appropriate logic to delete the card based on the card number
       const cardId = `#card${cardNumber}`;

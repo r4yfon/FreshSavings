@@ -173,9 +173,11 @@ import { Icon } from "@iconify/vue";
 
 <script>
 export default {
+	name: 'InventoryTracker',
 	components: {},
 	data() {
 		return {
+			isLoggedIn: false,
 			currentFilter: 'All',
 			user: 'John',
 			items: [
@@ -212,6 +214,9 @@ export default {
 
 		}
 	},
+	created() {
+		this.checkLoginStatus();
+	},
 	computed: {
 		sortedArray() {
 			let sortedItems = this.items;
@@ -236,6 +241,15 @@ export default {
 		},
 	},
 	methods: {
+		checkLoginStatus() {
+			const sessionData = JSON.parse(localStorage.getItem('session'));
+			if (sessionData && sessionData.user && sessionData.user.email) {
+			// Assuming that the presence of the user's email indicates a valid login session
+			this.isLoggedIn = true;
+			} else {
+			this.isLoggedIn = false;
+			}
+		},
 		imageUrl(img) {
 			return require(`@/assets/img/${img}`);
 		},
