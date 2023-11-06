@@ -1,5 +1,5 @@
 <script setup>
-	import { Icon } from "@iconify/vue";
+import { Icon } from "@iconify/vue";
 </script>
 
 <template>
@@ -9,7 +9,8 @@
 		<div class="container-fluid ">
 			<div class="row">
 				<h1 class="text-center fw-bold mb-4">
-					{{user}}'s Food Inventory <Icon icon="mdi:human-welcome"/>
+					{{ user }}'s Food Inventory
+					<Icon icon="mdi:human-welcome" />
 				</h1>
 			</div>
 		</div>
@@ -22,12 +23,14 @@
 			<input v-model="searching" type="text" id="search_input" class="form-control" placeholder="Search for ingredients" />
 		</div> -->
 
-		<!-- TODO: Fix category button width-->
+		<!-- Category Filter Buttons -->
 		<div id="category">
 			<div class="container-fluid justify-content-center d-flex">
-				<div v-for="category in categories" :key="category.categoryName" class="border rounded d-flex flex-column justify-content-between align-items-center">
-					<div class="filter" :class="{active: currentFilter === category.categoryName}" @click="setFilter(category.categoryName)">
-						<img :src=imageUrl(category.imgLink) style="width:30px"/> &nbsp;
+				<div v-for="category in categories" :key="category.categoryName"
+					class="border rounded d-flex flex-column justify-content-between align-items-center">
+					<div class="filter" :class="{ active: currentFilter === category.categoryName }"
+						@click="setFilter(category.categoryName)">
+						<img :src=imageUrl(category.imgLink) style="width:30px" /> &nbsp;
 						<span class="mb-0 fw-bold">{{ category.categoryName }}</span>
 					</div>
 				</div>
@@ -35,145 +38,225 @@
 			</div>
 		</div>
 
-		<!-- Add form -->
+		<!-- Add-items Form -->
 		<div class="form-popup" id="myForm">
-			<form action="/action_page.php" class="form-container">
+			<form class="form-container">
+
 				<h3 class="fw-bold" style="text-align: center">Item Tracking</h3>
+
 				<div class="mb-3 py-2">
 					<label for="formName" class="form-label">Item Name</label>
-					<input type="text" class="form-control" id="formName" placeholder="Enter product name" v-model="ingredient_name" required>
+					<input type="text" class="form-control" id="formName" placeholder="Enter product name"
+						v-model="ingredient_name" required>
 				</div>
+
 				<div class="mb-3">
 					<label for="formQty" class="form-label">Item Quantity</label>
-					<input type="number" class="form-control" id="formQty" placeholder="0" v-model="ingredient_quantity" required>
+					<input type="number" class="form-control" id="formQty" placeholder="0" v-model="ingredient_quantity"
+						required>
 				</div>
+
 				<div class="mb-3">
 					<label for="formCategory" class="form-label">Item Category</label>
-					<select class="form-select" id="formCategory" v-model="category" aria-label="Default select example">
-						<option value="Dairy">Dairy</option>
-						<option value="Fish">Fish</option>
-						<option value="Fruits" selected>Fruits</option>
-						<option value="Meats">Meats</option>
+					<select v-model="selectedCategory" class="form-select" id="formCategory" required>
+						<option>Fruits</option>
+						<option>Dairy</option>
+						<option>Fish</option>
+						<option>Meats</option>
 					</select>
 				</div>
-				<div class="mb-3">
+
+				<!-- <div class="mb-3">
 					<label for="pdate" class="form-label">Purchased Date</label>
 					<input type="date" class="form-control" id="pdate" v-model="ingredient_purchase_date" required>
-				</div>
+				</div> -->
+
 				<div class="mb-3">
 					<label for="edate" class="form-label">Expiry Date</label>
-					<input type="date" class="form-control" id="edate"  v-model="ingredient_expiry_date" required>
+					<input type="date" class="form-control" id="edate" v-model="ingredient_expiry_date" required>
 				</div>
-				<!-- <div class="mb-3">
+
+				<div class="mb-3">
 					<label for="emoji" class="form-label">Choose Emoji</label>
-					<select class="form-select"> -->
-						<!-- <div v-if="category==='Fruits'"> -->
-								<!-- <div v-for="fruit in emojis[2]" :key="fruit">
-									<div v-for="(f,idx) in fruit" :key="idx" style="display:inline">
-										<input type="radio" name="emoji" value="idx" class="form-check-input" id="fruitRadio">
-										<label class="form-check-label" for="fruitRadio">
-										{{f}}
-										</label>
-									</div>
+					<div id="radios">
+						<div v-if="selectedCategory === 'Fruits'">
+							<div v-for="emoji in emojis[2]" :key="emoji">
+								<div v-for="(e, idx) in emoji" :key="idx" style="display:inline-block">
+									<label class="form-check-label" for="idx">
+										<input type="radio" name="emoji" :value="e" class="form-check-input" id="idx"
+											v-model="selectedEmoji">
+										<span>{{ e }}</span>
+									</label>
 								</div>
 							</div>
-
-								<div class="form-check">
-									<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-									<label class="form-check-label" for="flexRadioDefault2">
-										Default checked radio
+						</div>
+						<div v-if="selectedCategory === 'Dairy'">
+							<div v-for="emoji in emojis[0]" :key="emoji">
+								<div v-for="(e, idx) in emoji" :key="idx" style="display:inline-block">
+									<label class="form-check-label" for="fruitRadio">
+										<input type="radio" name="emoji" :value="e" class="form-check-input" id="fruitRadio"
+											v-model="selectedEmoji">
+										<span>{{ e }}</span>
 									</label>
-								</div> -->
-						
-
-
-
-						<!-- </div> -->
-						<!-- <div v-if="category==dairy">
-							<div v-for="(d,idx) in dairy" :key=idx>
-								<option value="idx">{{ d }}</option>
+								</div>
 							</div>
 						</div>
-						<div v-if="category==meats">
-							<div v-for="(m,idx) in meats" :key=idx>
-								<option value="idx">{{ m }}</option>
+						<div v-if="selectedCategory === 'Meats'">
+							<div v-for="emoji in emojis[3]" :key="emoji">
+								<div v-for="(e, idx) in emoji" :key="idx" style="display:inline-block">
+									<label class="form-check-label" for="fruitRadio">
+										<input type="radio" name="emoji" :value="e" class="form-check-input" id="fruitRadio"
+											v-model="selectedEmoji">
+										<span>{{ e }}</span>
+									</label>
+								</div>
 							</div>
 						</div>
-						<div v-if="category==fish">
-							<div v-for="(f,idx) in fish" :key=idx>
-								<option value="idx">{{ f }}</option>
+						<div v-if="selectedCategory === 'Fish'">
+							<div v-for="emoji in emojis[1]" :key="emoji">
+								<div v-for="(e, idx) in emoji" :key="idx" style="display:inline-block">
+									<label class="form-check-label" for="fruitRadio">
+										<input type="radio" name="emoji" :value="e" class="form-check-input" id="fruitRadio"
+											v-model="selectedEmoji">
+										<span>{{ e }}</span>
+									</label>
+								</div>
 							</div>
-						</div> -->
+						</div>
+					</div>
+				</div>
 
-					<!-- </select> -->
-				<!-- </div> -->
-	
 				<div>
 					<button type="button" class="btn add" @click="add()">Add</button>
 					<button type="button" class="btn cancel" @click="closeForm()">Clear</button>
 				</div>
-				
+
 			</form>
 		</div>
-		
+
 		<!-- Product card  -->
-			<div class="row justify-content-start container">
-				<div class="col" style="column-fill: balance">
-				<div class="projects" name="projects">
-					<TransitionGroup class="project" :key="item.name" v-for="item in sortedArray">
+		<div class="row justify-content-start container">
+			<div class="col" style="column-fill: balance">
+				<div class="projects" name="projects" style="column-gap;2rem">
+					<TransitionGroup class="project" :key="item.name" v-for="(item, idx) in sortedArray" >
 						<div class="card" v-if="currentFilter === item.category || currentFilter === 'All'">
-								<div class="card-title">
+							<!-- Expiring soon -->
+							<div v-if="item.expiring_in <= 2" style="border: solid red; border-radius: 8px;">
+								<div class="card-title" :id="idx">
 									<span class="emoji">
-										{{item.emoji}}
+										{{ item.emoji }}
 									</span>
 									<span class="circle">
 										x {{ item.quantity }}
 									</span>
 								</div>
-								<div class="card-body" >
+								<div class="card-body">
 									<p>
-										{{ item.name }} <br/>
+										{{ item.name }} <br />
 										Expiring in {{ item.expiring_in }} days
 									</p>
 								</div>
-								
+
 								<!-- Modal ->
 								<!- Button trigger modal -->
-								<button type="button" class="btn btn-outline-danger">
+								<button type="button" class="btn btn-outline-danger" @click="removePost(idx)">
 									Remove
 								</button>
-								<button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+								<button type="button" class="btn btn-outline-success" data-bs-toggle="modal"
+									data-bs-target="#exampleModal">
 									Sell in Marketplace
 								</button>
 
 								<!-- Modal -->
-								<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+									aria-hidden="true">
 									<div class="modal-dialog">
 										<div class="modal-content">
 											<div class="modal-header">
 												<h1 class="modal-title fs-5" id="exampleModalLabel">Listing Details</h1>
-												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+												<button type="button" class="btn-close" data-bs-dismiss="modal"
+													aria-label="Close"></button>
 											</div>
 											<div class="modal-body">
 												<label for="FormControlInput1" class="form-label">Selling Price</label>
 												<div class="input-group mb-3">
 													<span class="input-group-text" id="addon-wrapping">$</span>
-													<input type="number" class="form-control" id="FormControlInput1" placeholder="3.00">
+													<input type="number" class="form-control" id="FormControlInput1"
+														placeholder="3.00">
 												</div>
 												<div class="mb-3">
-													<label for="FormControlInput2" class="form-label">Upload photo of product</label>
+													<label for="FormControlInput2" class="form-label">Upload photo of
+														product</label>
 													<input type="file" class="form-control" id="FormControlInput2">
 												</div>
 											</div>
 											<div class="modal-footer">
-												<button type="button" class="btn btn-primary" @click="post()">Post</button>
+												<button type="button" class="btn btn-primary"
+													@click="posted(idx)">Post</button>
 											</div>
 										</div>
 									</div>
 								</div>
-							
+							</div>
+							<!-- Not expiring soon -->
+							<div v-else>
+								<div class="card-title" :id="idx">
+									<span class="emoji">
+										{{ item.emoji }}
+									</span>
+									<span class="circle">
+										x {{ item.quantity }}
+									</span>
+								</div>
+								<div class="card-body">
+									<p>
+										{{ item.name }} <br />
+										Expiring in {{ item.expiring_in }} days
+									</p>
+								</div>
+
+								<!-- Modal ->
+								<!- Button trigger modal -->
+								<button type="button" class="btn btn-outline-danger" @click="removePost(idx)">
+									Remove
+								</button>
+								<button type="button" class="btn btn-outline-success" data-bs-toggle="modal"
+									data-bs-target="#exampleModal">
+									Sell in Marketplace
+								</button>
+
+								<!-- Modal -->
+								<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+									aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h1 class="modal-title fs-5" id="exampleModalLabel">Listing Details</h1>
+												<button type="button" class="btn-close" data-bs-dismiss="modal"
+													aria-label="Close"></button>
+											</div>
+											<div class="modal-body">
+												<label for="FormControlInput1" class="form-label">Selling Price</label>
+												<div class="input-group mb-3">
+													<span class="input-group-text" id="addon-wrapping">$</span>
+													<input type="number" class="form-control" id="FormControlInput1"
+														placeholder="3.00">
+												</div>
+												<div class="mb-3">
+													<label for="FormControlInput2" class="form-label">Upload photo of
+														product</label>
+													<input type="file" class="form-control" id="FormControlInput2">
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-primary"
+													@click="posted(idx)">Post</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
-					
 					</TransitionGroup>
 				</div>
 			</div>
@@ -185,51 +268,53 @@
 
 <script>
 export default {
-	components: { },
+	components: {},
 	data() {
 		return {
 			currentFilter: 'All',
-			user: 'John', 
+			user: 'John',
 			items: [
-				{ name: "Artwork", category: 'Fruits', expiring_in: '5', quantity: '3', emoji:'🍇' },
-				{ name: "Charcoal", category: 'Dairy', expiring_in: '3', quantity: '3' , emoji:'🍇'},
-				{ name: "Sketching", category: 'Meat', expiring_in: '2', quantity: '3' , emoji:'🍇'},
-				{ name: "Acrillic", category: 'Fish', expiring_in: '10', quantity: '3' , emoji:'🍇'},
-				{ name: "Pencil", category: 'Fruits', expiring_in: '2', quantity: '3' , emoji:'🍇'},
-				{ name: "Pen", category: 'Dairy', expiring_in: '0', quantity: '3' , emoji:'🍇'},
-				{ name: "Inking", category: 'Meat', expiring_in: '8', quantity: '3' , emoji:'🍇'},
+				{ name: "Grape", category: ['Fruits'], expiring_in: '5', quantity: '3', emoji: '🍇' },
+				{ name: "Milk", category: ['Dairy'], expiring_in: '3', quantity: '3', emoji: '🥛' },
+				{ name: "Chicken", category: ['Meat'], expiring_in: '2', quantity: '3', emoji: '🐓' },
+				{ name: "Fish", category: ['Fish'], expiring_in: '10', quantity: '3', emoji: '🐟' },
+				{ name: "Apple", category: ['Fruits'], expiring_in: '2', quantity: '3', emoji: '🍎' },
+				{ name: "Cheese", category: ['Dairy'], expiring_in: '0', quantity: '3', emoji: '🥛' },
+				{ name: "Beef", category: ['Meat'], expiring_in: '8', quantity: '3', emoji: '🐄' },
 			],
 			ingredient_name: '',
 			ingredient_quantity: '',
 			ingredient_purchase_date: '',
 			ingredient_expiry_date: '',
-			posting_status:'',
+			posting_status: '',
+			selectedCategory: 'Fruits',
+			selectedEmoji: '',
 			categories: [
-				{categoryName: "All", imgLink: "kitchen.png"},
-				{categoryName: "Due Soon", imgLink: "duesoon.png"},
-				{categoryName: "Past Due", imgLink: "pastdue.png"},
-				{categoryName: "Dairy", imgLink: "milk.png"},
-				{categoryName: "Fish", imgLink: "fish.png"},
-				{categoryName: "Fruits", imgLink: "fruits.png"},
-				{categoryName: "Meats", imgLink: "barbecue.png"},
+				{ categoryName: "All", imgLink: "kitchen.png" },
+				{ categoryName: "Due Soon", imgLink: "duesoon.png" },
+				{ categoryName: "Past Due", imgLink: "pastdue.png" },
+				{ categoryName: "Dairy", imgLink: "milk.png" },
+				{ categoryName: "Fish", imgLink: "fish.png" },
+				{ categoryName: "Fruits", imgLink: "fruits.png" },
+				{ categoryName: "Meats", imgLink: "barbecue.png" },
 			],
-			emojis:[
-				{dairy:['🧀','🧈','🥛']},
-				{fish:['🐟','🐠','🦀','🦞','🦐','🦑','🦪']},
-				{fruit:['🍇','🍈','🍉','🍊','🍋','🍌','🍍','🍎','🥭','🍏','🍐','🍑','🍒','🍓','🫐','🥝','🍅','🫒','🥥','🥑','🍆','🥔','🥕','🌽','🌶','🫑','🥒','🥬','🥦','🧄','🧅','🍠']},
-				{meat:['🍖','🍗','🥩','🥓','🐄','🐖','🐓','🐏']},
-			], 
-			
+			emojis: [
+				{ dairy: ['🧀', '🧈', '🥛'] },
+				{ fish: ['🐟', '🐠', '🦀', '🦞', '🦐', '🦑', '🦪'] },
+				{ fruit: ['🍇', '🍈', '🍉', '🍊', '🍋', '🍌', '🍍', '🍎', '🥭', '🍏', '🍐', '🍑', '🍒', '🍓', '🫐', '🥝', '🍅', '🫒', '🥥', '🥑', '🍆', '🥔', '🥕', '🌽', '🌶', '🫑', '🥒', '🥬', '🥦', '🧄', '🧅', '🍠'] },
+				{ meat: ['🍖', '🍗', '🥩', '🥓', '🐄', '🐖', '🐓', '🐏'] },
+			],
+
 		}
-	}, 
-	computed:{
-		sortedArray(){
+	},
+	computed: {
+		sortedArray() {
 			let sortedItems = this.items;
-			sortedItems = sortedItems.sort((a,b) =>{
+			sortedItems = sortedItems.sort((a, b) => {
 				return a.expiring_in - b.expiring_in;
 			})
-			return sortedItems; 
-		}
+			return sortedItems;
+		},
 	},
 	methods: {
 		imageUrl(img) {
@@ -241,16 +326,23 @@ export default {
 		add() {
 			if (
 				this.ingredient_name == "" ||
-				this.ingredient_quantity  == "" ||
+				this.ingredient_quantity == "" ||
 				this.category == ""
 			) {
 				alert("Please fill out all fields");
 				return;
 			};
-			this.items.push({ "name": this.ingredient_name, "image": "", "category": this.category, "freshness": "Fresh for today", "quantity": this.ingredient_quantity });
+			const currentDate = new Date();
+			const futureDate = new Date(this.ingredient_expiry_date);
+			const timeDifference = futureDate.getTime() - currentDate.getTime();
+			const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+			this.items.push({ "name": this.ingredient_name, "category": this.selectedCategory, "expiring_in": daysDifference, "quantity": this.ingredient_quantity, "emoji": this.selectedEmoji });
 			this.ingredient_name = '';
 			this.ingredient_quantity = '';
-			this.category = "";
+			this.selectedCategory = "";
+			this.ingredient_expiry_date = "";
+			this.selectedEmoji = "";
 			document.getElementById("myForm").style.display = "none";
 		},
 
@@ -260,11 +352,18 @@ export default {
 
 		closeForm() {
 			document.getElementById("myForm").style.display = "none";
+			this.ingredient_name = '';
+			this.ingredient_quantity = '';
+			this.selectedCategory = "";
+			this.ingredient_expiry_date = "";
+			this.selectedEmoji = "";
 		},
-		post(){
+		posted(idx) {
 			this.posting_status = 'Active';
 		},
-
+		removePost(idx) {
+			this.items.splice(idx, idx);
+		}
 	}
 }
 
@@ -286,7 +385,7 @@ export default {
 
 .filter {
 	padding: 6px 6px;
-	font-size:20px; 
+	font-size: 20px;
 	cursor: pointer;
 	transition: all 0.35s;
 	justify-content: center;
@@ -325,9 +424,9 @@ export default {
 }
 
 
-.card-body{
+.card-body {
 	height: 150px;
-	width:200px; 
+	width: 200px;
 	padding-left: 6px;
 	padding-right: 6px;
 }
@@ -354,12 +453,12 @@ export default {
 	z-index: 2;
 	font-size: 16pt;
 	top: -50px;
-	left: 140px;
+	left: 200px;
 }
 
 
 .project body {
-	z-index: 3; 
+	z-index: 3;
 }
 
 .project {
@@ -374,66 +473,97 @@ export default {
 	align-items: center;
 }
 
+
 /* Button used to open the contact form - fixed at the bottom of the page */
 .open-button {
-  background-color: #508E46;
-  color: white;
-  padding: 15px;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  bottom: 15px;
-  right: 28px;
-  width: 150px;
-  z-index: 4;
-  border:none; 
-  border-radius:10px; 
-  z-index: 4;
+	background-color: #508E46;
+	color: white;
+	padding: 15px;
+	cursor: pointer;
+	opacity: 0.8;
+	position: fixed;
+	bottom: 15px;
+	right: 28px;
+	width: 150px;
+	z-index: 4;
+	border: none;
+	border-radius: 10px;
+	z-index: 4;
 }
 
 /* The popup form - hidden by default */
 .form-popup {
-  display: none;
-  position: fixed;
-  bottom: 10px;
-  right: 15px;
-  border: 3px solid #f1f1f1;
-  z-index: 9;
+	display: none;
+	position: fixed;
+	bottom: 10px;
+	right: 15px;
+	border: 3px solid #f1f1f1;
+	z-index: 9;
 }
 
 /* Add styles to the form container */
 .form-container {
-  width: 300px;
-  padding: 15px;
-  background-color: white;
-  height: 700px; 
-  overflow-y: auto;
+	width: 300px;
+	padding: 15px;
+	background-color: white;
+	height: 700px;
+	overflow-y: auto;
 }
 
 /* Set a style for the add/clear button */
 .form-container .btn {
-  background-color: #04AA6D;
-  color: white;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  margin-bottom:10px;
-  opacity: 0.8;
+	background-color: #04AA6D;
+	color: white;
+	border: none;
+	cursor: pointer;
+	width: 100%;
+	margin-bottom: 10px;
+	opacity: 0.8;
 }
 
 /* Add a red background color to the cancel button */
 .form-container .cancel {
-  background-color: red;
+	background-color: red;
 }
 
 /* Add some hover effects to buttons */
-.form-container .btn:hover, .open-button:hover {
-  opacity: 1;
+.form-container .btn:hover,
+.open-button:hover {
+	opacity: 1;
 }
 
-.emoji{
+.emoji {
 	font-size: 2.5rem;
 }
 
-</style>
+#radios label {
+	cursor: pointer;
+	position: relative;
+}
+
+
+
+input[type="radio"] {
+	opacity: 0;
+	/* hidden but still tabable */
+	position: absolute;
+	z-index: 9;
+	border: 0px;
+	width: 100%;
+	height: 2em;
+}
+
+input[type="radio"]+span {
+	font-family: 'Material Icons';
+	color: #B3CEFB;
+	border-radius: 50%;
+	padding: 12px;
+	transition: all 0.4s;
+	-webkit-transition: all 0.4s;
+}
+
+input[type="radio"]:checked+span {
+	color: #D9E7FD;
+	background-color: #B3CEFB;
+}</style>
 
