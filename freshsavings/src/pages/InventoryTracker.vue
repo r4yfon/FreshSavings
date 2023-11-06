@@ -66,65 +66,24 @@ import { Icon } from "@iconify/vue";
 					</select>
 				</div>
 
-				<!-- <div class="mb-3">
-					<label for="pdate" class="form-label">Purchased Date</label>
-					<input type="date" class="form-control" id="pdate" v-model="ingredient_purchase_date" required>
-				</div> -->
-
 				<div class="mb-3">
 					<label for="edate" class="form-label">Expiry Date</label>
 					<input type="date" class="form-control" id="edate" v-model="ingredient_expiry_date" required>
 				</div>
 
 				<div class="mb-3">
-					<label for="emoji" class="form-label">Choose Emoji</label>
-					<div id="radios">
-						<div v-if="selectedCategory === 'Fruits'">
-							<div v-for="emoji in emojis[2]" :key="emoji">
-								<div v-for="(e, idx) in emoji" :key="idx" style="display:inline-block">
-									<label class="form-check-label" for="idx">
-										<input type="radio" name="emoji" :value="e" class="form-check-input" id="idx"
-											v-model="selectedEmoji">
-										<span>{{ e }}</span>
-									</label>
-								</div>
-							</div>
-						</div>
-						<div v-if="selectedCategory === 'Dairy'">
-							<div v-for="emoji in emojis[0]" :key="emoji">
-								<div v-for="(e, idx) in emoji" :key="idx" style="display:inline-block">
-									<label class="form-check-label" for="fruitRadio">
-										<input type="radio" name="emoji" :value="e" class="form-check-input" id="fruitRadio"
-											v-model="selectedEmoji">
-										<span>{{ e }}</span>
-									</label>
-								</div>
-							</div>
-						</div>
-						<div v-if="selectedCategory === 'Meats'">
-							<div v-for="emoji in emojis[3]" :key="emoji">
-								<div v-for="(e, idx) in emoji" :key="idx" style="display:inline-block">
-									<label class="form-check-label" for="fruitRadio">
-										<input type="radio" name="emoji" :value="e" class="form-check-input" id="fruitRadio"
-											v-model="selectedEmoji">
-										<span>{{ e }}</span>
-									</label>
-								</div>
-							</div>
-						</div>
-						<div v-if="selectedCategory === 'Fish'">
-							<div v-for="emoji in emojis[1]" :key="emoji">
-								<div v-for="(e, idx) in emoji" :key="idx" style="display:inline-block">
-									<label class="form-check-label" for="fruitRadio">
-										<input type="radio" name="emoji" :value="e" class="form-check-input" id="fruitRadio"
-											v-model="selectedEmoji">
-										<span>{{ e }}</span>
-									</label>
-								</div>
+					<label :for="radios" class="form-label">Choose Emoji</label>
+					<div :id="radios">
+						<div v-for="emoji in getEmojis" :key="emoji">
+							<div v-for="(e, idx) in emoji" :key="idx" style="display:inline-block">
+							<label class="form-check-label" :for="'emojiRadio-' + idx">
+								<input type="radio" name="emoji" :value="e" class="form-check-input" :id="'emojiRadio-' + idx" v-model="selectedEmoji">
+								<span>{{ e }}</span>
+							</label>
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> 
 
 				<div>
 					<button type="button" class="btn add" @click="add()">Add</button>
@@ -140,9 +99,8 @@ import { Icon } from "@iconify/vue";
 				<div class="projects" name="projects" style="column-gap;2rem">
 					<TransitionGroup class="project" :key="item.name" v-for="(item, idx) in sortedArray" >
 						<div class="card" v-if="currentFilter === item.category || currentFilter === 'All'">
-							<!-- Expiring soon -->
-							<div v-if="item.expiring_in <= 2" style="border: solid red; border-radius: 8px;">
-								<div class="card-title" :id="idx">
+							<div :style="item.expiring_in <= 2 ? 'border: solid red; border-radius: 8px;' : ''">
+								<div class="card-title" :id="'card-title-' + idx">
 									<span class="emoji">
 										{{ item.emoji }}
 									</span>
@@ -156,38 +114,37 @@ import { Icon } from "@iconify/vue";
 										Expiring in {{ item.expiring_in }} days
 									</p>
 								</div>
-
-								<!-- Modal ->
-								<!- Button trigger modal -->
+								
+								<!-- Modal  -->
+								<!-- Button trigger modal -->
 								<button type="button" class="btn btn-outline-danger" @click="removePost(idx)">
 									Remove
 								</button>
 								<button type="button" class="btn btn-outline-success" data-bs-toggle="modal"
-									data-bs-target="#exampleModal">
+									data-bs-target="#openModal-{{ idx }}">
 									Sell in Marketplace
 								</button>
-
-								<!-- Modal -->
-								<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+								<!-- Modal Opened -->
+								<div class="modal fade" :id="'openModal-' + idx" tabindex="-1" aria-labelledby="openModalLabel"
 									aria-hidden="true">
 									<div class="modal-dialog">
 										<div class="modal-content">
 											<div class="modal-header">
-												<h1 class="modal-title fs-5" id="exampleModalLabel">Listing Details</h1>
+												<h1 class="modal-title fs-5" :id="'ModalLabel'+ idx">Listing Details</h1>
 												<button type="button" class="btn-close" data-bs-dismiss="modal"
 													aria-label="Close"></button>
 											</div>
 											<div class="modal-body">
-												<label for="FormControlInput1" class="form-label">Selling Price</label>
+												<label :for="'FormControlInput1'+idx" class="form-label">Selling Price</label>
 												<div class="input-group mb-3">
 													<span class="input-group-text" id="addon-wrapping">$</span>
-													<input type="number" class="form-control" id="FormControlInput1"
+													<input type="number" class="form-control" :id="'FormControlInput1'+idx"
 														placeholder="3.00">
 												</div>
 												<div class="mb-3">
-													<label for="FormControlInput2" class="form-label">Upload photo of
+													<label :for="'FormControlInput2'+idx" class="form-label">Upload photo of
 														product</label>
-													<input type="file" class="form-control" id="FormControlInput2">
+													<input type="file" class="form-control" :id="'FormControlInput2'+idx">
 												</div>
 											</div>
 											<div class="modal-footer">
@@ -197,65 +154,9 @@ import { Icon } from "@iconify/vue";
 										</div>
 									</div>
 								</div>
-							</div>
-							<!-- Not expiring soon -->
-							<div v-else>
-								<div class="card-title" :id="idx">
-									<span class="emoji">
-										{{ item.emoji }}
-									</span>
-									<span class="circle">
-										x {{ item.quantity }}
-									</span>
-								</div>
-								<div class="card-body">
-									<p>
-										{{ item.name }} <br />
-										Expiring in {{ item.expiring_in }} days
-									</p>
-								</div>
+							</div> 
+							
 
-								<!-- Modal ->
-								<!- Button trigger modal -->
-								<button type="button" class="btn btn-outline-danger" @click="removePost(idx)">
-									Remove
-								</button>
-								<button type="button" class="btn btn-outline-success" data-bs-toggle="modal"
-									data-bs-target="#exampleModal">
-									Sell in Marketplace
-								</button>
-
-								<!-- Modal -->
-								<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-									aria-hidden="true">
-									<div class="modal-dialog">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h1 class="modal-title fs-5" id="exampleModalLabel">Listing Details</h1>
-												<button type="button" class="btn-close" data-bs-dismiss="modal"
-													aria-label="Close"></button>
-											</div>
-											<div class="modal-body">
-												<label for="FormControlInput1" class="form-label">Selling Price</label>
-												<div class="input-group mb-3">
-													<span class="input-group-text" id="addon-wrapping">$</span>
-													<input type="number" class="form-control" id="FormControlInput1"
-														placeholder="3.00">
-												</div>
-												<div class="mb-3">
-													<label for="FormControlInput2" class="form-label">Upload photo of
-														product</label>
-													<input type="file" class="form-control" id="FormControlInput2">
-												</div>
-											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-primary"
-													@click="posted(idx)">Post</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
 						</div>
 					</TransitionGroup>
 				</div>
@@ -274,13 +175,13 @@ export default {
 			currentFilter: 'All',
 			user: 'John',
 			items: [
-				{ name: "Grape", category: ['Fruits'], expiring_in: '5', quantity: '3', emoji: '🍇' },
-				{ name: "Milk", category: ['Dairy'], expiring_in: '3', quantity: '3', emoji: '🥛' },
-				{ name: "Chicken", category: ['Meat'], expiring_in: '2', quantity: '3', emoji: '🐓' },
-				{ name: "Fish", category: ['Fish'], expiring_in: '10', quantity: '3', emoji: '🐟' },
-				{ name: "Apple", category: ['Fruits'], expiring_in: '2', quantity: '3', emoji: '🍎' },
-				{ name: "Cheese", category: ['Dairy'], expiring_in: '0', quantity: '3', emoji: '🥛' },
-				{ name: "Beef", category: ['Meat'], expiring_in: '8', quantity: '3', emoji: '🐄' },
+				{ name: "Grape", category: 'Fruits', expiring_in: '5', quantity: '3', emoji: '🍇' },
+				{ name: "Milk", category: 'Dairy', expiring_in: '3', quantity: '3', emoji: '🥛' },
+				{ name: "Chicken", category: 'Meat', expiring_in: '2', quantity: '3', emoji: '🐓' },
+				{ name: "Fish", category: 'Fish', expiring_in: '10', quantity: '3', emoji: '🐟' },
+				{ name: "Apple", category: 'Fruits', expiring_in: '2', quantity: '3', emoji: '🍎' },
+				{ name: "Cheese", category: 'Dairy', expiring_in: '0', quantity: '3', emoji: '🥛' },
+				{ name: "Beef", category: 'Meat', expiring_in: '8', quantity: '3', emoji: '🐄' },
 			],
 			ingredient_name: '',
 			ingredient_quantity: '',
@@ -314,6 +215,20 @@ export default {
 				return a.expiring_in - b.expiring_in;
 			})
 			return sortedItems;
+		},
+		getEmojis() {
+			switch (this.selectedCategory) {
+				case 'Fruits':
+					return this.emojis[2];
+				case 'Dairy':
+					return this.emojis[0];
+				case 'Meats':
+					return this.emojis[3];
+				case 'Fish':
+					return this.emojis[1];
+				default:
+					return [];
+			}
 		},
 	},
 	methods: {
