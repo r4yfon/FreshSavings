@@ -27,8 +27,8 @@
 			<div class="container-fluid justify-content-center d-flex">
 				<div v-for="category in categories" :key="category.categoryName" class="border rounded d-flex flex-column justify-content-between align-items-center">
 					<div class="filter" :class="{active: currentFilter === category.categoryName}" @click="setFilter(category.categoryName)">
-						<img :src=imageUrl(category.imgLink) style="width:30px"/>
-						<p class="mb-0 fw-bold">{{ category.categoryName }}</p>
+						<img :src=imageUrl(category.imgLink) style="width:30px"/> &nbsp;
+						<span class="mb-0 fw-bold">{{ category.categoryName }}</span>
 					</div>
 				</div>
 				<button class="open-button" @click="openForm()"> + New item</button>
@@ -40,34 +40,73 @@
 			<form action="/action_page.php" class="form-container">
 				<h3 class="fw-bold" style="text-align: center">Item Tracking</h3>
 				<div class="mb-3 py-2">
-					<label for="name" class="form-label">Item Name</label>
-					<input type="text" class="form-control" placeholder="Enter product name" v-model="ingredient_name" required>
+					<label for="formName" class="form-label">Item Name</label>
+					<input type="text" class="form-control" id="formName" placeholder="Enter product name" v-model="ingredient_name" required>
 				</div>
 				<div class="mb-3">
-					<label for="qty" class="form-label">Item Quantity</label>
-					<input type="number" class="form-control" placeholder="0" v-model="ingredient_quantity" required>
+					<label for="formQty" class="form-label">Item Quantity</label>
+					<input type="number" class="form-control" id="formQty" placeholder="0" v-model="ingredient_quantity" required>
 				</div>
 				<div class="mb-3">
-					<label for="category" class="form-label">Item Category</label>
-					<select class="form-select" v-model="category" aria-label="Default select example">
-						<option value="Fruits" selected>Fruits</option>
+					<label for="formCategory" class="form-label">Item Category</label>
+					<select class="form-select" id="formCategory" v-model="category" aria-label="Default select example">
 						<option value="Dairy">Dairy</option>
-						<option value="Meat">Meat</option>
 						<option value="Fish">Fish</option>
+						<option value="Fruits" selected>Fruits</option>
+						<option value="Meats">Meats</option>
 					</select>
 				</div>
 				<div class="mb-3">
 					<label for="pdate" class="form-label">Purchased Date</label>
-					<input type="date" class="form-control" v-model="ingredient_purchase_date" required>
+					<input type="date" class="form-control" id="pdate" v-model="ingredient_purchase_date" required>
 				</div>
 				<div class="mb-3">
 					<label for="edate" class="form-label">Expiry Date</label>
-					<input type="date" class="form-control" v-model="ingredient_expiry_date" required>
+					<input type="date" class="form-control" id="edate"  v-model="ingredient_expiry_date" required>
 				</div>
-				<div class="mb-3">
+				<!-- <div class="mb-3">
 					<label for="emoji" class="form-label">Choose Emoji</label>
-					<input type="emoji" class="form-control" v-model="emoji">
-				</div>
+					<select class="form-select"> -->
+						<!-- <div v-if="category==='Fruits'"> -->
+								<!-- <div v-for="fruit in emojis[2]" :key="fruit">
+									<div v-for="(f,idx) in fruit" :key="idx" style="display:inline">
+										<input type="radio" name="emoji" value="idx" class="form-check-input" id="fruitRadio">
+										<label class="form-check-label" for="fruitRadio">
+										{{f}}
+										</label>
+									</div>
+								</div>
+							</div>
+
+								<div class="form-check">
+									<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+									<label class="form-check-label" for="flexRadioDefault2">
+										Default checked radio
+									</label>
+								</div> -->
+						
+
+
+
+						<!-- </div> -->
+						<!-- <div v-if="category==dairy">
+							<div v-for="(d,idx) in dairy" :key=idx>
+								<option value="idx">{{ d }}</option>
+							</div>
+						</div>
+						<div v-if="category==meats">
+							<div v-for="(m,idx) in meats" :key=idx>
+								<option value="idx">{{ m }}</option>
+							</div>
+						</div>
+						<div v-if="category==fish">
+							<div v-for="(f,idx) in fish" :key=idx>
+								<option value="idx">{{ f }}</option>
+							</div>
+						</div> -->
+
+					<!-- </select> -->
+				<!-- </div> -->
 	
 				<div>
 					<button type="button" class="btn add" @click="add()">Add</button>
@@ -78,17 +117,15 @@
 		</div>
 		
 		<!-- Product card  -->
-		<!-- <div class="row justify-content-center container"> -->
 			<div class="row justify-content-start container">
-				<div class="col" style="column-fill: balance; column-gap: 1em;">
+				<div class="col" style="column-fill: balance">
 				<div class="projects" name="projects">
-					<TransitionGroup class="project" v-bind:key="item.title" v-for="item in items">
-						<div class="w3-card-4"
-						v-if="currentFilter === item.category || currentFilter === 'All'">
-							<div class="card">
-								
+					<TransitionGroup class="project" :key="item.name" v-for="item in sortedArray">
+						<div class="card" v-if="currentFilter === item.category || currentFilter === 'All'">
 								<div class="card-title">
-									<img :src=imageUrl(item.emoji) style="width:50px; padding-top: 6px; padding-left: 6px">
+									<span class="emoji">
+										{{item.emoji}}
+									</span>
 									<span class="circle">
 										x {{ item.quantity }}
 									</span>
@@ -96,12 +133,15 @@
 								<div class="card-body" >
 									<p>
 										{{ item.name }} <br/>
-										{{ item.freshness }} 
+										Expiring in {{ item.expiring_in }} days
 									</p>
 								</div>
 								
 								<!-- Modal ->
 								<!- Button trigger modal -->
+								<button type="button" class="btn btn-outline-danger">
+									Remove
+								</button>
 								<button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
 									Sell in Marketplace
 								</button>
@@ -131,13 +171,14 @@
 										</div>
 									</div>
 								</div>
-							</div>
+							
 						</div>
 					
 					</TransitionGroup>
 				</div>
 			</div>
 		</div>
+
 	</section>
 </template>
 
@@ -150,13 +191,13 @@ export default {
 			currentFilter: 'All',
 			user: 'John', 
 			items: [
-				{ name: "Artwork", image: "https://picsum.photos/g/200?image=122", category: 'Fruits', freshness: 'Fresh for Today', quantity: '3', emoji:'kitchen.png' },
-				{ name: "Charcoal", image: "https://picsum.photos/g/200?image=116", category: 'Dairy', freshness: 'Fresh for Today', quantity: '3' , emoji:'kitchen.png'},
-				{ name: "Sketching", image: "https://picsum.photos/g/200?image=121", category: 'Meat', freshness: 'Fresh for Today', quantity: '3' , emoji:'kitchen.png'},
-				{ name: "Acrillic", image: "https://picsum.photos/g/200?image=133", category: 'Fish', freshness: 'Fresh for Today', quantity: '3' , emoji:'kitchen.png'},
-				{ name: "Pencil", image: "https://picsum.photos/g/200?image=134", category: 'Fruits', freshness: 'Fresh for Today', quantity: '3' , emoji:'kitchen.png'},
-				{ name: "Pen", image: "https://picsum.photos/g/200?image=115", category: 'Dairy', freshness: 'Fresh for Today', quantity: '3' , emoji:'kitchen.png'},
-				{ name: "Inking", image: "https://picsum.photos/g/200", category: 'Meat', freshness: 'Fresh for Today', quantity: '3' , emoji:'kitchen.png'},
+				{ name: "Artwork", category: 'Fruits', expiring_in: '5', quantity: '3', emoji:'🍇' },
+				{ name: "Charcoal", category: 'Dairy', expiring_in: '3', quantity: '3' , emoji:'🍇'},
+				{ name: "Sketching", category: 'Meat', expiring_in: '2', quantity: '3' , emoji:'🍇'},
+				{ name: "Acrillic", category: 'Fish', expiring_in: '10', quantity: '3' , emoji:'🍇'},
+				{ name: "Pencil", category: 'Fruits', expiring_in: '2', quantity: '3' , emoji:'🍇'},
+				{ name: "Pen", category: 'Dairy', expiring_in: '0', quantity: '3' , emoji:'🍇'},
+				{ name: "Inking", category: 'Meat', expiring_in: '8', quantity: '3' , emoji:'🍇'},
 			],
 			ingredient_name: '',
 			ingredient_quantity: '',
@@ -164,39 +205,32 @@ export default {
 			ingredient_expiry_date: '',
 			posting_status:'',
 			categories: [
-				{
-				categoryName: "All",
-				imgLink: "kitchen.png",
-				},
-				{
-				categoryName: "Due Soon",
-				imgLink: "duesoon.png",
-				},
-				{
-				categoryName: "Past Due",
-				imgLink: "pastdue.png",
-				},
-				{
-				categoryName: "Fruits",
-				imgLink: "fruits.png",
-				},
-				{
-				categoryName: "Vegetables",
-				imgLink: "vegetable.png",
-				},
-				{
-				categoryName: "Dairy",
-				imgLink: "milk.png",
-				},
-				{
-				categoryName: "Meat",
-				
-				imgLink: "barbecue.png",
-				},
+				{categoryName: "All", imgLink: "kitchen.png"},
+				{categoryName: "Due Soon", imgLink: "duesoon.png"},
+				{categoryName: "Past Due", imgLink: "pastdue.png"},
+				{categoryName: "Dairy", imgLink: "milk.png"},
+				{categoryName: "Fish", imgLink: "fish.png"},
+				{categoryName: "Fruits", imgLink: "fruits.png"},
+				{categoryName: "Meats", imgLink: "barbecue.png"},
 			],
+			emojis:[
+				{dairy:['🧀','🧈','🥛']},
+				{fish:['🐟','🐠','🦀','🦞','🦐','🦑','🦪']},
+				{fruit:['🍇','🍈','🍉','🍊','🍋','🍌','🍍','🍎','🥭','🍏','🍐','🍑','🍒','🍓','🫐','🥝','🍅','🫒','🥥','🥑','🍆','🥔','🥕','🌽','🌶','🫑','🥒','🥬','🥦','🧄','🧅','🍠']},
+				{meat:['🍖','🍗','🥩','🥓','🐄','🐖','🐓','🐏']},
+			], 
 			
 		}
 	}, 
+	computed:{
+		sortedArray(){
+			let sortedItems = this.items;
+			sortedItems = sortedItems.sort((a,b) =>{
+				return a.expiring_in - b.expiring_in;
+			})
+			return sortedItems; 
+		}
+	},
 	methods: {
 		imageUrl(img) {
 			return require(`@/assets/img/${img}`);
@@ -229,7 +263,8 @@ export default {
 		},
 		post(){
 			this.posting_status = 'Active';
-		}
+		},
+
 	}
 }
 
@@ -255,7 +290,6 @@ export default {
 	cursor: pointer;
 	transition: all 0.35s;
 	justify-content: center;
-	
 }
 
 .filter.active {
@@ -319,13 +353,13 @@ export default {
 	/* 	box-shadow:0px -3px 3px #484848a6; */
 	z-index: 2;
 	font-size: 16pt;
-	top: -40px;
+	top: -50px;
 	left: 140px;
 }
 
 
 .project body {
-	z-index: 3
+	z-index: 3; 
 }
 
 .project {
@@ -372,7 +406,7 @@ export default {
   width: 300px;
   padding: 15px;
   background-color: white;
-  height: 600px; 
+  height: 700px; 
   overflow-y: auto;
 }
 
@@ -395,6 +429,10 @@ export default {
 /* Add some hover effects to buttons */
 .form-container .btn:hover, .open-button:hover {
   opacity: 1;
+}
+
+.emoji{
+	font-size: 2.5rem;
 }
 
 </style>
