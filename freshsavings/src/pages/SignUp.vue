@@ -11,7 +11,6 @@ const from = ref('default'); // Define the from variable here
 const handleSignUp = async () => {
   errorMessage.value = '';
 
-  // Extract the values of the email and password fields from the form
   const email = document.querySelector("input[type='text']").value;
   const password = document.querySelector("input[type='password']").value;
 
@@ -22,21 +21,35 @@ const handleSignUp = async () => {
     });
 
     if (response.status === 200) {
-      const user = response.data.user;
-      console.log('User created successfully. Response data:', response.data);
+      const user = response.data;
+	console.log("Session data from the response:", response.data.session);
+
+      if (user) {
+        localStorage.setItem('user', JSON.stringify(user));
+        console.log('User data stored in local storage:', user);
+      } else {
+        console.error('No user data found in the response.');
+      }
+
+      const sessionData = response.data.session;
+      if (sessionData) {
+        localStorage.setItem('session', JSON.stringify(sessionData));
+        console.log('Session data stored in local storage:', sessionData);
+      } else {
+        console.error('No session data found in the response.');
+      }
+
       router.push('/inventory-tracker');
     }
   } catch (error) {
-    // Handle signup error
     console.error('Signup error:', error.response ? error.response.data.errors : error);
     if (error.response && error.response.data.errors) {
-      errorMessage.value = '';
-      error.response.data.errors.forEach(error => {
-        errorMessage.value += error + " ";
-      });
+      errorMessage.value = error.response.data.errors.join(' ');
     }
   }
 };
+
+
 
 const errorMessage = ref('');
 
@@ -107,7 +120,7 @@ inputs.forEach(input => {
     <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
     <div class="link-and-button">
       <!-- <a href="#" class="forgot-password">Forgot Password?</a> -->
-      <input type="submit" class="btn" value="Sign Up" style="margin-top: 10%;" @click="handleSignUp">
+      <input type="submit" class="btn" value="Sign Up" style="margin-top: 10%;">
     </div>
   </div>
 		<!-- <a href="#">Forgot Password?</a>

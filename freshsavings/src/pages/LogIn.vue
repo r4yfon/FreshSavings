@@ -23,11 +23,14 @@ const handleLogin = async () => {
 
 		if (response && response.data && response.status === 200) {
 			const user = response.data.user;
+			const sessionData = response.data.session;
 
       // Store user data in the local storage
     localStorage.setItem('user', JSON.stringify(user));
 	console.log("User data stored in local storage:", user);
 	console.log("Session data from the response:", response.data.session);
+	localStorage.setItem('session', JSON.stringify(sessionData));
+        console.log('Session data stored in local storage:', sessionData);
 		router.push('/inventory-tracker');
     } else {
       errorMessage.value = 'Invalid credentials';

@@ -246,19 +246,16 @@ app.post("/signup", (req, res) => {
   const { email, password } = req.body;
   const errors = [];
 
-  // Check if the email and password are provided in the request
   if (!email) {
     errors.push("Email is required.");
   }
 
-  // Check if the password is provided in the request
   if (!password) {
     errors.push("Password is required.");
   } else if (password.length < 8) {
     errors.push("Password should be at least 8 characters long.");
   }
 
-  // Check if the email format is valid
   const emailFormat = /^\S+@\S+\.\S+$/;
   if (email && !email.match(emailFormat)) {
     errors.push("Invalid email format.");
@@ -269,7 +266,6 @@ app.post("/signup", (req, res) => {
     return res.status(400).json({ errors });
   }
 
-  // Hardcode the postal code and retrieve its latitude and longitude
   connection.query(
     "SELECT * FROM freshsavings.Account WHERE email = ?",
     [email],
@@ -288,6 +284,10 @@ app.post("/signup", (req, res) => {
       const latitude = "1.38765766146094";
       const longitude = "103.76208975109";
 
+      // Store user data in the session
+      req.session.user = { email, password, postalCode, latitude, longitude };
+      console.log("User data stored in session:", req.session.user);
+
       // Insert the new user record with the postal code and its coordinates
       connection.query(
         "INSERT INTO freshsavings.Account (email, password, postalcode, a_lat, a_long) VALUES (?, ?, ?, ?, ?)",
@@ -297,12 +297,16 @@ app.post("/signup", (req, res) => {
             console.error("Error inserting into the database:", err);
             return res.status(500).json({ error: "Internal Server Error" });
           }
-          res.json({ message: "User created successfully." });
+
+          res.json({ message: "User created successfully.", user: req.session.user, session: req.session });
         }
       );
     }
   );
 });
+
+
+
 
 app.get("/get-distance", async (req, res) => {
   try {
