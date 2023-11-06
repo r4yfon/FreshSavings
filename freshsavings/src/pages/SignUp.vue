@@ -257,6 +257,10 @@ body{
 	margin: 20px 0;
 }
 
+img {
+	object-fit: cover !important;
+}
+
 a{
 	display: block;
 	text-align: right;
