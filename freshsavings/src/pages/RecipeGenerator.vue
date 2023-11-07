@@ -67,10 +67,10 @@ import axios from "axios";
                     <span v-if="ingredientNameQty[item[0]]">{{ ingredientNameQty[item[0]].qty }}</span>
                     <span v-else>0</span>
                     <button class="btn btn-outline-success" @click="modifyIngredientNameQty(item, 'add')">+</button>
-                    <button type="button" class="btn d-flex btn-outline-danger px-0 py-0"
+                    <button type="button" class="btn d-flex btn-link text-danger p-0"
                       :class="{ 'disabled': Object.keys(ingredientNameQty).indexOf(item[0]) === -1 }"
                       @click="modifyIngredientNameQty(item, 'reset')">
-                      <Icon icon="solar:trash-bin-2-outline" width="24" height="24" />
+                      <Icon icon="solar:trash-bin-trash-outline" width="24" height="24" />
                     </button>
                   </div>
                 </div>
