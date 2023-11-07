@@ -105,6 +105,23 @@ app.get("/get_all_products", (req, res) => {
     }
   );
 });
+
+app.get("/get_product_description/:pid", (req, res) => {
+  // Query the database to retrieve ingredients
+  const pid = parseInt(req.params.pid);
+  connection.query(
+    "select pid, Ingredient.iid, Ingredient.iname, selling_price, selling_quantity, fname, lname, said, Account.postalcode, Account.a_lat, Account.a_long, posting_status, icat, Ingredient.price, image from freshsavings.Posting, freshsavings.Account, freshsavings.Ingredient where Posting.said = Account.aid and Posting.iid = Ingredient.iid and Posting.pid = ?",
+    [pid],
+    (err, results) => {
+      if (err) {
+        console.error("Error querying the database:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+        return;
+      }
+      res.json(results);
+    }
+  );
+});
 app.get("/get_address/:aid", (req, res) => {
   // Query the database to retrieve ingredients
   const aid = parseInt(req.params.aid);
@@ -121,23 +138,6 @@ app.get("/get_address/:aid", (req, res) => {
     }
   );
 });
-app.get("/get_product_description/:pid", (req, res) => {
-  // Query the database to retrieve ingredients
-  const pid = parseInt(req.params.pid);
-  connection.query(
-    "select Posting.pid, Ingredient.iid, expiring_in, selling_price, selling_quantity, fname, lname, address, iname, icat, price, image from freshsavings.Posting, freshsavings.Account, freshsavings.Ingredient where Posting.said = Account.aid and Posting.iid = Ingredient.iid and Posting.pid = ?",
-    [pid],
-    (err, results) => {
-      if (err) {
-        console.error("Error querying the database:", err);
-        res.status(500).json({ error: "Internal Server Error" });
-        return;
-      }
-      res.json(results);
-    }
-  );
-});
-
 app.get("/get_all_ingredients_categories", (req, res) => {
   // Query the database to retrieve ingredients
   connection.query(
@@ -239,7 +239,16 @@ app.get("/test_session", (req, res) => {
   }
 });
 
-
+app.get("/get-session-data", (req, res) => {
+  if (req.session && req.session.user) {
+    // Include the session data in the response
+    console.log("hello")
+    console.log(req.session)
+    res.json({ session: req.session });
+  } else {
+    res.status(401).json({ message: "User is not logged in" });
+  }
+});
 
 
 app.post("/signup", (req, res) => {
