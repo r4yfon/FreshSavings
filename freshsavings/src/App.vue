@@ -8,19 +8,22 @@
     ]" />
   </main>
   <!-- <Footer v-if="!this.$route.meta.hideNavBar" /> -->
+  <FooterComponent />
 </template>
 
 <script>
 import HomePage from "./pages/HomePage.vue";
 import "bootstrap";
 import NavBar from "./components/NavBar.vue";
+import FooterComponent from "./components/Footer.vue";
 
 
 export default {
   name: "App",
   components: {
     HomePage,
-    NavBar
+    NavBar,
+    FooterComponent
   },
   data() {
     return {
@@ -50,7 +53,7 @@ export default {
 
 }
 
-img {
-  object-fit: contain;
-}
+/* img {
+  object-fit: cover;
+} */
 </style>

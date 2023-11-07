@@ -1,29 +1,74 @@
+<script setup>
+import { Icon } from "@iconify/vue";
+</script>
+
+
 <template>
-  <section class="container-fluid row row-cols-1 row-cols-md-2">
-    <div class="col col-md-6 pt-3 d-flex flex-column justify-content-center align-items-center">
-      <h1 class="mb-4">
-        Save food, save money, save the planet.
-      </h1>
-      <p class="w-75">Food waste poses a dire threat to our environment and global resources. Join us to take an active
-        stance against
-        food waste today.</p>
-      <a href="#" role="button" class="btn btn-outline-success align-self-center">
-        How our app can help
-      </a>
-    </div>
-    <div class="col col-md-6 overflow-x-hidden">
-      <img src="https://massel.com/wp-content/uploads/2017/05/Sustainable-foods-1000x612.jpg" class="h-100" />
+  <!-- <section class="container-fluid">
+      <div class="row row-cols-1 row-cols-md-2 h-100">
+        <div class="col col-md-6 pt-3 d-flex flex-column justify-content-center align-items-center glass-effect">
+          <h1 class="mb-4">
+            Save food, save money, save the planet.
+          </h1>
+          <p class="w-75">Food waste poses a dire threat to our environment and global resources. Join us to take an active
+            stance against
+            food waste today.</p>
+          <a href="#" role="button" class="btn btn-outline-success align-self-center">
+            How our app can help
+          </a>
+        </div>
+        <div class="col col-md-6 px-0">
+          <video autoplay muted loop: poster="require('@/assets/img/food_packing.webp')" class="object-fit-fill h-100">
+            <source: src="require('@/assets/img/food_packing.webm')" type="video/webm">
+          </video>
+          <img src="https://massel.com/wp-content/uploads/2017/05/Sustainable-foods-1000x612.jpg" class="h-100" />
+        </div>
+      </div>
+    </section> -->
+  <section class="container-fluid position-relative overflow-hidden px-0">
+    <video autoplay muted loop: poster="require('@/assets/img/food_packing.webp')" class="object-fit-cover h-100 w-100">
+      <source :src="require('@/assets/img/food_packing.webm')" type="video/webm" />
+    </video>
+
+
+    <div class="position-absolute top-50 glass-container col-12 col-md-7 col-xl-5">
+      <div class="p-3 d-flex flex-column justify-content-center align-items-center glass-effect">
+        <h1 class="mb-4">
+          Save food, save money, save the planet.
+        </h1>
+        <p class="w-75">Food waste poses a dire threat to our environment and global resources. Join us to take an active
+          stance against
+          food waste today.</p>
+        <a href="#how_we_help" role="button" class="btn btn-outline-light align-self-center">
+          How our app can help
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <g transform="rotate(-90 12 12)">
+              <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                <path stroke-dasharray="14" stroke-dashoffset="14" d="M19 12H5.5">
+                  <animate fill="freeze" repeatCount="indefinite" attributeName="stroke-dashoffset" dur="1s"
+                    values="14;0" />
+                </path>
+                <path stroke-dasharray="8" stroke-dashoffset="8" d="M5 12L10 17M5 12L10 7">
+                  <animate fill="freeze" repeatCount="indefinite" attributeName="stroke-dashoffset" begin="1s" dur="1s"
+                    values="8;0" />
+                </path>
+              </g>
+            </g>
+          </svg> </a>
+      </div>
+      <div class="col col-md-6 px-0">
+      </div>
     </div>
   </section>
 
-  <section class="container-fluid row pt-3 my-3 mx-auto">
+  <section class="container row pt-3 my-3 mx-auto" id="how_we_help">
     <h1 class="mb-3">The ideal assistant in your kitchen</h1>
 
-    <div class="row row-cols-1 row-cols-md-3 g-2">
+    <div class="row row-cols-1 row-cols-md-3 g-">
       <div class="col" v-for="feature in featuresAndDescriptions" :key="feature">
-        <div class="card p-3">
-          <img :src="require(`@/assets/img/${feature.imageUrl}`)" class=" card-img-top" height="48" />
-          <div class="card-body">
+        <div class="card p-3 h-100">
+          <img :src="require(`@/assets/img/${feature.imageUrl}`)" class="object-fit-contain card-img-top" height="56" />
+          <div class="card-body d-flex flex-column align-items-center justify-content-between">
             <h5 class="card-title">{{ feature.feature }}</h5>
             <p class="card-text w-md-75">{{ feature.description }}</p>
             <a href="#" class="btn btn-success" role="button">
@@ -34,7 +79,7 @@
       </div>
     </div>
   </section>
-</template>
+</template >
 
 <script>
 export default {
@@ -53,7 +98,7 @@ export default {
         },
         {
           feature: "Marketplace",
-          description: "Gone are the days where you have to discard expired food items. Our app notifies you when you have items that are expiring, and lets you sell to others who can use them.",
+          description: "Gone are the days where you have to discard expired food items. Our app notifies you when you have items that are expiring, and lets you sell them to others who can use them.",
           imageUrl: "trade.webp"
         }
       ]
@@ -65,6 +110,10 @@ export default {
 <!-- Save food, save money, save the planet. -->
 
 <style scoped>
+h1 {
+  text-wrap: balance;
+}
+
 a {
   width: fit-content;
 }
@@ -72,5 +121,47 @@ a {
 section:first-of-type {
   height: calc(100vh - 74px);
 
+  /* div>div {
+    height: 50%;
+
+    @media (min-width: 768px) {
+      height: 100%;
+    }
+  } */
+
+}
+
+.glass-container {
+  left: 0;
+  height: 50%;
+
+  @media (min-width: 768px) {
+    left: 100px;
+    height: auto;
+
+  }
+}
+
+.glass-effect {
+  height: 100%;
+  border-radius: 16px 16px 0 0;
+
+
+
+  /* From https://css.glass */
+  background: rgba(80, 142, 70, 0.4);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(7.2px);
+  -webkit-backdrop-filter: blur(7.2px);
+  border: 1px solid rgba(80, 142, 70, 0.32);
+
+
+  &>:not(a) {
+    color: white;
+  }
+
+  @media (min-width: 768px) {
+    border-radius: 16px;
+  }
 }
 </style>

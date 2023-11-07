@@ -1,7 +1,9 @@
 <template>
     <nav class="navbar navbar-expand-lg p-2 fixed-top" id="navbarContent">
-        <a class="navbar-brand" href="#">
-            <img src="../assets/img/logo.jpg" alt="Your Logo" width="250" height="45" class="d-inline-block align-text-top">
+        <!-- topleft logo -->
+        <a class="navbar-brand" href="/">
+            <img src="../assets/img/logo.webp" alt="Your Logo" width="250" height="45"
+                class="d-inline-block align-text-top">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,9 +12,9 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav text-center" style="width: 100%;">
-                <li class="nav-item align-self-center">
+                <!-- <li class="nav-item align-self-center">
                     <a class="nav-link" href="home">Home</a>
-                </li>
+                </li> -->
                 <li class="nav-item align-self-center">
                     <a class="nav-link" href="recipe-generator">Recipe Generator</a>
                 </li>
@@ -74,13 +76,13 @@ export default {
     },
     methods: {
         checkLoginStatus() {
-        const sessionData = JSON.parse(localStorage.getItem('session'));
-        if (sessionData && sessionData.user && sessionData.user.email) {
-            // Assuming that the presence of the user's email indicates a valid login session
-            this.isLoggedIn = true;
-        } else {
-            this.isLoggedIn = false;
-        }
+            const sessionData = JSON.parse(localStorage.getItem('session'));
+            if (sessionData && sessionData.user && sessionData.user.email) {
+                // Assuming that the presence of the user's email indicates a valid login session
+                this.isLoggedIn = true;
+            } else {
+                this.isLoggedIn = false;
+            }
         }
     }
 };

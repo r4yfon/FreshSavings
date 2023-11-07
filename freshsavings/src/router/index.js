@@ -10,13 +10,13 @@ import PageNotFound from "../pages/PageNotFound.vue";
 import HomePage from "../pages/HomePage.vue";
 
 const routes = [
+  // {
+  //   path: "/",
+  //   name: "App",
+  //   component: App,
+  // },
   {
     path: "/",
-    name: "App",
-    component: App,
-  },
-  {
-    path: "/home",
     name: "HomePage",
     component: HomePage,
   },
@@ -29,7 +29,7 @@ const routes = [
     path: "/checkout",
     name: "CheckOut",
     component: CheckOut,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
   },
   {
     path: "/login",
@@ -56,7 +56,7 @@ const routes = [
     path: "/inventory-tracker",
     name: "InventoryTracker",
     component: InventoryTracker,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
   },
   {
     path: "/404-page-not-found",
@@ -73,20 +73,21 @@ const router = createRouter({
   routes,
 });
 
-
 router.beforeEach((to, from, next) => {
-  const sessionData = JSON.parse(localStorage.getItem('session'));
+  const sessionData = JSON.parse(localStorage.getItem("session"));
   console.log("Session Data:", sessionData);
 
-  if (to.matched.some(record => record.meta.requiresAuth) && !sessionData) {
-    console.log("Requires authentication but user not logged in. Redirecting to login.");
-    next('/login');
+  if (to.matched.some((record) => record.meta.requiresAuth) && !sessionData) {
+    console.log(
+      "Requires authentication but user not logged in. Redirecting to login."
+    );
+    next("/login");
   } else {
-    console.log("User is authenticated or the route does not require authentication. Proceeding to the next step.");
+    console.log(
+      "User is authenticated or the route does not require authentication. Proceeding to the next step."
+    );
     next();
   }
 });
-
-
 
 export default router;
