@@ -133,7 +133,7 @@ import axios from "axios";
                     <p v-if="recipe.totalNumberOfIngredientsNeeded - recipe.numberOfIngredientsOwned > 0"
                       class="text-danger">You are missing {{
                         Object.values(recipe.missingIngredients)[0].qty }}x {{
-    Object.values(recipe.missingIngredients)[0].iname }}<span
+    Object.values(recipe.missingIngredients)[0].iname.toLowerCase() }}<span
                         v-if="recipe.totalNumberOfIngredientsNeeded - recipe.numberOfIngredientsOwned > 1"> and {{
                           recipe.totalNumberOfIngredientsNeeded - recipe.numberOfIngredientsOwned - 1 }} more
                         ingredients</span>.
