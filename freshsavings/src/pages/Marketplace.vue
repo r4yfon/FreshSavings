@@ -13,7 +13,7 @@ import thirdImage from '@/assets/img/quality.png'
 
 
 <template><div v-if="loaded">
-{{this.animated()}}
+
   <section style="padding-top: 20px;">
     <div class="container-fluid ">
       <div class="row">
@@ -106,7 +106,7 @@ import thirdImage from '@/assets/img/quality.png'
         <li><button class="dropdown-item" @click="changeDistance(500)">Within 500 metres</button></li>
         <li><button class="dropdown-item" @click="changeDistance(1000)">Within 1000 metres</button></li>
         <li><button class="dropdown-item" @click="changeDistance(1500)">Within 1500 metres</button></li>
-        <li><button class="dropdown-item" @click="changeDistance(2000)">Within 2000 metres</button></li>
+        <li><button class="dropdown-item" @click="changeDistance(5000)">Within 5000 metres</button></li>
       </ul>
     </div>
 
@@ -287,6 +287,7 @@ export default {
     await this.GetAllPostings();
     await this.AddinDistance();
     this.loaded = true;
+    this.animated()
   } catch (error) {
     console.error('Error loading data:', error);
   }
