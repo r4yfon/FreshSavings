@@ -11,7 +11,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav text-center" style="width: 100%;">
                 <li class="nav-item align-self-center">
-                    <a class="nav-link" href="#">Home</a>
+                    <a class="nav-link" href="home">Home</a>
                 </li>
                 <li class="nav-item align-self-center">
                     <a class="nav-link" href="recipe-generator">Recipe Generator</a>
