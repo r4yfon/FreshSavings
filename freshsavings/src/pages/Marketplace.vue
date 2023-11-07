@@ -9,10 +9,13 @@ import firstImage from '@/assets/img/sale.png'
 import secondImage from '@/assets/img/trusted.png'
 import thirdImage from '@/assets/img/quality.png'
 
+
 </script>
 
 
-<template><div v-if="loaded">
+<template>
+<div v-if="loaded">
+
 
   <section style="padding-top: 20px;">
     <div class="container-fluid ">
@@ -225,6 +228,7 @@ export default {
       distancestorage: [],
       distanceAway: 2000,
       Buyer: 1,
+      sessionData: null,
       buyerLat: undefined,
       buyerLong: undefined,
       buyerPostalCode: undefined,
@@ -265,15 +269,17 @@ export default {
   components: {
     Icon,
   },
+  
   created() {
+    
     this.GetBuyerAddress();
     this.GetPostingsAndAddDistance()
+    
     
     
   },
   mounted() {
     // Call the API endpoint when the component is mounted
-    
     
   },
   computed: {
@@ -283,7 +289,8 @@ export default {
     
     async GetPostingsAndAddDistance() {
   try {
-    this.GetBuyerAddress();
+    this.getSession()
+    await this.GetBuyerAddress();
     await this.GetAllPostings();
     await this.AddinDistance();
     this.loaded = true;
@@ -315,7 +322,7 @@ async GetDistanceAPI(Lat, Lng) {
     let dist = parseFloat(distance[0]);
 
     let awayfrom = parseFloat(dist * 1000);
-    console.log("Hello from API. awayFrom is ", awayfrom);
+    
     return awayfrom;
   } catch (error) {
     console.error('Fetch error:', error);
@@ -327,7 +334,7 @@ async GetAllPostings() {
     const response = await axios.get("http://localhost:3000/get_all_products");
     console.log(response.data);
     this.groceryItems = response.data;
-    console.log("grocery data is here! yay!")
+    
      // Wait for AddinDistance to complete
   } catch (error) {
     console.log(error);
@@ -358,8 +365,7 @@ async AddinDistance() {
   // Assign it to this.distanceStorage
   this.distanceStorage = distancesWithIds;
 
-  console.log("Hello from addindistance");
-  console.log(this.distanceStorage);
+  
 },
 
     GetBuyerAddress() {
@@ -406,9 +412,8 @@ async AddinDistance() {
 
     },
     distancetrack(pid){
-      console.log("Hello from distancetrack")
-      console.log(this.distanceStorage[pid])
-      console.log(this.distanceStorage[pid] <= this.distanceAway)
+      
+      
       return parseInt(this.distanceStorage[pid]) <= this.distanceAway;
     },
     searched(productName) {
@@ -426,6 +431,19 @@ async AddinDistance() {
         }
       }
     },
+    getSession() {
+    axios
+        .get("http://localhost:3000/get-session-data")
+        .then((response) => {
+
+          console.log(response.data)
+
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+},
+    
     animated() {
       this.$nextTick(() => {
         const firstCard = this.$refs.firstcard;
