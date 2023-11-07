@@ -1,14 +1,13 @@
 <template>
   <NavBar v-if="!this.$route.meta.hideNavBar" />
-  <main>
-    <RouterView :class="[this.$route.meta.hideNavBar ? 'bg-white' : 'bg-light']" :style="[
-      this.$route.meta.hideNavBar
-        ? { 'min-height': `100vh` }
-        : { 'min-height': `calc(100vh - 75px)` },
-    ]" />
+  <main :class="[this.$route.meta.hideNavBar ? 'bg-white' : 'bg-light']" :style="[
+    { 'min-height': $route.meta.hideNavBar ? '100vh' : 'calc(100vh - 75px)' },
+    { 'margin-top': $route.meta.hideNavBar ? '0' : '75px' }
+  ]">
+    <RouterView />
   </main>
   <!-- <Footer v-if="!this.$route.meta.hideNavBar" /> -->
-  <FooterComponent />
+  <FooterComponent v-if="!this.$route.meta.hideNavBar" />
 </template>
 
 <script>
@@ -47,7 +46,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 75px;
+  /* margin-top: 75px; */
   background-color: #FAF9F6;
 
 
