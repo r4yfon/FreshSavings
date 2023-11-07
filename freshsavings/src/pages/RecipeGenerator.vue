@@ -49,11 +49,32 @@ import axios from "axios";
           </div>
           <div :id="'collapse' + index" class="accordion-collapse collapse">
             <div class="accordion-body d-flex flex-wrap">
-              <button type="button" class="btn btn-outline-success m-1 p-2 text-capitalize"
-                :class="{ 'active': ingredientsIidList.indexOf(item[1]) !== -1 }" v-for="item in category.items"
-                :key="item" @click="modifyIngredientsIidList(item[1])" data-bs-toggle="button">
-                {{ item[0] }}
-              </button>
+              <div class="dropdown" v-for="item in category.items" :key="item">
+
+                <button type="button" class="btn btn-outline-success m-1 p-2 text-capitalize"
+                  :class="{ 'active': Object.keys(ingredientNameQty).indexOf(item[0]) !== -1 }" data-bs-toggle="dropdown"
+                  data-bs-auto-close="outside">
+                  {{ item[0] }}
+                  <span v-if="Object.keys(ingredientNameQty).indexOf(item[0]) !== -1"
+                    class="badge rounded-pill text-bg-warning">{{
+                      ingredientNameQty[item[0]].qty }}</span>
+                </button>
+                <div class="dropdown-menu p-2">
+                  <p class="text-center">Select quantity</p>
+                  <!-- </div> -->
+                  <div class="d-flex justify-content-between align-items-center">
+                    <button class="btn btn-outline-success" @click="modifyIngredientNameQty(item, 'minus')">-</button>
+                    <span v-if="ingredientNameQty[item[0]]">{{ ingredientNameQty[item[0]].qty }}</span>
+                    <span v-else>0</span>
+                    <button class="btn btn-outline-success" @click="modifyIngredientNameQty(item, 'add')">+</button>
+                    <button type="button" class="btn d-flex btn-outline-danger px-0 py-0"
+                      :class="{ 'disabled': Object.keys(ingredientNameQty).indexOf(item[0]) === -1 }"
+                      @click="modifyIngredientNameQty(item, 'reset')">
+                      <Icon icon="solar:trash-bin-2-outline" width="24" height="24" />
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -82,7 +103,7 @@ import axios from "axios";
       <div v-else>
         <!-- button to clear selected inventory items -->
         <div class="d-flex justify-content-end mb-3">
-          <button class="btn btn-danger" @click="clearIngredientsIidLisit()">Unselect all items</button>
+          <button class="btn btn-danger" @click="clearIngredientNameQty()">Unselect all items</button>
         </div>
         <h3 class="text-start mb-3">You can make the below {{ Object.keys(suitableRecipes).length }} {{
           Object.keys(suitableRecipes).length
@@ -90,8 +111,6 @@ import axios from "axios";
           'recipes' :
           'recipe' }}:
         </h3>
-        <!-- <div class="row" style="color: black">{{ ingredientsIidList }}</div> -->
-        <!-- <div class="row">{{ suitableRecipes }}</div> -->
         <div class="row m-1 recipe-container row-cols-sm-2 row-cols-xxl-3">
           <div class="recipe p-1" v-for="recipe of suitableRecipes" :key="recipe">
             <a class="card text-decoration-none recipe-card px-0 h-100 justify-content-center" role="button"
@@ -99,22 +118,26 @@ import axios from "axios";
               <div class="row g-0 align-items-center">
                 <div
                   class=" ps-1 col-md-4 text-center bg-white d-flex align-items-center justify-content-center recipe-img">
-                  <img :src="imageUrl(recipe.img)" class="img-fluid object-fit-contain recipe-img h-75" />
+                  <img :src="imageUrl(recipe.rimg)" class="img-fluid object-fit-contain recipe-img h-75" />
                 </div>
                 <div class="col-md-8">
                   <div class="card-body">
                     <p class="card-title fw-semibold">{{ recipe.name }}</p>
-                    <p class="card-text" v-if="recipe.missingIngredients.length !== 0">You have {{
-                      recipe.ingredientsNeeded.length - recipe.missingIngredients.length }} /
-                      {{ recipe.ingredientsNeeded.length }} ingredients.</p>
-                    <p v-else>
-                      You have all the required {{ recipe.ingredientsNeeded.length }} ingredients to make thie dish.
+                    <p class="card-text"
+                      v-if="recipe.totalNumberOfIngredientsNeeded - recipe.numberOfIngredientsOwned > 0">You have {{
+                        recipe.numberOfIngredientsOwned }} /
+                      {{ recipe.totalNumberOfIngredientsNeeded }} ingredients.</p>
+                    <p v-else class="text-success">
+                      You have all the required {{ recipe.totalNumberOfIngredientsNeeded }} ingredients to make thie dish.
                     </p>
-                    <p v-if="recipe.missingIngredients.length > 0 && recipe.missingIngredients.length < 2"
+                    <p v-if="recipe.totalNumberOfIngredientsNeeded - recipe.numberOfIngredientsOwned > 0"
                       class="text-danger">You are missing {{
-                        recipe.missingIngredients[0][1] }}
+                        Object.values(recipe.missingIngredients)[0].qty }}x {{
+    Object.values(recipe.missingIngredients)[0].iname }}<span
+                        v-if="recipe.totalNumberOfIngredientsNeeded - recipe.numberOfIngredientsOwned > 1"> and {{
+                          recipe.totalNumberOfIngredientsNeeded - recipe.numberOfIngredientsOwned - 1 }} more
+                        ingredients</span>.
                     </p>
-                    <!-- <p>{{ recipe.ingredientsNeeded }}</p> -->
                   </div>
                 </div>
               </div>
@@ -123,15 +146,6 @@ import axios from "axios";
         </div>
       </div>
     </div>
-
-    <!-- <div style="color: black"> -->
-    <!-- {{ compiledRecipeIngredients }} -->
-    <!-- </div> -->
-    <!-- <div class="bg-black"> -->
-    <!-- </div> -->
-    <!-- <div style="color: black"> -->
-    <!-- {{ suitableRecipes }} -->
-    <!-- </div> -->
   </section>
 </template>
 
@@ -141,13 +155,11 @@ export default {
   data() {
     return {
       isLoggedIn: false,
-      ingredientsIidList: [],
+      ingredientNameQty: {},
       accordionCategories: {},
       compiledRecipeIngredients: {},
       suitableRecipes: {},
-      searchedIngredient: '',
       showLoadingIndicator: false,
-      alreadyPopuatedFromInventory: false,
     };
   },
   components: {
@@ -157,7 +169,7 @@ export default {
     this.isLoggedIn = this.checkLoggedIn();
     this.getIngredientsCategories();
     this.compileRecipeIngredients();
-    // console.log(this.compiledRecipeIngredients);
+    this.filterRecipes();
   },
   methods: {
     checkLoggedIn() {
@@ -190,28 +202,36 @@ export default {
             }
           }
           this.accordionCategories = newCategories;
-          // console.log(this.accordionCategories);
         });
     },
 
-    // add selected sub-items' iid into this.ingredientsList
-    modifyIngredientsIidList(item) {
-      // console.log("this item's iid: ", item);
-      const itemIndex = this.ingredientsIidList.indexOf(item);
-      if (itemIndex !== -1) {
-        this.ingredientsIidList.splice(itemIndex, 1);
-      } else {
-        this.ingredientsIidList.push(item);
+    modifyIngredientNameQty(item, operator, number = 1) {
+      if (Object.keys(this.ingredientNameQty).indexOf(item[0]) === -1) {
+        this.ingredientNameQty[item[0]] = {
+          name: item[0],
+          iid: item[1],
+          qty: 0,
+        }
       }
-      // console.log(this.ingredientsIidList);
+      if (operator == 'add') {
+        this.ingredientNameQty[item[0]].qty += number;
+      } else if (operator == 'minus' && this.ingredientNameQty[item[0]].qty > 0) {
+        this.ingredientNameQty[item[0]].qty -= number;
+      } else if (operator == 'reset') {
+        this.ingredientNameQty[item[0]].qty = 0;
+      };
+
+      this.cleanUpIngredientNameQty();
       this.filterRecipes();
     },
 
-    // this is only used by the "Select Inventory items" button
-    selectIngredient(item) {
-      const itemIndex = this.ingredientsIidList.indexOf(item);
-      if (itemIndex === -1) {
-        this.ingredientsIidList.push(item);
+    // only here to prevent ingredientNameQty from having items that are of quantity 0
+    cleanUpIngredientNameQty() {
+      for (let ingredient in this.ingredientNameQty) {
+        // // console.log(ingredient.qty);
+        if (this.ingredientNameQty[ingredient].qty === 0) {
+          delete this.ingredientNameQty[ingredient];
+        }
       }
     },
 
@@ -221,78 +241,83 @@ export default {
         .get("http://localhost:3000/get_all_recipes")
         .then((response) => {
           for (let item of response.data) {
-            if (item.rname in this.compiledRecipeIngredients) {
-              this.compiledRecipeIngredients[item.rname].ingredients.push([item.iid, item.iname]);
-            } else {
+            if (!(item.rname in this.compiledRecipeIngredients)) {
               this.compiledRecipeIngredients[item.rname] = {
                 rname: item.rname,
-                rid: item.rid,
-                ingredients: [[item.iid, item.iname]],
                 rimg: item.rimg,
-                qty: item.qty
+                ingredients: {},
               };
+            }
+            this.compiledRecipeIngredients[item.rname].ingredients[item.iname] = {
+              iname: item.iname,
+              iid: item.iid,
+              qty: item.qty,
             }
           }
         });
-      // console.log(this.compiledRecipeIngredients);
     },
 
     // based on user's ingredient selection, filter and display the recipes they can follow
     filterRecipes() {
-      // this.suitableRecipes = [];
-      this.suitableRecipes = {};
-      for (let item in this.compiledRecipeIngredients) {
-        console.log(item);
-        // let numOfIngredientsOwned = 0;
-        let ingredientsOwned = [];
-        let missingIngredients = [];
-        // console.log(this.ingredientsIidList);
-        // this returns the ingredient and the iid as an array
-        for (let ingredient of this.compiledRecipeIngredients[item].ingredients) {
-          console.log(ingredient);
-          if ((this.ingredientsIidList.indexOf(ingredient[0]) !== -1) && (this.ingredientsIidList.length > 0)) {
+      let goodRecipes = {};
+      let compiledRecipes = this.compiledRecipeIngredients;
+      let numberOfMissingIngredients = 0;
 
-            this.suitableRecipes[item] = {};
-            // numOfIngredientsOwned++;
-            ingredientsOwned.push(ingredient);
-            // this was for implementing suitableRecipes as an array, but i changed that to an Object to count the number of missing ingredients the user needs
-            // console.log(ingredient);
-            // console.log("a suitable recipe is: ", this.compiledRecipeIngredients[item].rname, ingredient);
-            // this.suitableRecipes.push([
-            //   this.compiledRecipeIngredients[item].rname,
-            //   this.compiledRecipeIngredients[item].rimg,
-            //   this.compiledRecipeIngredients[item].ingredients,
-            //   this.compiledRecipeIngredients[item].ingredients.length,
-            // ])
-            // console.log(item, numOfIngredientsOwned);
-            // if (!(item in Object.keys(this.suitableRecipes))) {
-            // }
-            missingIngredients = (this.compiledRecipeIngredients[item].ingredients).filter((ingredient) => !ingredientsOwned.includes(ingredient));
-            // missingIngredients = ingredientsOwned.filter((ingredient) => { !(this.compiledRecipeIngredients[item].ingredients).includes(ingredient) });
-            this.suitableRecipes[item] = {
-              name: item,
-              img: this.compiledRecipeIngredients[item].rimg,
-              // numOfIngredientsNeeded: this.compiledRecipeIngredients[item].ingredients.length,
-              ingredientsNeeded: this.compiledRecipeIngredients[item].ingredients,
-              // numOfIngredientsOwned: numOfIngredientsOwned,
-              missingIngredients: missingIngredients
+      for (let recipe in compiledRecipes) {
+        const ingredients = compiledRecipes[recipe].ingredients;
+
+        // if the particular recipe has similar ingredients as the ingredients selected by the user, then the recipe goes into goodRecipes
+        if (Object.keys(ingredients).filter((ingredient) => Object.keys(this.ingredientNameQty).includes(ingredient)).length > 0) {
+          goodRecipes[recipe] = {
+            name: recipe,
+            ingredientsNeeded: ingredients,
+            missingIngredients: {},
+            rimg: compiledRecipes[recipe].rimg,
+            totalNumberOfIngredientsNeeded: 0,
+            numberOfIngredientsOwned: 0,
+            numberOfMissingIngredients: 0,
+          };
+        };
+
+        for (let recipe in goodRecipes) {
+          let totalNumberOfIngredientsNeeded = 0;
+          let numberOfIngredientsOwned = 0;
+          for (let ingredient in goodRecipes[recipe].ingredientsNeeded) {
+            totalNumberOfIngredientsNeeded += goodRecipes[recipe].ingredientsNeeded[ingredient].qty;
+            if (Object.keys(this.ingredientNameQty).indexOf(ingredient) !== -1) {
+              let numberOfSpecificIngredient = Math.min(this.ingredientNameQty[ingredient].qty, goodRecipes[recipe].ingredientsNeeded[ingredient].qty);
+              numberOfIngredientsOwned += numberOfSpecificIngredient;
+              let howManyMore = goodRecipes[recipe].ingredientsNeeded[ingredient].qty - this.ingredientNameQty[ingredient].qty;
+              if (howManyMore > 0) {
+                goodRecipes[recipe].missingIngredients[ingredient] = {
+                  iname: ingredient,
+                  iid: goodRecipes[recipe].ingredientsNeeded[ingredient].iid,
+                  qty: howManyMore
+                }
+              }
+            } else {
+              goodRecipes[recipe].missingIngredients[ingredient] = {
+                iname: ingredient,
+                iid: goodRecipes[recipe].ingredientsNeeded[ingredient].iid,
+                qty: goodRecipes[recipe].ingredientsNeeded[ingredient].qty
+              }
             }
           }
-
+          goodRecipes[recipe].totalNumberOfIngredientsNeeded = totalNumberOfIngredientsNeeded;
+          goodRecipes[recipe].numberOfIngredientsOwned = numberOfIngredientsOwned;
         }
-        // console.log(this.suitableRecipes);
-        // this.suitableRecipes[item].numOfIngredientsOwned = numOfIngredientsOwned;
       }
-
+      this.suitableRecipes = goodRecipes;
     },
 
     imageUrl(name) {
       return require(`@/assets/img/${name}`);
-      // console.log(name);
     },
 
     // upon clicking "Populate Inventory" button, selects items in user's inventory and filters suitable recipes
     selectInventoryItems() {
+      this.ingredientNameQty = {};
+      // show loading indicator
       if (!(this.alreadyPopuatedFromInventory)) {
         this.showLoadingIndicator = true;
         const duration = 1500;
@@ -300,29 +325,18 @@ export default {
           this.showLoadingIndicator = false;
           axios.get("http://localhost:3000/get_user_inventory_items").then((response) => {
             for (let ingredient of response.data) {
-              // this.ingredientsIidList.push(ingredient.iid);
-              this.selectIngredient(ingredient.iid);
-              this.filterRecipes();
+              let ingredientInameIid = [ingredient.iname, ingredient.iid];
+              let ingredientQty = ingredient.qty;
+              this.modifyIngredientNameQty(ingredientInameIid, 'add', ingredientQty);
             };
           });
         }, duration);
       }
-      // else {
-      //   axios.get("http://localhost:3000/get_user_inventory_items").then((response) => {
-      //     for (let ingredient of response.data) {
-      //       // this.ingredientsIidList.push(ingredient.iid);
-      //       this.modifyIngredientsIidList(ingredient.iid);
-      //       this.filterRecipes();
-      //     };
-      //   });
-      // }
-      // this.alreadyPopuatedFromInventory = !this.alreadyPopuatedFromInventory;
     },
 
-
-
-    clearIngredientsIidLisit() {
-      this.ingredientsIidList = [];
+    // for "Unselect all ingredients" button
+    clearIngredientNameQty() {
+      this.ingredientNameQty = {};
       this.filterRecipes();
     }
   },
@@ -339,10 +353,6 @@ export default {
   height: fit-content;
 }
 
-/* h3 {
-  text-align: left;
-} */
-
 input {
   margin-bottom: 0;
 }
@@ -358,19 +368,6 @@ input {
 p {
   margin-bottom: 8px;
 }
-
-/* .recipe-container {
-  display: grid;
-  grid-template-columns: repeat(6, auto);
-  gap: 8px;
-}
-
-.recipe {
-  grid-column-start: span 2;
-  height: 100%;
-
-
-} */
 </style>
 
 <!-- TODO: should be automatically populated based on user's inventory -->

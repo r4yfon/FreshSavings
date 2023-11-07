@@ -8,35 +8,35 @@ const port = 3000;
 const mysql = require("mysql2");
 const bodyParser = require("body-parser");
 const axios = require("axios");
-const session = require('express-session');
+const session = require("express-session");
 axios.defaults.withCredentials = true;
 
-const url = 'http://localhost:3000/test_session';
+const url = "http://localhost:3000/test_session";
 
 // Make a GET request to the test_session endpoint
-axios.get(url, {
-  withCredentials: true, // Ensure that credentials are included in the request
-})
-  .then(response => {
-    console.log('Response data:', response.data);
+axios
+  .get(url, {
+    withCredentials: true, // Ensure that credentials are included in the request
   })
-  .catch(error => {
-    console.error('Error occurred:', error);
+  .then((response) => {
+    console.log("Response data:", response.data);
+  })
+  .catch((error) => {
+    console.error("Error occurred:", error);
   });
 
-
-app.use(cors({
-  credentials: true,
-  origin: true,
-  exposedHeaders: 'Set-Cookie',
-}));
-
+app.use(
+  cors({
+    credentials: true,
+    origin: true,
+    exposedHeaders: "Set-Cookie",
+  })
+);
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Expose-Headers', 'Set-Cookie');
+  res.header("Access-Control-Expose-Headers", "Set-Cookie");
   next();
 });
-
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -61,7 +61,7 @@ app.use(
     cookie: {
       secure: true,
       httpOnly: true,
-      sameSite: 'none',
+      sameSite: "none",
     },
   })
 );
@@ -172,7 +172,7 @@ app.get("/get_user_inventory_items", (req, res) => {
   const userid = 1; // aid of currently logged-in user
   connection.query(
     // TODO: make query more specific after finalising the data to fetch
-    "SELECT * FROM freshsavings.AccountInventory WHERE aid = ?",
+    "SELECT a.aid, a.iid, i.iname, a.qty FROM freshsavings.AccountInventory a, freshsavings.Ingredient i WHERE a.iid = i.iid AND a.aid = ?",
     [userid],
     (err, results) => {
       if (err) {
@@ -186,7 +186,6 @@ app.get("/get_user_inventory_items", (req, res) => {
 
 app.all("/login", (req, res) => {
   if (req.method === "GET") {
-
     res.send("Login form");
   } else if (req.method === "POST") {
     const { email, password } = req.body;
@@ -210,8 +209,11 @@ app.all("/login", (req, res) => {
             // Login successful, store the user data in the session
             req.session.user = results[0];
             console.log("User data stored in session:", req.session.user); // Log the user data in the session
-            res.json({ message: "Login successful", user: results[0], session: req.session });
-
+            res.json({
+              message: "Login successful",
+              user: results[0],
+              session: req.session,
+            });
           } else {
             // Incorrect password, return an error message
             res.status(401).json({ error: "Invalid credentials" });
@@ -228,7 +230,6 @@ app.all("/login", (req, res) => {
   }
 });
 
-
 app.get("/test_session", (req, res) => {
   if (req.session && req.session.user) {
     const user = req.session.user;
@@ -238,9 +239,6 @@ app.get("/test_session", (req, res) => {
     res.status(401).json({ message: "User is not logged in" });
   }
 });
-
-
-
 
 app.post("/signup", (req, res) => {
   const { email, password } = req.body;
@@ -298,15 +296,16 @@ app.post("/signup", (req, res) => {
             return res.status(500).json({ error: "Internal Server Error" });
           }
 
-          res.json({ message: "User created successfully.", user: req.session.user, session: req.session });
+          res.json({
+            message: "User created successfully.",
+            user: req.session.user,
+            session: req.session,
+          });
         }
       );
     }
   );
 });
-
-
-
 
 app.get("/get-distance", async (req, res) => {
   try {

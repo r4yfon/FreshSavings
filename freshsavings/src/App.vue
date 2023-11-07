@@ -48,11 +48,14 @@ export default {
   color: #2c3e50;
   /* margin-top: 75px; */
   background-color: #FAF9F6;
-
-
 }
 
-/* img {
-  object-fit: cover;
-} */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
 </style>

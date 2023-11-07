@@ -4,29 +4,8 @@ import { Icon } from "@iconify/vue";
 
 
 <template>
-  <!-- <section class="container-fluid">
-      <div class="row row-cols-1 row-cols-md-2 h-100">
-        <div class="col col-md-6 pt-3 d-flex flex-column justify-content-center align-items-center glass-effect">
-          <h1 class="mb-4">
-            Save food, save money, save the planet.
-          </h1>
-          <p class="w-75">Food waste poses a dire threat to our environment and global resources. Join us to take an active
-            stance against
-            food waste today.</p>
-          <a href="#" role="button" class="btn btn-outline-success align-self-center">
-            How our app can help
-          </a>
-        </div>
-        <div class="col col-md-6 px-0">
-          <video autoplay muted loop: poster="require('@/assets/img/food_packing.webp')" class="object-fit-fill h-100">
-            <source: src="require('@/assets/img/food_packing.webm')" type="video/webm">
-          </video>
-          <img src="https://massel.com/wp-content/uploads/2017/05/Sustainable-foods-1000x612.jpg" class="h-100" />
-        </div>
-      </div>
-    </section> -->
   <section class="container-fluid position-relative overflow-hidden px-0">
-    <video autoplay muted loop: poster="require('@/assets/img/food_packing.webp')" class="object-fit-cover h-100 w-100">
+    <video autoplay muted loop :poster="require('@/assets/img/food_packing.webp')" class="object-fit-cover h-100 w-100">
       <source :src="require('@/assets/img/food_packing.webm')" type="video/webm" />
     </video>
 
@@ -36,7 +15,8 @@ import { Icon } from "@iconify/vue";
         <h1 class="mb-4">
           Save food, save money, save the planet.
         </h1>
-        <p class="w-75">Food waste poses a dire threat to our environment and global resources. Join us to take an active
+        <p class="w-75" style="text-wrap: balance;">Food waste poses a dire threat to our environment and global
+          resources. Join us to take an active
           stance against
           food waste today.</p>
         <a href="#how_we_help" role="button" class="btn btn-outline-light align-self-center">
@@ -63,14 +43,13 @@ import { Icon } from "@iconify/vue";
 
   <section class="container row pt-3 my-3 mx-auto" id="how_we_help">
     <h1 class="mb-3">The ideal assistant in your kitchen</h1>
-
-    <div class="row row-cols-1 row-cols-md-3 g-">
+    <div class="row row-cols-1 row-cols-md-3 g-2">
       <div class="col" v-for="feature in featuresAndDescriptions" :key="feature">
-        <div class="card p-3 h-100">
+        <div class="card p-3 h-100 card-shadow">
           <img :src="require(`@/assets/img/${feature.imageUrl}`)" class="object-fit-contain card-img-top" height="56" />
           <div class="card-body d-flex flex-column align-items-center justify-content-between">
             <h5 class="card-title">{{ feature.feature }}</h5>
-            <p class="card-text w-md-75">{{ feature.description }}</p>
+            <p class="card-text w-md-75" style="text-wrap: balance;">{{ feature.description }}</p>
             <a href="#" class="btn btn-success" role="button">
               Learn more
             </a>
@@ -79,7 +58,7 @@ import { Icon } from "@iconify/vue";
       </div>
     </div>
   </section>
-</template >
+</template>
 
 <script>
 export default {
@@ -88,17 +67,17 @@ export default {
       featuresAndDescriptions: [
         {
           feature: "Inventory Tracker",
-          description: "Keep track of your groceries and canned food with our Inventory Tracker and ensure that you never have to discard expired food items anymore.",
+          description: "Keeping track of your groceries with our Inventory Tracker means that you never have to discard expired food items anymore.",
           imageUrl: "shelf.webp"
         },
         {
           feature: "Recipe Generator",
-          description: "Need inspiration on what to cook for the day? Simply select the ingredients you have or want to use and our Recipe Generator will do the rest for you.",
+          description: "Need inspiration on what to cook? Simply select the ingredients you want to use and our Recipe Generator will do the rest for you.",
           imageUrl: "recipe_book.webp"
         },
         {
           feature: "Marketplace",
-          description: "Gone are the days where you have to discard expired food items. Our app notifies you when you have items that are expiring, and lets you sell them to others who can use them.",
+          description: "Gone are the days of discarding expired food items. Be notified of items are expiring, and let us help you sell them should you want to.",
           imageUrl: "trade.webp"
         }
       ]
@@ -110,25 +89,16 @@ export default {
 <!-- Save food, save money, save the planet. -->
 
 <style scoped>
-h1 {
-  text-wrap: balance;
-}
-
 a {
   width: fit-content;
 }
 
 section:first-of-type {
   height: calc(100vh - 74px);
+}
 
-  /* div>div {
-    height: 50%;
-
-    @media (min-width: 768px) {
-      height: 100%;
-    }
-  } */
-
+.card-shadow {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 .glass-container {
