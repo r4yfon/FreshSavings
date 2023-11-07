@@ -12,7 +12,8 @@ import thirdImage from '@/assets/img/quality.png'
 </script>
 
 
-<template>
+<template><div v-if="loaded">
+{{this.animated()}}
   <section style="padding-top: 20px;">
     <div class="container-fluid ">
       <div class="row">
@@ -124,7 +125,8 @@ import thirdImage from '@/assets/img/quality.png'
     <div class="container px-4 px-lg-5 mt-5">
       <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-start">
         <template v-for="product of groceryItems" :key="product.iname">
-          <div v-if="product.posting_status == 'Active' && cart.indexOf(product.pid) == -1 && searched(product.iname)"
+          
+          <div v-if="product.posting_status == 'Active' && cart.indexOf(product.pid) == -1 && searched(product.iname) && distancetrack(product.pid)"
             class="col mb-5">
             <!--<div v-if="product.posting_status == 'Active' && cart.indexOf(product.pid) == -1 && searched(product.iname) && checkDistance(product.a_lat, product.a_long)" class="col mb-5">-->
 
@@ -153,7 +155,7 @@ import thirdImage from '@/assets/img/quality.png'
           </div>
 
           <div
-            v-else-if="product.posting_status == 'Active' && cart.indexOf(product.pid) != -1 && searched(product.iname)"
+            v-else-if="product.posting_status == 'Active' && cart.indexOf(product.pid) != -1 && searched(product.iname) && distancetrack(product.pid)"
             class="col mb-5">
             <div class="card h-100 carted">
               <!-- Product image -->
@@ -173,7 +175,7 @@ import thirdImage from '@/assets/img/quality.png'
               <!-- Product actions -->
               <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                 <div class="text-center">
-                  <button class="btn btn-outline-dark mt-auto" @click="Remove(product.pid)">Remove from cart</button>
+                  <button class="btn btn-outline-dark mt-auto" @click="Remove(product.pid) && distancetrack(product.pid)">Remove from cart</button>
 
                 </div>
               </div>
@@ -210,14 +212,17 @@ import thirdImage from '@/assets/img/quality.png'
       </div>
     </div>
   </div>
-</template>
+
+</div></template>
 
 <script>
 export default {
   name: "marketplaceHome",
   data() {
     return {
+      loaded: false,
       awayfrom: undefined,
+      distancestorage: [],
       distanceAway: 2000,
       Buyer: 1,
       buyerLat: undefined,
@@ -261,59 +266,101 @@ export default {
     Icon,
   },
   created() {
-
+    this.GetBuyerAddress();
+    this.GetPostingsAndAddDistance()
+    
+    
   },
   mounted() {
     // Call the API endpoint when the component is mounted
-    this.GetBuyerAddress();
-    this.GetAllPostings();
-    this.animated();
+    
+    
   },
   computed: {
-
+    
   },
   methods: {
-    async GetDistanceAPI(destLat, destLng) {
-      try {
-        const response = await axios.get('http://localhost:3000/get-distance', {
-          params: {
-            originLat: this.buyerLat, // Replace with your origin's latitude
-            originLng: this.buyerLong, // Replace with your origin's longitude
-            destLat: destLat,    // Replace with your destination's latitude
-            destLng: destLng,   // Replace with your destination's longitude
-            units: 'metric',
-            apiKey: '',
-          },
-        });
+    
+    async GetPostingsAndAddDistance() {
+  try {
+    this.GetBuyerAddress();
+    await this.GetAllPostings();
+    await this.AddinDistance();
+    this.loaded = true;
+  } catch (error) {
+    console.error('Error loading data:', error);
+  }
+},
+    
+async GetDistanceAPI(Lat, Lng) {
+  const originLat = this.buyerLat; // Replace with your origin's latitude
+  const originLng = this.buyerLong; // Replace with your origin's longitude
+  const destLat = Lat; // Replace with your destination's latitude
+  const destLng = Lng; // Replace with your destination's longitude
+  const units = 'metric'; // Units of measurement
+  const apiKey = 'AIzaSyBaK6fapQE5NMhxj0ZZdKcQsn9o1xhZf3M'; // Your API key
 
-        let data = response.data.rows[0].elements[0].distance.text;
-        let distance = data.split(" ");
-        let dist = parseFloat(distance[0]); // Convert to a number
-        let awayfrom = parseFloat(dist * 1000);
-        console.log(awayfrom)
+  const url = `http://localhost:3000/get-distance?originLat=${originLat}&originLng=${originLng}&destLat=${destLat}&destLng=${destLng}&units=${units}&apiKey=${apiKey}`;
 
-        if (awayfrom <= this.distanceAway) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
 
-          return true;
-        } else {
-          return false;
-        }
-      } catch (error) {
-        console.error(error);
-        return false; // Handle the error and return false
-      }
-    },
-    async checkDistance(destLat, destLng) {
-      try {
+    let dat = data.rows[0].elements[0].distance.text;
+    let distance = dat.split(" ");
+    let dist = parseFloat(distance[0]);
 
-        const result = await this.GetDistanceAPI(destLat, destLng);
+    let awayfrom = parseFloat(dist * 1000);
+    console.log("Hello from API. awayFrom is ", awayfrom);
+    return awayfrom;
+  } catch (error) {
+    console.error('Fetch error:', error);
+    return 0; // Handle the error and return a default value
+  }
+},
+async GetAllPostings() {
+  try {
+    const response = await axios.get("http://localhost:3000/get_all_products");
+    console.log(response.data);
+    this.groceryItems = response.data;
+    console.log("grocery data is here! yay!")
+     // Wait for AddinDistance to complete
+  } catch (error) {
+    console.log(error);
+  }
+},
+async AddinDistance() {
+  const distancePromises = {};
 
-        return true;
-      } catch (error) {
-        console.error("An error occurred:", error);
-        return false;
-      }
-    },
+  for (let product of this.groceryItems) {
+    distancePromises[product.pid] = this.GetDistanceAPI(product.a_lat, product.a_long);
+  }
+
+  const resolvedDistances = await Promise.all(
+    Object.values(distancePromises).map((promise) => {
+      return promise.then((value) => {
+        return value; // This is the resolved distance value
+      });
+    })
+  );
+
+  // Now you have an array of resolved distances
+  // Create an object to associate distances with product IDs
+  const distancesWithIds = {};
+  Object.keys(distancePromises).forEach((productId, index) => {
+    distancesWithIds[productId] = resolvedDistances[index];
+  });
+
+  // Assign it to this.distanceStorage
+  this.distanceStorage = distancesWithIds;
+
+  console.log("Hello from addindistance");
+  console.log(this.distanceStorage);
+},
+
     GetBuyerAddress() {
 
       axios
@@ -329,17 +376,7 @@ export default {
           console.log(error);
         });
     },
-    GetAllPostings() {
-      axios
-        .get("http://localhost:3000/get_all_products")
-        .then((response) => {
-          console.log(response.data);
-          this.groceryItems = response.data;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
+    
     imageUrl(img) {
       return require(`@/assets/img/${img}`);
     },
@@ -367,6 +404,12 @@ export default {
 
 
     },
+    distancetrack(pid){
+      console.log("Hello from distancetrack")
+      console.log(this.distanceStorage[pid])
+      console.log(this.distanceStorage[pid] <= this.distanceAway)
+      return parseInt(this.distanceStorage[pid]) <= this.distanceAway;
+    },
     searched(productName) {
       productName = productName.toLowerCase();
       this.searching = this.searching.toLowerCase();
@@ -387,7 +430,6 @@ export default {
         const firstCard = this.$refs.firstcard;
         const secondCard = this.$refs.secondcard;
         const thirdCard = this.$refs.thirdcard;
-
         const firstCardRect = firstCard.getBoundingClientRect();
         const secondCardRect = secondCard.getBoundingClientRect();
 
