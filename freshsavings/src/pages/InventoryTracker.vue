@@ -106,32 +106,27 @@ import { Icon } from "@iconify/vue";
 		</div>
 
 		<!-- Product card  -->
+
 		<div class="row justify-content-start container">
 			<div class="projects" name="projects">
-				<TransitionGroup class="project" :key="item.name" v-for="(item, idx) in sortedArray" >
+				<template v-for="(item, idx) in sortedArray" :key="item.name">
+				<TransitionGroup class="project" v-if="currentFilter === item.category || currentFilter === 'All'">
 					<div class="col-lg-3 col-md-6 col-sm-12" style="padding-bottom: 3px;">
-						<div class="card" v-if="currentFilter === item.category || currentFilter === 'All'">
-							<div :style="item.expiring_in <= 2 ? 'border: solid red; border-radius: 8px' : ''">
-								<div :style="'🧀🧈🍋🍌🥔🌽'.includes(item.emoji)==true ? 'background: linear-gradient(to top left, #FBF8CC, 70%, white);':''">
-								<div :style="'🐟🐠'.includes(item.emoji)==true ? 'background: linear-gradient(to top left, #8EECF5, 70%, white);':''">
-								<div :style="' 🦑🍇🫐🍆'.includes(item.emoji)==true ? 'background: linear-gradient(to top left, #CFBAF0, 70%, white);':''">
-								<div :style="'🍈🍏🍐🥝🫒🥑🫑🥒🥬🥦'.includes(item.emoji)==true ? 'background: linear-gradient(to top left, #b9fbc0, 70%, white);':''">
-								<div :style="'🦀🦞🦐🍉🍎🍒🍓🍅'.includes(item.emoji)==true ? 'background: linear-gradient(to top left, #ffb5a7 , 70%, white);':''">
-								<div :style="'🍍🍗🍑🥕'.includes(item.emoji)==true ? 'background: linear-gradient(to top left, #fec89a, 70%, white);':''">
-								<div :style="'🥥🍖🥓🐓'.includes(item.emoji)==true ? 'background: linear-gradient(to top left, #e2cfc4, 70%, white);':''">
-								<div :style="'🐖'.includes(item.emoji)==true ? 'background: linear-gradient(to top left, #ffacc5, 70%, white);':''">
-							
+					<div :style="item.expiring_in <= 2 ? 'border: solid red; border-radius: 8px; ': ''">
+						<div class="card" :style="computedItemStyle(item.emoji)">
+							<div >
 								<div class="card-title d-flex justify-content-between" :id="'card-title-' + idx">
 									<div class="emoji">
 										{{ item.emoji }}
 									</div>
-									<div id="counter" style="display:inline-flex">
-										<button type="button" class="btn btn-outline-secondary" style="border: none" @click="item.quantity++">+</button>
+									<div id="counter" style="display:inline-flex; ">
+										<button type="button" class="btn btn-outline-secondary" style="border: none" v-if="item.quantity>0" @click="item.quantity--">-</button>
+										<button type="button" class="btn btn-outline-secondary" style="border: none" v-else>-</button>
 										<span class="circle">
 											x {{ item.quantity }}	
 										</span>
-										<button type="button" class="btn btn-outline-secondary" style="border: none" v-if="item.quantity>0" @click="item.quantity--">-</button>
-										<button type="button" class="btn btn-outline-secondary" style="border: none" v-else>-</button>
+										<button type="button" class="btn btn-outline-secondary" style="border: none" @click="item.quantity++">+</button>
+										
 									</div>
 								</div>
 								
@@ -188,19 +183,12 @@ import { Icon } from "@iconify/vue";
 										</div>
 									</div>
 								</div>
-									</div> 
-									</div>
-									</div>
-									</div>
-									</div>
-									</div>
-									</div>
-									</div>
+								</div>
 								</div>
 							</div>
 						</div>
 					</TransitionGroup>
-
+				</template>
 			</div>
 		</div>
 
@@ -215,7 +203,8 @@ export default {
 		return {
 			isLoggedIn: true,
 			currentFilter: 'All',
-			user: 'John',
+			user: '',
+
 			items: [
 				{ name: "Grape", category: 'Fruits', expiring_in: '5', quantity: '3', emoji: '🍇' },
 				{ name: "Milk", category: 'Dairy', expiring_in: '3', quantity: '3', emoji: '🥛' },
@@ -225,6 +214,7 @@ export default {
 				{ name: "Cheese", category: 'Dairy', expiring_in: '0', quantity: '3', emoji: '🧀' },
 				{ name: "Beef", category: 'Meat', expiring_in: '8', quantity: '3', emoji: '🐄' },
 			],
+
 			ingredient_name: '',
 			ingredient_quantity: '',
 			ingredient_purchase_date: '',
@@ -232,6 +222,8 @@ export default {
 			posting_status: '',
 			selectedCategory: 'Fruits',
 			selectedEmoji: '',
+
+			// hard-coded
 			categories: [
 				{ categoryName: "All", imgLink: "kitchen.png" },
 				// { categoryName: "Due Soon", imgLink: "duesoon.png" },
@@ -275,6 +267,7 @@ export default {
 					return [];
 			}
 		},
+		
 	},
 	methods: {
 		checkLoginStatus() {
@@ -336,6 +329,31 @@ export default {
 		removePost(idx) {
 			this.items.splice(idx, idx);
 		},
+		computedItemStyle(obj){
+			let style = {
+				'border-radius': '8px',
+			};
+
+			if ('🧀🧈🍋🍌🥔🌽'.includes(obj)) {
+				style.background = 'linear-gradient(to top left, #FBF8CC 70%, white)';
+			} else if ('🐟🐠'.includes(obj)) {
+				style.background = 'linear-gradient(to top left, #8EECF5 70%, white)';
+			} else if ('🦑🍇🫐🍆'.includes(obj)) {
+				style.background = 'linear-gradient(to top left, #CFBAF0 70%, white)';
+			} else if ('🍈🍏🍐🥝🫒🥑🫑🥒🥬🥦'.includes(obj)) {
+				style.background = 'linear-gradient(to top left, #b9fbc0 70%, white)';
+			} else if ('🦀🦞🦐🍉🍎🍒🍓🍅'.includes(obj)){
+				style.background ='linear-gradient(to top left, #ffb5a7 , 70%, white)';
+			} else if ('🍍🍗🍑🥕'.includes(obj)){
+				style.background = 'linear-gradient(to top left, #fec89a, 70%, white)';
+			} else if ('🥥🍖🥓🐓'.includes(obj)){
+				style.background = 'linear-gradient(to top left, #e2cfc4, 70%, white)';
+			}else if ('🐖'.includes(obj)){
+				style.background = 'linear-gradient(to top left, #ffacc5, 70%, white)';
+			}
+			console.log(style)			
+			return style;		
+		}
 	}
 }
 
@@ -397,6 +415,8 @@ export default {
 
 .card{
 	max-width:260px;
+	border-radius: 8px;
+	
 }
 
 .card-body {
@@ -423,7 +443,8 @@ export default {
 	justify-content: center;
 	align-items: center;
 	display: inline-flex;
-	background-color: lightgrey;
+	background: rgba(255, 255, 255, 0.8);
+  	backdrop-filter: saturate(180%) blur(10px);
 	/* 	box-shadow:0px -3px 3px #484848a6; */
 	z-index: 2;
 	font-size: 18pt;
@@ -507,6 +528,7 @@ export default {
 
 .emoji {
 	font-size: 2.5rem;
+	text-shadow: 0 -0.5rem 1rem #faf5f5, 0 0.5rem 1rem #999;
 }
 
 #radios label {
