@@ -2,7 +2,6 @@
 import { Icon } from "@iconify/vue";
 </script>
 
-
 <template>
   <section class="container-fluid position-relative overflow-hidden px-0">
     <video autoplay muted loop :poster="require('@/assets/img/food_packing.webp')" class="object-fit-cover h-100 w-100">
@@ -41,10 +40,25 @@ import { Icon } from "@iconify/vue";
     </div>
   </section>
 
-  <section class="container row pt-3 my-3 mx-auto" id="how_we_help">
-    <h1 class="mb-3">The ideal assistant in your kitchen</h1>
-    <div class="row row-cols-1 row-cols-md-3 g-2">
-      <div class="col" v-for="feature in featuresAndDescriptions" :key="feature">
+  <section class="container-fluid bg-custom" id="how_we_help">
+    <div class="container row py-5 mx-auto">
+      <h1 class="mb-3">The ideal assistant in your kitchen</h1>
+      <div class="row row-cols-1 row-cols-md-3 g-2">
+        <div class="col" v-for="feature in featuresAndDescriptions" :key="feature">
+          <div class="p-3 h-100 d-flex justify-content-start align-items-start flex-column">
+            <img :src="require(`@/assets/img/${feature.imageUrl}`)" class="object-fit-contain glass2 p-2 mb-3" height="80"
+              width="80" />
+            <h5 class="text-start fw-semibold">{{ feature.feature }}</h5>
+            <p class="text-start w-md-75" style="text-wrap: balance;">{{ feature.description }}</p>
+            <a href="#" class="btn btn-success" role="button">
+              Learn more
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- old card-style design -->
+      <!-- <div class="col" v-for="feature in featuresAndDescriptions" :key="feature">
         <div class="card p-3 h-100 card-shadow">
           <img :src="require(`@/assets/img/${feature.imageUrl}`)" class="object-fit-contain card-img-top" height="56" />
           <div class="card-body d-flex flex-column align-items-center justify-content-between">
@@ -55,8 +69,12 @@ import { Icon } from "@iconify/vue";
             </a>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
+  </section>
+
+  <section class="container-fluid bg-success-subtle vh-100">
+    <div class="parallax"></div>
   </section>
 </template>
 
@@ -133,5 +151,35 @@ section:first-of-type {
   @media (min-width: 768px) {
     border-radius: 16px;
   }
+}
+
+.glass2 {
+  /* From https://css.glass */
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(6.1px);
+  -webkit-backdrop-filter: blur(6.1px);
+  border: 1px solid rgba(255, 255, 255, 0.23);
+}
+
+.bg-custom {
+  background-image: linear-gradient(to right top, #ffffe9, #fbffe4, #f5ffdf, #eeffdb, #e6ffd8, #daffde, #cfffe4, #c5feec, #c1fbf9, #c5f6ff, #d0f0ff, #dceaff);
+}
+
+.parallax {
+
+  /* The image used */
+  background-image: url("../assets/img/loginbg.jpg");
+
+  /* Set a specific height */
+  min-height: 500px;
+
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
 }
 </style>
