@@ -1,5 +1,6 @@
 <script setup>
 import { Icon } from "@iconify/vue";
+
 </script>
 
 <template>
@@ -97,39 +98,69 @@ import { Icon } from "@iconify/vue";
 			</form>
 		</div>
 
+		<!-- If there are no items -->
+		<div class="row container justify-content-center" v-if="items==''" style="padding-top: 10px;">
+			<img :src="imageUrl('inventorytracker.webp')" style="width:50%"/>
+			<h3 class="text-center">Record the food items you have to get started.</h3>
+			<p class="text-center">Let's not make all these food go to waste!</p>
+		</div>
+
 		<!-- Product card  -->
 		<div class="row justify-content-start container">
-			<div class="col" style="column-fill: balance">
-				<div class="projects" name="projects" style="column-gap;2rem">
-					<TransitionGroup class="project" :key="item.name" v-for="(item, idx) in sortedArray" >
+			<div class="projects" name="projects">
+				<TransitionGroup class="project" :key="item.name" v-for="(item, idx) in sortedArray" >
+					<div class="col-lg-3 col-md-6 col-sm-12" style="padding-bottom: 3px;">
 						<div class="card" v-if="currentFilter === item.category || currentFilter === 'All'">
-							<div :style="item.expiring_in <= 2 ? 'border: solid red; border-radius: 8px;' : ''">
-								<div class="card-title" :id="'card-title-' + idx">
-									<span class="emoji">
+							<div :style="item.expiring_in <= 2 ? 'border: solid red; border-radius: 8px' : ''">
+								<div :style="'🧀🧈🍋🍌🥔🌽'.includes(item.emoji)==true ? 'background: linear-gradient(to top left, #FBF8CC, 70%, white);':''">
+								<div :style="'🐟🐠'.includes(item.emoji)==true ? 'background: linear-gradient(to top left, #8EECF5, 70%, white);':''">
+								<div :style="' 🦑🍇🫐🍆'.includes(item.emoji)==true ? 'background: linear-gradient(to top left, #CFBAF0, 70%, white);':''">
+								<div :style="'🍈🍏🍐🥝🫒🥑🫑🥒🥬🥦'.includes(item.emoji)==true ? 'background: linear-gradient(to top left, #b9fbc0, 70%, white);':''">
+								<div :style="'🦀🦞🦐🍉🍎🍒🍓🍅'.includes(item.emoji)==true ? 'background: linear-gradient(to top left, #ffb5a7 , 70%, white);':''">
+								<div :style="'🍍🍗🍑🥕'.includes(item.emoji)==true ? 'background: linear-gradient(to top left, #fec89a, 70%, white);':''">
+								<div :style="'🥥🍖🥓🐓'.includes(item.emoji)==true ? 'background: linear-gradient(to top left, #e2cfc4, 70%, white);':''">
+								<div :style="'🐖'.includes(item.emoji)==true ? 'background: linear-gradient(to top left, #ffacc5, 70%, white);':''">
+							
+								<div class="card-title d-flex justify-content-between" :id="'card-title-' + idx">
+									<div class="emoji">
 										{{ item.emoji }}
-									</span>
-									<span class="circle">
-										x {{ item.quantity }}
-									</span>
+									</div>
+									<div id="counter" style="display:inline-flex">
+										<button type="button" class="btn btn-outline-secondary" style="border: none" @click="item.quantity++">+</button>
+										<span class="circle">
+											x {{ item.quantity }}	
+										</span>
+										<button type="button" class="btn btn-outline-secondary" style="border: none" v-if="item.quantity>0" @click="item.quantity--">-</button>
+										<button type="button" class="btn btn-outline-secondary" style="border: none" v-else>-</button>
+									</div>
 								</div>
+								
 								<div class="card-body">
 									<p>
-										{{ item.name }} <br />
-										Expiring in {{ item.expiring_in }} days
+										<h5><b>{{ item.name }}</b></h5> 
+										Expiring in <b>{{ item.expiring_in }}</b> days
 									</p>
 								</div>
 								
 								<!-- Modal  -->
 								<!-- Button trigger modal -->
-								<button type="button" class="btn btn-outline-danger" @click="removePost(idx)">
-									Remove
-								</button>
-								<button type="button" class="btn btn-outline-success" data-bs-toggle="modal"
-									data-bs-target="#openModal-{{ idx }}">
-									Sell in Marketplace
-								</button>
+								<div class="d-flex">
+									<div class="col-lg-6 col-md-6 col-sm-6">
+										<button type="button" class="btn btn-danger" style="display:block; width:100%" @click="removePost(idx)">
+											Remove
+										</button>
+									</div>
+									<div class="col-lg-6 col-md-6 col-sm-6">
+										<button type="button" class="btn btn-success" style="display:block; width:100%" data-bs-toggle="modal"
+											data-bs-target="#openModal-{{ idx }}">
+											Sell
+										</button>
+
+									</div>
+								</div>
+								
 								<!-- Modal Opened -->
-								<div class="modal fade" :id="'openModal-' + idx" tabindex="-1" aria-labelledby="openModalLabel"
+								<div class="modal fade" :id="'#openModal-' + idx" tabindex="-1" aria-labelledby="openModalLabel"
 									aria-hidden="true">
 									<div class="modal-dialog">
 										<div class="modal-content">
@@ -146,8 +177,7 @@ import { Icon } from "@iconify/vue";
 														placeholder="3.00">
 												</div>
 												<div class="mb-3">
-													<label :for="'FormControlInput2'+idx" class="form-label">Upload photo of
-														product</label>
+													<label :for="'FormControlInput2'+idx" class="form-label">Upload photo of product</label>
 													<input type="file" class="form-control" :id="'FormControlInput2'+idx">
 												</div>
 											</div>
@@ -158,12 +188,19 @@ import { Icon } from "@iconify/vue";
 										</div>
 									</div>
 								</div>
-							</div> 
-							
-
+									</div> 
+									</div>
+									</div>
+									</div>
+									</div>
+									</div>
+									</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</TransitionGroup>
-				</div>
+
 			</div>
 		</div>
 
@@ -174,10 +211,9 @@ import { Icon } from "@iconify/vue";
 <script>
 export default {
 	name: 'InventoryTracker',
-	components: {},
 	data() {
 		return {
-			isLoggedIn: false,
+			isLoggedIn: true,
 			currentFilter: 'All',
 			user: 'John',
 			items: [
@@ -186,7 +222,7 @@ export default {
 				{ name: "Chicken", category: 'Meat', expiring_in: '2', quantity: '3', emoji: '🐓' },
 				{ name: "Fish", category: 'Fish', expiring_in: '10', quantity: '3', emoji: '🐟' },
 				{ name: "Apple", category: 'Fruits', expiring_in: '2', quantity: '3', emoji: '🍎' },
-				{ name: "Cheese", category: 'Dairy', expiring_in: '0', quantity: '3', emoji: '🥛' },
+				{ name: "Cheese", category: 'Dairy', expiring_in: '0', quantity: '3', emoji: '🧀' },
 				{ name: "Beef", category: 'Meat', expiring_in: '8', quantity: '3', emoji: '🐄' },
 			],
 			ingredient_name: '',
@@ -198,8 +234,8 @@ export default {
 			selectedEmoji: '',
 			categories: [
 				{ categoryName: "All", imgLink: "kitchen.png" },
-				{ categoryName: "Due Soon", imgLink: "duesoon.png" },
-				{ categoryName: "Past Due", imgLink: "pastdue.png" },
+				// { categoryName: "Due Soon", imgLink: "duesoon.png" },
+				// { categoryName: "Past Due", imgLink: "pastdue.png" },
 				{ categoryName: "Dairy", imgLink: "milk.png" },
 				{ categoryName: "Fish", imgLink: "fish.png" },
 				{ categoryName: "Fruits", imgLink: "fruits.png" },
@@ -207,8 +243,8 @@ export default {
 			],
 			emojis: [
 				{ dairy: ['🧀', '🧈', '🥛'] },
-				{ fish: ['🐟', '🐠', '🦀', '🦞', '🦐', '🦑', '🦪'] },
-				{ fruit: ['🍇', '🍈', '🍉', '🍊', '🍋', '🍌', '🍍', '🍎', '🥭', '🍏', '🍐', '🍑', '🍒', '🍓', '🫐', '🥝', '🍅', '🫒', '🥥', '🥑', '🍆', '🥔', '🥕', '🌽', '🌶', '🫑', '🥒', '🥬', '🥦', '🧄', '🧅', '🍠'] },
+				{ fish: ['🐟', '🐠', '🦀', '🦞', '🦐', '🦑'] },
+				{ fruit: ['🍇', '🍈', '🍉', '🍊', '🍋', '🍌', '🍍', '🍎', '🥭', '🍏', '🍐', '🍑', '🍒', '🍓', '🫐', '🥝', '🍅', '🫒', '🥥', '🥑', '🍆', '🥔', '🥕', '🌽', '🫑', '🥒', '🥬', '🥦',] },
 				{ meat: ['🍖', '🍗', '🥩', '🥓', '🐄', '🐖', '🐓', '🐏'] },
 			],
 
@@ -299,7 +335,7 @@ export default {
 		},
 		removePost(idx) {
 			this.items.splice(idx, idx);
-		}
+		},
 	}
 }
 
@@ -359,10 +395,13 @@ export default {
 	z-index: -1;
 }
 
+.card{
+	max-width:260px;
+}
 
 .card-body {
 	height: 150px;
-	width: 200px;
+	width: auto;
 	padding-left: 6px;
 	padding-right: 6px;
 }
@@ -380,16 +419,15 @@ export default {
 	height: 50px;
 	border-radius: 50px;
 	/* 	border:1px solid black; */
-	display: flex;
 	/* box-shadow: 0px -4px 3px 0px #494d3257; */
 	justify-content: center;
 	align-items: center;
+	display: inline-flex;
 	background-color: lightgrey;
 	/* 	box-shadow:0px -3px 3px #484848a6; */
 	z-index: 2;
-	font-size: 16pt;
-	top: -50px;
-	left: 200px;
+	font-size: 18pt;
+	top: 5px;
 }
 
 
@@ -404,7 +442,6 @@ export default {
 	border-radius: 3px;
 	width: 180px;
 	height: 200px;
-	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
@@ -541,6 +578,11 @@ input[type="radio"]:checked+span {
 	transform: rotate(-45deg); 
 }
 
+#counter button{
+	background-color: transparent;
+	outline: none;
+	color: black;
+}
 
 
 
