@@ -107,12 +107,12 @@ import { Icon } from "@iconify/vue";
 
 		<!-- Product card  -->
 
-		<div class="row justify-content-start container">
+		<div class="row justify-content-start container-fluid">
 			<div class="projects" name="projects">
 				<template v-for="(item, idx) in sortedArray" :key="item.name">
 				<TransitionGroup class="project" v-if="currentFilter === item.category || currentFilter === 'All'">
-					<div class="col-lg-3 col-md-6 col-sm-12" style="padding-bottom: 3px;">
-					<div :style="item.expiring_in <= 2 ? 'border: solid red; border-radius: 8px; ': ''">
+					<div class="col-lg-4 col-md-6 col-sm-12" style="padding-bottom: 3px;">
+					<div :style="item.expiring_in <= 2 ? 'border: solid red; border-radius: 8px; width:260px': ''">
 						<div class="card" :style="computedItemStyle(item.emoji)">
 							<div >
 								<div class="card-title d-flex justify-content-between" :id="'card-title-' + idx">
@@ -132,7 +132,8 @@ import { Icon } from "@iconify/vue";
 								
 								<div class="card-body">
 									<p>
-										<h5><b>{{ item.name }}</b></h5> 
+										<span class="fw-bold" style="font-size:large">{{ item.name }}</span> 
+										<br/>
 										Expiring in <b>{{ item.expiring_in }}</b> days
 									</p>
 								</div>
@@ -444,7 +445,7 @@ export default {
 	align-items: center;
 	display: inline-flex;
 	background: rgba(255, 255, 255, 0.8);
-  	backdrop-filter: saturate(180%) blur(10px);
+	backdrop-filter: saturate(180%) blur(10px);
 	/* 	box-shadow:0px -3px 3px #484848a6; */
 	z-index: 2;
 	font-size: 18pt;
