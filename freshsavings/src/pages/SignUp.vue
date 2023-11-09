@@ -6,6 +6,7 @@ import { ref, onMounted } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import router from '../router/index.js';
 
+
 const from = ref('default'); // Define the from variable here
 
 const handleSignUp = async () => {

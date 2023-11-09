@@ -1,6 +1,7 @@
 <script setup>
 import { Icon } from "@iconify/vue";
-
+import { useAccountStorage } from '../main.js';
+const accountStorage = useAccountStorage();
 </script>
 
 <template>
@@ -10,7 +11,7 @@ import { Icon } from "@iconify/vue";
 		<div class="container-fluid ">
 			<div class="row">
 				<h1 class="text-center fw-bold mb-4">
-					{{ user }}'s Food Inventory
+					{{ accountStorage.name }}'s Food Inventory
 					<Icon icon="mdi:human-welcome" />
 				</h1>
 			</div>
@@ -322,16 +323,15 @@ export default {
 
 		// ALL SQL STATEMENTS
 		// Retrieves record of all Inventory Items in an Array 
-		getInventoryItems() {
-			axios
-			.get("http://localhost:3000/get_user_inventory_items")
-			.then((response) => {
-			let newItems = [];
-			for (let item of response.data) {
-				const currentDate = new Date();
-				var futureDate = new Date(item.ExpiryDate);
-				var timeDifference = futureDate.getTime() - currentDate.getTime();
-				var daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+		// getInventoryItems() {
+		// 	axios
+		// 	.axios.get("http://localhost:3000/get_user_inventory_items/" + useAccountStorage().aid).then((response) =>
+		// 	let newItems = [];
+		// 	for (let item of response.data) {
+		// 		const currentDate = new Date();
+		// 		var futureDate = new Date(item.ExpiryDate);
+		// 		var timeDifference = futureDate.getTime() - currentDate.getTime();
+		// 		var daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 
 				newItems.push({
 					name: item.iname,

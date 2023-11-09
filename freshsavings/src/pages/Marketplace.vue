@@ -9,11 +9,13 @@ import firstImage from '@/assets/img/sale.png'
 import secondImage from '@/assets/img/trusted.png'
 import thirdImage from '@/assets/img/quality.png'
 
-
+import { useAccountStorage } from '../main.js';
+const accountStorage = useAccountStorage();
 </script>
 
 
 <template>
+  {{ accountStorage.intoCart(cart)}}
 <div v-if="loaded">
 
 
@@ -232,7 +234,7 @@ export default {
       awayfrom: undefined,
       distancestorage: [],
       distanceAway: 2000,
-      Buyer: 1,
+      Buyer: useAccountStorage().aid,
       sessionData: null,
       buyerLat: undefined,
       buyerLong: undefined,
@@ -306,7 +308,7 @@ export default {
     },
     async GetPostingsAndAddDistance() {
   try {
-    this.getSession()
+    
     await this.GetBuyerAddress();
     await this.GetAllPostings();
     await this.AddinDistance();
@@ -323,7 +325,7 @@ async GetDistanceAPI(Lat, Lng) {
   const destLat = Lat; // Replace with your destination's latitude
   const destLng = Lng; // Replace with your destination's longitude
   const units = 'metric'; // Units of measurement
-  const apiKey = 'AIzaSyBaK6fapQE5NMhxj0ZZdKcQsn9o1xhZf3M'; // Your API key
+  const apiKey = process.env.GOOGLEMAPS_API_KEY; // Your API key
 
   const url = `http://localhost:3000/get-distance?originLat=${originLat}&originLng=${originLng}&destLat=${destLat}&destLng=${destLng}&units=${units}&apiKey=${apiKey}`;
 
@@ -416,7 +418,7 @@ async AddinDistance() {
       setTimeout(() => {
         this.showadd = false;
       }, 700); // Hide the toast after 2 seconds
-
+      
     },
     Remove(pid) {
       let a = this.cart.indexOf(pid);
@@ -425,7 +427,7 @@ async AddinDistance() {
       setTimeout(() => {
         this.showdel = false;
       }, 700); // Hide the toast after 2 seconds
-
+      accountStorage.RemoveCart(pid)
 
     },
     distancetrack(pid){
@@ -448,18 +450,6 @@ async AddinDistance() {
         }
       }
     },
-    getSession() {
-    axios
-        .get("http://localhost:3000/get-session-data")
-        .then((response) => {
-
-          console.log(response.data)
-
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-},
     
     animated() {
       this.$nextTick(() => {

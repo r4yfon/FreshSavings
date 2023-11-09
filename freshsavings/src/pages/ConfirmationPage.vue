@@ -1,3 +1,4 @@
+
 <template>
     <div id="app">
       <div class="lottie-container" ref="lottie"></div>
@@ -14,6 +15,7 @@
   <script>
   import lottie from 'lottie-web';
   import animationData from '@/assets/img/confirmation.json'; // Update the path accordingly
+  
   export default {
   mounted() {
     this.animation = lottie.loadAnimation({
@@ -35,7 +37,7 @@
   align-items: center;
   width: 50%; /* Adjust the width as needed */
   height: 50vh; /* Adjust the height as needed */
-  margin: 120px auto 0;
+  margin: 0px auto 0;
   background-color: #FAF9F6;
 
 }
