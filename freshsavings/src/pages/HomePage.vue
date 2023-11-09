@@ -3,7 +3,7 @@ import { Icon } from "@iconify/vue";
 </script>
 
 <template>
-  <section class="container-fluid position-relative overflow-hidden px-0">
+  <section class="container-fluid position-relative overflow-hidden px-0 section-vh">
     <video autoplay muted loop :poster="require('@/assets/img/food_packing.webp')" class="object-fit-cover h-100 w-100">
       <source :src="require('@/assets/img/food_packing.webm')" type="video/webm" />
     </video>
@@ -42,41 +42,28 @@ import { Icon } from "@iconify/vue";
     <div class="container row py-5 mx-auto">
       <h1 class="mb-3">The ideal assistant in your kitchen</h1>
       <div class="row row-cols-1 row-cols-md-3 g-2">
-        <div class="col" v-for="feature in featuresAndDescriptions" :key="feature">
-          <div class="p-3 h-100 d-flex justify-content-start align-items-start flex-column">
-            <img :src="require(`@/assets/img/${feature.imageUrl}`)" class="object-fit-contain glass2 p-2 mb-3" height="80"
-              width="80" />
+        <div class="col mb-4" v-for="feature in featuresAndDescriptions" :key="feature">
+          <div class="p-3 h-100 d-flex justify-content-between align-items-start flex-column">
+            <img :src="require(`@/assets/img/${feature.imageUrl}`)" class="object-fit-contain icon-glass-bg p-2 mb-3"
+              height="80" width="80" />
             <h5 class="text-start fw-semibold">{{ feature.feature }}</h5>
             <p class="text-start w-md-75" style="text-wrap: balance">
               {{ feature.description }}
             </p>
-            <a href="#" class="btn btn-success" role="button"> Learn more </a>
+            <a :href="'#anchor-' + feature.redirect" class="btn btn-success" role="button"> Learn more </a>
           </div>
         </div>
       </div>
-
-      <!--old card-style design-->
-      <!--<div class="col" v-for="feature in featuresAndDescriptions" :key="feature">
-        <div class="card p-3 h-100 card-shadow">
-          <img :src="require(`@/assets/img/${feature.imageUrl}`)" class="object-fit-contain card-img-top" height="56" />
-          <div class="card-body d-flex flex-column align-items-center justify-content-between">
-            <h5 class="card-title">{{ feature.feature }}</h5>
-            <p class="card-text w-md-75" style="text-wrap: balance;">{{ feature.description }}</p>
-            <a href="#" class="btn btn-success" role="button">
-              Learn more
-            </a>
-          </div>
-        </div>
-      </div>-->
     </div>
   </section>
 
+
   <section class="container-fluid p-0">
-    <div class="parallax vh-100 pt-5">
+    <span class="anchor" id="anchor-inventory-tracker"></span>
+    <div class="parallax pb-5">
       <div class="container">
-        <h1>Inventory Tracker</h1>
+        <h1 class="pt-5 text-light fw-bold">Inventory Tracker</h1>
         <div class="row my-3 row-cols-1 py-3">
-          <!-- <div class="col">Add items to keep track</div> -->
           <div class="col">
             <div class="row row-cols-2 row-cols-lg-4 flex-wrap g-3">
               <div class="col order-lg-1" :class="[{ 'order-2': i <= 2 }, { 'order-5': i > 2 }]" v-for="i in 6"
@@ -101,13 +88,29 @@ import { Icon } from "@iconify/vue";
                   </div>
                 </div>
               </div>
+
               <div class="col-12 col-lg-6 order-3">
                 <h1
-                  class="rounded-4 p-5 p-lg-3 d-flex justify-content-center align-items-center fw-bold fs-1 shadow h-100">
+                  class="rounded-4 p-5 p-lg-3 d-flex justify-content-center align-items-center fw-bold fs-1 shadow h-100 glass-card text-light">
                   Add your items and never forget about them...
                 </h1>
               </div>
-              <div class="col order-5" v-for="i in 8" :key="cards[i + 6]" style="aspect-ratio: 1/1">
+
+              <div class="col-12 col-lg-6 order-5">
+                <h1
+                  class="rounded-4 p-5 p-lg-3 d-flex justify-content-center align-items-center fw-bold fs-1 shadow h-100 glass-card text-light">
+                  ...and get notified when they are about to expire </h1>
+
+              </div>
+
+              <div class="col order-5" style="aspect-ratio: 1/1;">
+                <div class="rounded-4 p-3 shadow h-100 d-flex justify-content-center align-items-center"
+                  style="background: linear-gradient(135deg, rgb(99, 99, 104) 0%, rgb(36, 36, 36) 100%);">
+                  <img :src="require('@/assets/img/notification.gif')" class="img-fluid" />
+                </div>
+              </div>
+
+              <div class="col order-5" v-for="i in 5" :key="cards[i + 6]" style="aspect-ratio: 1/1">
                 <div :style="{ background: cards[i + 6].background }"
                   class="rounded-4 p-3 d-flex flex-column justify-content-between shadow h-100">
                   <div class="d-flex justify-content-between align-items-center">
@@ -133,7 +136,6 @@ import { Icon } from "@iconify/vue";
         </div>
       </div>
       <!--<img :src=" require('@/assets/img/notification.gif')" class="img-thumbnail" />-->
-      <div>Get notified when it is expiring</div>
     </div>
 
     <div class="parallax vh-100" style="
@@ -166,18 +168,21 @@ export default {
           description:
             "Keeping track of your groceries with our Inventory Tracker means that you never have to discard expired food items anymore.",
           imageUrl: "shelf.webp",
+          redirect: 'inventory-tracker'
         },
         {
           feature: "Recipe Generator",
           description:
             "Need inspiration on what to cook? Simply select the ingredients you want to use and our Recipe Generator will do the rest for you.",
           imageUrl: "recipe_book.webp",
+          redirect: 'inventory-tracker'
         },
         {
           feature: "Marketplace",
           description:
             "Gone are the days of discarding expired food items. Be notified when items are expiring, and let us help you sell them should you want to.",
           imageUrl: "trade.webp",
+          redirect: 'inventory-tracker'
         },
       ],
       cards: [
@@ -367,8 +372,12 @@ a {
   width: fit-content;
 }
 
-section:first-of-type {
-  height: calc(100vh-74px);
+.anchor {
+  scroll-margin-top: 58px;
+}
+
+.section-vh {
+  height: calc(100vh - 74px) !important;
 }
 
 .card-shadow {
@@ -408,8 +417,17 @@ section:first-of-type {
   }
 }
 
-.glass2 {
+.glass-card {
   /* From https://css.glass */
+  background: rgba(76, 76, 76, 0.4);
+  border-radius: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(6.1px);
+  -webkit-backdrop-filter: blur(6.1px);
+  border: 1px solid rgba(255, 255, 255, 0.23);
+}
+
+.icon-glass-bg {
   background: rgba(255, 255, 255, 0.18);
   border-radius: 12px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -447,7 +465,7 @@ section:first-of-type {
 
 .parallax {
   /* The image used */
-  background-image: url("../assets/img/loginbg.jpg");
+  background-image: url("../assets/img/food_on_table.webp");
 
   /* Set a specific height */
   min-height: 100%;
