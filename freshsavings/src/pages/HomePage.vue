@@ -10,7 +10,7 @@ import { Icon } from "@iconify/vue";
 
 
     <div class="position-absolute top-50 glass-container col-12 col-md-7 col-xl-5">
-      <div class="p-3 d-flex flex-column justify-content-center align-items-center glass-effect">
+      <div class="px-3 py-5 d-flex flex-column justify-content-center align-items-center glass-effect">
         <h1 class="mb-4">
           Save food, save money, save the planet.
         </h1>
@@ -18,9 +18,10 @@ import { Icon } from "@iconify/vue";
           resources. Join us to take an active
           stance against
           food waste today.</p>
-        <a href="#how_we_help" role="button" class="btn btn-outline-light align-self-center">
-          How our app can help
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <a href="/signup" role="button" class="btn btn-outline-light align-self-center">
+          <span class="pe-2">Kickstart your journey now</span>
+          <Icon icon="solar:cup-star-outline" height="24" width="24" />
+          <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
             <g transform="rotate(-90 12 12)">
               <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                 <path stroke-dasharray="14" stroke-dashoffset="14" d="M19 12H5.5">
@@ -33,7 +34,8 @@ import { Icon } from "@iconify/vue";
                 </path>
               </g>
             </g>
-          </svg> </a>
+          </svg> -->
+        </a>
       </div>
       <div class="col col-md-6 px-0">
       </div>
@@ -73,8 +75,25 @@ import { Icon } from "@iconify/vue";
     </div>
   </section>
 
-  <section class="container-fluid bg-success-subtle vh-100">
-    <div class="parallax"></div>
+  <section class="container-fluid bg-success-subtle p-0">
+    <div class="parallax vh-100"></div>
+    <div class="parallax vh-100"
+      style="background-image: url(https://images.unsplash.com/photo-1511300636408-a63a89df3482?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)">
+    </div>
+    <div class="parallax vh-100"
+      style="background-image: url(https://images.unsplash.com/photo-1580137189272-c9379f8864fd?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)">
+    </div>
+  </section>
+
+  <section>
+    <div class="background">
+      <div class="background-container">
+        <div class="background-artwork"></div>
+      </div>
+      <div class="content">
+        <h3>Hello The quick brown fox jumps over the lazy dog</h3>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -95,7 +114,7 @@ export default {
         },
         {
           feature: "Marketplace",
-          description: "Gone are the days of discarding expired food items. Be notified of items are expiring, and let us help you sell them should you want to.",
+          description: "Gone are the days of discarding expired food items. Be notified when items are expiring, and let us help you sell them should you want to.",
           imageUrl: "trade.webp"
         }
       ]
@@ -122,10 +141,13 @@ section:first-of-type {
 .glass-container {
   left: 0;
   height: 50%;
+  /* bottom: 0; */
 
   @media (min-width: 768px) {
     left: 100px;
+    /* top: 50%; */
     height: auto;
+    transform: translateY(-50%);
 
   }
 }
@@ -167,19 +189,29 @@ section:first-of-type {
   background-image: linear-gradient(to right top, #ffffe9, #fbffe4, #f5ffdf, #eeffdb, #e6ffd8, #daffde, #cfffe4, #c5feec, #c1fbf9, #c5f6ff, #d0f0ff, #dceaff);
 }
 
+.custom-viewheight {
+  height: 300vh;
+}
+
 .parallax {
 
   /* The image used */
   background-image: url("../assets/img/loginbg.jpg");
 
   /* Set a specific height */
-  min-height: 500px;
+  min-height: 100%;
 
   /* Create the parallax scrolling effect */
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+
+  /* Turn off parallax scrolling for all tablets and phones. Increase/decrease the pixels if needed */
+  @media only screen and (max-device-width: 991px) {
+    background-attachment: scroll;
+
+  }
 
 }
 </style>

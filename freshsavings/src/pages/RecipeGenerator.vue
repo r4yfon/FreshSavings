@@ -53,7 +53,7 @@ import axios from "axios";
 
                 <button type="button" class="btn btn-outline-success m-1 p-2 text-capitalize"
                   :class="{ 'active': Object.keys(ingredientNameQty).indexOf(item[0]) !== -1 }" data-bs-toggle="dropdown"
-                  data-bs-auto-close="outside">
+                  data-bs-auto-close="outside" aria-expanded="false">
                   {{ item[0] }}
                   <span v-if="Object.keys(ingredientNameQty).indexOf(item[0]) !== -1"
                     class="badge rounded-pill text-bg-warning">{{
@@ -61,7 +61,6 @@ import axios from "axios";
                 </button>
                 <div class="dropdown-menu p-2">
                   <p class="text-center">Select quantity</p>
-                  <!-- </div> -->
                   <div class="d-flex justify-content-between align-items-center">
                     <button class="btn btn-outline-success" @click="modifyIngredientNameQty(item, 'minus')">-</button>
                     <span v-if="ingredientNameQty[item[0]]">{{ ingredientNameQty[item[0]].qty }}</span>
@@ -136,7 +135,8 @@ import axios from "axios";
     Object.values(recipe.missingIngredients)[0].iname.toLowerCase() }}<span
                         v-if="recipe.totalNumberOfIngredientsNeeded - recipe.numberOfIngredientsOwned > 1"> and {{
                           recipe.totalNumberOfIngredientsNeeded - recipe.numberOfIngredientsOwned - 1 }} more
-                        ingredients</span>.
+                        ingredient<span
+                          v-if="recipe.totalNumberOfIngredientsNeeded - recipe.numberOfIngredientsOwned - 1 > 1">s</span></span>.
                     </p>
                   </div>
                 </div>
@@ -369,6 +369,3 @@ p {
   margin-bottom: 8px;
 }
 </style>
-
-<!-- TODO: should be automatically populated based on user's inventory -->
-<!-- TODO: can be in the form of a button  -->
