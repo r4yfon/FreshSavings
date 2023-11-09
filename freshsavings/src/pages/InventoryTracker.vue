@@ -120,14 +120,14 @@ const accountStorage = useAccountStorage();
 					<div class="d-flex justify-content-between align-items-center">
 						<div class="fs-1">{{ card.icon }}</div>
 						<div class="d-flex gap-2 align-items-center">
-							<button type="button" class="btn btn-light rounded-circle d-flex align-items-center"
+							<button type="button" class="btn btn-outline-light rounded-circle d-flex align-items-center"
 								style="height: 32px; width: 32px;">-</button>
 							<div
 								class="p-2 rounded-circle lh-1 fs-4 fw-bold d-flex justify-content-center align-items-center inventory-qty"
 								:style="{ color: card.qty_color }">
 								x{{ card.qty }}
 							</div>
-							<button type="button" class="btn btn-light rounded-circle d-flex align-items-center"
+							<button type="button" class="btn btn-outline-light rounded-circle d-flex align-items-center"
 								style="height: 32px; width: 32px;">+</button>
 						</div>
 					</div>
