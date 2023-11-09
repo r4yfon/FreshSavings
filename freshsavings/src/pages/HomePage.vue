@@ -42,7 +42,7 @@ import { Icon } from "@iconify/vue";
     </div>
   </section>
 
-  <section class="container-fluid bg-custom" id="how_we_help">
+  <section class="container-fluid bg-custom">
     <div class="container row py-5 mx-auto">
       <h1 class="mb-3">The ideal assistant in your kitchen</h1>
       <div class="row row-cols-1 row-cols-md-3 g-2">
@@ -76,7 +76,40 @@ import { Icon } from "@iconify/vue";
   </section>
 
   <section class="container-fluid bg-success-subtle p-0">
-    <div class="parallax vh-100"></div>
+    <div class="parallax vh-100 pt-5">
+
+      <div class="container">
+
+        <h1>Inventory Tracker</h1>
+        <div class="row my-3 row-cols-1 row-cols-lg-2">
+          <div class="col">Add items to keep track</div>
+          <div class="col">
+            <div class="row row-cols-2 flex-wrap g-3">
+              <div class="col" v-for="card in cards" :key="card">
+                <div :style="{ 'background': card.background }"
+                  class="rounded-4 p-3 d-flex flex-column justify-content-between shadow inventory-card">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="fs-1">{{ card.icon }}</div>
+                    <div class="p-2 rounded-circle bg-danger lh-1 align-middle inventory-qty">
+                      x<span>{{ card.qty }}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="text-start fs-4 fw-semibold">{{ card.item }}</div>
+                    <div class="text-start text-secondary-emphasis">Fresh for {{ card.expiry }} more days</div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- <img :src="require('@/assets/img/notification.gif')" class="img-thumbnail" /> -->
+      <div>Get notified when it is expiring</div>
+    </div>
+
     <div class="parallax vh-100"
       style="background-image: url(https://images.unsplash.com/photo-1511300636408-a63a89df3482?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)">
     </div>
@@ -117,6 +150,36 @@ export default {
           description: "Gone are the days of discarding expired food items. Be notified when items are expiring, and let us help you sell them should you want to.",
           imageUrl: "trade.webp"
         }
+      ],
+      cards: [
+        {
+          icon: '🥬',
+          qty: 4,
+          item: 'Lettuce',
+          expiry: 3,
+          background: 'linear-gradient(135deg, rgb(202, 236, 172) 0%, rgb(131, 208, 197) 100%)',
+        },
+        {
+          icon: '🍍',
+          qty: 2,
+          item: 'Pineapples',
+          expiry: 3,
+          background: 'linear-gradient(135deg, rgb(255, 239, 184) 0%, rgb(251, 220, 113) 100%)',
+        },
+        {
+          icon: '🍅',
+          qty: 2,
+          item: 'Tomatoes',
+          expiry: 8,
+          background: 'linear-gradient(135deg, rgb(255, 200, 143) 0%, rgb(255, 143, 143) 100%)',
+        },
+        {
+          icon: '🥕',
+          qty: 6,
+          item: 'Carrots',
+          expiry: 14,
+          background: 'linear-gradient(135deg, rgb(255, 232, 188) 0%, rgb(255, 156, 84) 100%)',
+        },
       ]
     }
   }
@@ -185,6 +248,17 @@ section:first-of-type {
   border: 1px solid rgba(255, 255, 255, 0.23);
 }
 
+.inventory-card {
+  height: 240px;
+  /* width: 240px; */
+
+  .inventory-qty {
+    height: 36px;
+    width: 36px;
+
+  }
+}
+
 .bg-custom {
   background-image: linear-gradient(to right top, #ffffe9, #fbffe4, #f5ffdf, #eeffdb, #e6ffd8, #daffde, #cfffe4, #c5feec, #c1fbf9, #c5f6ff, #d0f0ff, #dceaff);
 }
@@ -196,7 +270,7 @@ section:first-of-type {
 .parallax {
 
   /* The image used */
-  background-image: url("../assets/img/loginbg.jpg");
+  /* background-image: url("../assets/img/loginbg.jpg"); */
 
   /* Set a specific height */
   min-height: 100%;
