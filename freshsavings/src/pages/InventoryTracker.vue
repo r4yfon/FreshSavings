@@ -112,15 +112,23 @@ const accountStorage = useAccountStorage();
 		<!-- Product card  -->
 
 		<div class="row justify-content-start container-fluid">
+
+			<!-- example inventory card -->
 			<div class="col-4" v-for="card in cards" :key="card" style="height: 360px; width: 360px;">
 				<div :style="{ background: card.background }"
 					class="rounded-4 p-3 d-flex flex-column justify-content-between shadow h-100">
 					<div class="d-flex justify-content-between align-items-center">
 						<div class="fs-1">{{ card.icon }}</div>
-						<div
-							class="p-2 rounded-circle lh-1 fs-4 fw-bold d-flex justify-content-center align-items-center inventory-qty"
-							:style="{ color: card.qty_color }">
-							x{{ card.qty }}
+						<div class="d-flex gap-2 align-items-center">
+							<button type="button" class="btn btn-light rounded-circle d-flex align-items-center"
+								style="height: 32px; width: 32px;">-</button>
+							<div
+								class="p-2 rounded-circle lh-1 fs-4 fw-bold d-flex justify-content-center align-items-center inventory-qty"
+								:style="{ color: card.qty_color }">
+								x{{ card.qty }}
+							</div>
+							<button type="button" class="btn btn-light rounded-circle d-flex align-items-center"
+								style="height: 32px; width: 32px;">+</button>
 						</div>
 					</div>
 					<div>
@@ -130,9 +138,25 @@ const accountStorage = useAccountStorage();
 						<div class="text-start text-secondary-emphasis">
 							Fresh for {{ card.expiry }} more days
 						</div>
+						<div class="btn-group w-100 mt-2">
+							<!-- <div class="col-lg-6 col-md-6 col-sm-6"> -->
+							<button type="button" class="btn btn-danger" style="display:block; width:100%" @click="removePost()">
+								Remove
+							</button>
+							<!-- </div> -->
+							<!-- <div class="col-lg-6 col-md-6 col-sm-6"> -->
+							<button type="button" class="btn btn-success" style="display:block; width:100%" data-bs-toggle="modal"
+								data-bs-target="#openModal-{{ idx }}">
+								Sell
+							</button>
+
+							<!-- </div> -->
+						</div>
 					</div>
 				</div>
 			</div>
+
+
 			<div class="projects" name="projects">
 				<template v-for="(item, idx) in sortedArray" :key="item.iname">
 					<TransitionGroup class="project" v-if="currentFilter === item.icat || currentFilter === 'All'">
