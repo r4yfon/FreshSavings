@@ -13,7 +13,8 @@ const accountStorage = useAccountStorage();
       <div class="mb-3">
         <div class="d-flex flex-wrap gap-2 align-items-center">
           <p class="mb-0">Have items in your inventory?</p>
-          <button v-if="isLoggedIn" type="button" class="btn btn-success d-flex" @click="selectInventoryItems()">
+          <button v-if="isLoggedIn" type="button" class="btn btn-success d-flex align-items-center"
+            @click="selectInventoryItems()">
             <span class="me-2">Use Inventory items</span>
             <Icon icon="solar:download-minimalistic-outline" />
           </button>
@@ -318,7 +319,7 @@ export default {
 
     // upon clicking "Populate Inventory" button, selects items in user's inventory and filters suitable recipes
     selectInventoryItems() {
-      
+
       this.ingredientNameQty = {};
       // show loading indicator
       if (!(this.alreadyPopuatedFromInventory)) {

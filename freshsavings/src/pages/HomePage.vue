@@ -9,9 +9,9 @@ import { Icon } from "@iconify/vue";
     </video>
 
     <div class="position-absolute top-50 glass-container col-12 col-md-7 col-xl-5">
-      <div class="px-3 py-5 d-flex flex-column justify-content-center align-items-center glass-effect">
+      <div class="px-3 py-4 d-flex flex-column justify-content-center align-items-center glass-effect">
         <h1 class="mb-4">Save food, save money, save the planet.</h1>
-        <p class="w-75" style="text-wrap: balance">
+        <p class="w-75 mb-4" style="text-wrap: balance">
           Food waste poses a dire threat to our environment and global
           resources. Join us to take an active stance against food waste today.
         </p>
@@ -57,7 +57,7 @@ import { Icon } from "@iconify/vue";
     </div>
   </section>
 
-
+  <!-- inventory-tracker -->
   <section class="container-fluid p-0">
     <span class="anchor" id="anchor-inventory-tracker"></span>
     <div class="parallax pb-5">
@@ -73,13 +73,13 @@ import { Icon } from "@iconify/vue";
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="fs-1">{{ cards[i].icon }}</div>
                     <div
-                      class="p-2 rounded-circle lh-1 fs-4 fw-bold d-flex justify-content-center align-items-center inventory-qty"
+                      class="p-2 rounded-circle lh-1 fs-5 fw-bold d-flex justify-content-center align-items-center inventory-qty"
                       :style="{ color: cards[i].qty_color }">
                       x{{ cards[i].qty }}
                     </div>
                   </div>
                   <div>
-                    <div class="text-start fs-4 fw-semibold">
+                    <div class="text-start fs-5 fw-semibold">
                       {{ cards[i].item }}
                     </div>
                     <div class="text-start text-secondary-emphasis">
@@ -116,13 +116,13 @@ import { Icon } from "@iconify/vue";
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="fs-1">{{ cards[i + 6].icon }}</div>
                     <div
-                      class="p-2 rounded-circle lh-1 fs-4 fw-bold d-flex justify-content-center align-items-center inventory-qty"
+                      class="p-2 rounded-circle lh-1 fs-5 fw-bold d-flex justify-content-center align-items-center inventory-qty"
                       :style="{ color: cards[i + 6].qty_color }">
                       x{{ cards[i + 6].qty }}
                     </div>
                   </div>
                   <div>
-                    <div class="text-start fs-4 fw-semibold">
+                    <div class="text-start fs-5 fw-semibold">
                       {{ cards[i + 6].item }}
                     </div>
                     <div class="text-start text-secondary-emphasis">
@@ -138,10 +138,56 @@ import { Icon } from "@iconify/vue";
       <!--<img :src=" require('@/assets/img/notification.gif')" class="img-thumbnail" />-->
     </div>
 
-    <div class="parallax vh-100" style="
-        background-image: url(https://images.unsplash.com/photo-1511300636408-a63a89df3482?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
-      "></div>
-    <div class="parallax vh-100" style="
+    <!-- recipe-generator -->
+    <span class="anchor" id="anchor-recipe-generator"></span>
+    <div class="parallax vh-100" id="parallax-recipe-generator">
+      <div class="container">
+        <h1 class="fw-bold text-start text-light pt-5 pb-4">Recipe Generator</h1>
+        <!-- <div class="row"> -->
+        <div class="accordion col-12 col-md-9 col-lg-7 col-xl-6">
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <button type="button" class="accordion-button fs-5" data-bs-toggle="collapse" data-bs-target="#collapse"
+                aria-expanded="true" aria-control="collapse">
+                Simply select
+              </button>
+              <div id="collapse" class="accordion-collapse collapse show">
+                <div class="accordion-body p-3">
+                  <button type="button" class="btn text-light bg-success m-1 p-2 fs-5" data-bs-toggle="button">
+                    the
+                    <span class="badge rounded-pill text-bg-warning">3</span>
+                  </button>
+                  <button type="button" class="btn btn-outline-success m-1 p-2 active fs-5"
+                    data-bs-toggle="button">ingredients</button>
+                  <button type="button" class="btn btn-outline-success m-1 p-2 active fs-5"
+                    data-bs-toggle="button">you</button>
+                  <!-- <button type="button" class="btn btn-outline-success m-1 p-2 active fs-5"
+                    data-bs-toggle="button">have</button>
+                  <button type="button" class="btn btn-outline-success m-1 p-2 active fs-5"
+                    data-bs-toggle="button">or</button> -->
+                  <button type="button" class="btn btn-outline-success m-1 p-2 fs-5" data-bs-toggle="button">want</button>
+                  <button type="button" class="btn btn-outline-success m-1 p-2 fs-5" data-bs-toggle="button">to</button>
+                  <button type="button" class="btn btn-outline-success m-1 p-2 fs-5" data-bs-toggle="button">use</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- </div> -->
+
+        <div class="mt-3 d-flex justify-content-end">
+          <div class="paper rounded-4 p-3">
+            <h3 class="paper-content text-start fs-3 fw-semibold p-2">
+
+              and we will recommend suitable recipes for you
+            </h3>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+    <div class=" parallax vh-100" style="
         background-image: url(https://images.unsplash.com/photo-1580137189272-c9379f8864fd?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
       "></div>
   </section>
@@ -175,14 +221,14 @@ export default {
           description:
             "Need inspiration on what to cook? Simply select the ingredients you want to use and our Recipe Generator will do the rest for you.",
           imageUrl: "recipe_book.webp",
-          redirect: 'inventory-tracker'
+          redirect: 'recipe-generator'
         },
         {
           feature: "Marketplace",
           description:
             "Gone are the days of discarding expired food items. Be notified when items are expiring, and let us help you sell them should you want to.",
           imageUrl: "trade.webp",
-          redirect: 'inventory-tracker'
+          redirect: 'marketplace'
         },
       ],
       cards: [
@@ -480,5 +526,51 @@ a {
   @media only screen and (max-device-width: 991px) {
     background-attachment: scroll;
   }
+}
+
+#parallax-recipe-generator {
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('../assets/img/cooking.webp') no-repeat center;
+  background-size: cover;
+
+}
+
+.paper {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  /* min-width: 400px; */
+  height: 480px;
+  /* margin: 0 auto; */
+  background: #fafafa;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .3);
+  overflow: hidden;
+
+  @media (min-width: 767px) {
+    width: 80%;
+  }
+}
+
+.paper:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  background: radial-gradient(#575450 6px, transparent 7px) repeat-y;
+  background-size: 30px 30px;
+  border-right: 3px solid #D44147;
+  box-sizing: border-box;
+}
+
+.paper-content {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  bottom: 30px;
+  left: 40px;
+  background: linear-gradient(transparent, transparent 36px, #91D1D3 36px);
+  background-size: 38px 38px;
 }
 </style>
