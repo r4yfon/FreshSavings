@@ -11,7 +11,7 @@ const accountStorage = useAccountStorage();
 		<div class="container-fluid ">
 			<div class="row">
 				<h1 class="text-center fw-bold mb-4">
-					{{ user }}'s Food Inventory
+					{{ accountStorage.name }}'s Food Inventory
 					<Icon icon="mdi:human-welcome" />
 				</h1>
 			</div>
@@ -325,8 +325,7 @@ export default {
 		// Retrieves record of all Inventory Items in an Array 
 		// getInventoryItems() {
 		// 	axios
-		// 	.get("http://localhost:3000/get_user_inventory_items")
-		// 	.then((response) => {
+		// 	.axios.get("http://localhost:3000/get_user_inventory_items/" + useAccountStorage().aid).then((response) =>
 		// 	let newItems = [];
 		// 	for (let item of response.data) {
 		// 		const currentDate = new Date();

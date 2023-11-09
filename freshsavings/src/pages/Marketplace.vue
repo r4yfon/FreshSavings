@@ -308,7 +308,7 @@ export default {
     },
     async GetPostingsAndAddDistance() {
   try {
-    this.getSession()
+    
     await this.GetBuyerAddress();
     await this.GetAllPostings();
     await this.AddinDistance();
@@ -450,18 +450,6 @@ async AddinDistance() {
         }
       }
     },
-    getSession() {
-    axios
-        .get("http://localhost:3000/get-session-data")
-        .then((response) => {
-
-          console.log(response.data)
-
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-},
     
     animated() {
       this.$nextTick(() => {

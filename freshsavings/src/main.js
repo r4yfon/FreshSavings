@@ -23,13 +23,15 @@ export const useAccountStorage = defineStore({
     id: 'Account',
     state: () => {
         return {
-         aid: useLocalStorage('aid', 0),
+         aid: useLocalStorage('aid', -1),
          cart: useLocalStorage('cart', []), //useLocalStorage takes in a key of 'count' and default value of 0
+         name: useLocalStorage('name', ""), //useLocalStorage takes in a key of 'count' and default value of 0
         };
       },
     actions: {
-        set(new_aid){
+        set(new_aid, new_name){
             this.aid = new_aid
+            this.name = new_name
             this.cart = []
         },
         intoCart(arr){
