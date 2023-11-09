@@ -208,25 +208,27 @@ const accountStorage = useAccountStorage();
     <!-- Your main content -->
 
     <!-- Toast container at the top right -->
-    <div v-if="showadd" class="toast-container align-items-center text-white" style="background-color: #D5FFCF;">
-      <div class="toast-header">
-        <h5 class="mx-auto size-3" style="color:black">Notification!</h5>
+    <div class="toast-container align-items-center">
+    <div v-if="showadd" class="card">
+      <div class="card-header" style="background-color: #D5FFCF">
+        <h5 class="mx-auto size-3">Notification!</h5>
 
       </div>
-      <div class="toast-body" style="color:black">
+      <div class="card-body" style="background-color: white;">
         Added to cart
       </div>
     </div>
 
-    <div v-if="showdel" class="toast-container align-items-center text-white " style="background-color: #FFCFD3;">
-      <div class="toast-header">
-        <h5 class="mx-auto size-3" style="color:black">Notification!</h5>
+    <div v-if="showdel" class="card">
+      <div class="card-header" style="background-color: #FFCFD3">
+        <h5 class="mx-auto size-3">Notification!</h5>
 
       </div>
-      <div class="toast-body" style="color:black">
-        Deleted from cart
+      <div class="card-body" style="background-color: white;">
+        Removed from cart
       </div>
     </div>
+  </div>
   </div>
 
 </div></template>
@@ -423,7 +425,7 @@ async AddinDistance() {
       this.showadd = true;
       setTimeout(() => {
         this.showadd = false;
-      }, 700); // Hide the toast after 2 seconds
+      }, 1300); // Hide the toast after 2 seconds
       
     },
     Remove(pid) {
@@ -432,7 +434,7 @@ async AddinDistance() {
       this.showdel = true;
       setTimeout(() => {
         this.showdel = false;
-      }, 700); // Hide the toast after 2 seconds
+      }, 1300); // Hide the toast after 2 seconds
       
 
     },
