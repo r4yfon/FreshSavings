@@ -30,7 +30,7 @@ const handleLogin = async () => {
     localStorage.setItem('user', JSON.stringify(user));
 	console.log("User data stored in local storage:", user);
 	console.log("Session data from the response:", response.data.session);
-	accountStorage.set(response.data.session.user.aid, response.data.session.user.fname)
+	accountStorage.set(response.data.session.user.aid, response.data.session.user.fname, response.data.session.user.a_lat, response.data.session.user.a_long)
 
 	localStorage.setItem('session', JSON.stringify(sessionData));
         console.log('Session data stored in local storage:', sessionData);

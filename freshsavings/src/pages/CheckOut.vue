@@ -7,7 +7,7 @@
 
 
 <template>
-  {{ accountStorage.aid }}
+  
   <div>
     <!-- <NavBar /> -->
     
@@ -381,7 +381,7 @@ export default {
     subtotalCost: 0,
     Unit: "",
     
-    center: {lat: 1.38756183636332, lng: 103.761055818184},
+    center: {lat: useAccountStorage().lat, lng: useAccountStorage().lng},
     markers: {},
           
   }),

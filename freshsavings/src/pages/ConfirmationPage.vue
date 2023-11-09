@@ -37,7 +37,7 @@
   align-items: center;
   width: 50%; /* Adjust the width as needed */
   height: 50vh; /* Adjust the height as needed */
-  margin: 120px auto 0;
+  margin: 0px auto 0;
   background-color: #FAF9F6;
 
 }

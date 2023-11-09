@@ -26,13 +26,17 @@ export const useAccountStorage = defineStore({
          aid: useLocalStorage('aid', -1),
          cart: useLocalStorage('cart', []), //useLocalStorage takes in a key of 'count' and default value of 0
          name: useLocalStorage('name', ""), //useLocalStorage takes in a key of 'count' and default value of 0
+         lat: useLocalStorage('lat', 0), //useLocalStorage takes in a key of 'count' and default value of 0
+         lng: useLocalStorage('lng', 0), //useLocalStorage takes in a key of 'count' and default value of 0
         };
       },
     actions: {
-        set(new_aid, new_name){
+        set(new_aid, new_name, new_lat, new_lng){
             this.aid = new_aid
             this.name = new_name
             this.cart = []
+            this.lat = new_lat
+            this.lng = new_lng
         },
         intoCart(arr){
             this.cart = arr

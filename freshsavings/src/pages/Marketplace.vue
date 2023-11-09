@@ -234,7 +234,7 @@ export default {
       awayfrom: undefined,
       distancestorage: [],
       distanceAway: 2000,
-      Buyer: 1,
+      Buyer: useAccountStorage().aid,
       sessionData: null,
       buyerLat: undefined,
       buyerLong: undefined,
