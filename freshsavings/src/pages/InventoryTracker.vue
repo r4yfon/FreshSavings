@@ -322,65 +322,64 @@ export default {
 
 		// ALL SQL STATEMENTS
 		// Retrieves record of all Inventory Items in an Array 
-		// getInventoryItems() {
-		// 	axios
-		// 	.get("http://localhost:3000/get_user_inventory_items")
-		// 	.then((response) => {
-		// 	let newItems = [];
-		// 	for (let item of response.data) {
-		// 		const currentDate = new Date();
-		// 		var futureDate = new Date(item.ExpiryDate);
-		// 		var timeDifference = futureDate.getTime() - currentDate.getTime();
-		// 		var daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+		getInventoryItems() {
+			axios
+			.get("http://localhost:3000/get_user_inventory_items")
+			.then((response) => {
+			let newItems = [];
+			for (let item of response.data) {
+				const currentDate = new Date();
+				var futureDate = new Date(item.ExpiryDate);
+				var timeDifference = futureDate.getTime() - currentDate.getTime();
+				var daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 
-		// 		newItems.push({
-		// 			name: item.iname,
-		// 			category: item.icat,
-		// 			expiring_in: daysDifference,
-		// 			quantity: item.qty,
-		// 			// emoji: item.emoji, need to add into database
-		// 		})
-		// 	};
-		// 	this.newItems = items;
-		// });
-		// },
+				newItems.push({
+					name: item.iname,
+					category: item.icat,
+					expiring_in: daysDifference,
+					quantity: item.qty,
+					emoji: item.emoji
+				})
+			};
+			this.newItems = items;
+		});
+		},
 
 		// Insert new item into databases - Ingredient and AccountInventory 
-		// insertItem() {
-		// 	if (
-		// 		this.ingredient_name == "" ||
-		// 		this.ingredient_quantity == "" ||
-		// 		this.category == ""
-		// 	) {
-		// 		alert("Please fill out all fields");
-		// 		return;
-		// 	};
+		insertItem() {
+			if (
+				this.ingredient_name == "" ||
+				this.ingredient_quantity == "" ||
+				this.category == ""
+			) {
+				alert("Please fill out all fields");
+				return;
+			};
 
-		// 	const expiring_in = this.calculateRemainingDays; 
-		// 	this.formAction('clear');
-		// 	this.formAction('close'); 
+			const expiring_in = this.calculateRemainingDays; 
+			this.formAction('clear');
+			this.formAction('close'); 
 
-		// 	// Your logic to update the SQL table
-		// 	const updatedData = {
-		// 		iname: this.ingredient_name,
-		// 		icat: this.selectedCategory,
-		// 		expiring_in: expiring_in, 
-		// 		qty: this.ingredient_quantity,
-		// 		emoji: this.selectedEmoji,// havent include yet 
-		// 	};
+			// Update the SQL table
+			const updatedData = {
+				iname: this.ingredient_name,
+				icat: this.selectedCategory,
+				expiring_in: expiring_in, 
+				qty: this.ingredient_quantity,
+				emoji: this.selectedEmoji,
+			};
 
-		// 	// Make an HTTP PUT request to the server-side endpoint
-		// 	axios.put('/insertNewInventoryItem', updatedData)
-		// 		.then(response => {
-		// 		// Handle the response if needed
-		// 		console.log('Table updated successfully', response.data);
-		// 		})
-		// 		.catch(error => {
-		// 		// Handle errors
-		// 		console.error('Error updating table', error);
-		// 		});
-		// 	}
-		// },
+			// Make an HTTP PUT request to the server-side endpoint
+			axios.put('/insertNewInventoryItem', updatedData)
+				.then(response => {
+				// Handle the response if needed
+				console.log('Table updated successfully', response.data);
+				})
+				.catch(error => {
+				// Handle errors
+				console.error('Error updating table', error);
+				});
+			},
 			
 		formAction(action){
 			if (action == 'open'){
@@ -413,10 +412,23 @@ export default {
 			
 		},
 
-		// TO DO: remove this card information from the Table 'AccountInventory' completely 
+		// Removes this card information from the Table 'AccountInventory' completely 
 		removePost() {
 			this.items.splice(idx, idx);
-			// check again 
+			// Assuming you have an ID or some data to identify what to delete
+			const dataToDelete = { aid: 1, iid: 1};
+
+			axios
+			.delete('/delete-data', { data: dataToDelete })
+			.then(response => {
+				// Handle success
+				console.log('Data deleted successfully');
+			})
+			.catch(error => {
+				// Handle error
+				console.error('Error deleting data:', error);
+			});
+			
 		},
 
 		// TO DO: insert this card information to Table 'Posting'
@@ -426,7 +438,6 @@ export default {
 
 	}
 }
-
 </script>
 
 
