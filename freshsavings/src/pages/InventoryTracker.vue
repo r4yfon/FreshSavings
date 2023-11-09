@@ -357,6 +357,65 @@ export default {
 					console.error('Error occurred while fetching inventory items:', error);
 				});
 		},
+		getIngredientIdByName(ingredientName) {
+    // Make a GET request to the server-side endpoint to retrieve all ingredients
+    axios.get("http://localhost:3000/get_all_ingredients")
+      .then(response => {
+        const ingredients = response.data;
+        const ingredient = ingredients.find(ingredient => ingredient.name === ingredientName);
+        return ingredient ? ingredient.iid : null;
+      })
+      .catch(error => {
+        console.error('Error fetching ingredients:', error);
+        return null;
+      });
+  },
+
+  insertItem() {
+  // Access the values from the input fields
+  const itemName = this.ingredient_name;
+  const itemQuantity = this.ingredient_quantity;
+  const selectedCategory = this.selectedCategory;
+  const expiryDate = this.ingredient_expiry_date;
+  const selectedEmoji = this.selectedEmoji;
+
+  // Get the ingredient id by name
+  axios.get('http://localhost:3000/get_ingredient_id_by_name', {
+    params: {
+      name: itemName
+    }
+  })
+  .then(response => {
+    const ingredientId = response.data.iid;
+    if (ingredientId) {
+      // Now you can use these variables to perform any necessary logic or actions
+      // For example, you can use them in your axios POST request
+
+      axios.post('http://localhost:3000/add_inventory_item', {
+        aid: useAccountStorage().aid,
+        iid: ingredientId,
+        qty: itemQuantity,
+		expiring_in: this.calculateRemainingDays,
+        ExpiryDate: expiryDate,
+        // other data properties as needed
+      })
+      .then(response => {
+        // Handle the response if needed
+      })
+      .catch(error => {
+        // Handle errors
+      });
+    } else {
+      console.error('Ingredient ID not found for the provided name:', itemName);
+    }
+  })
+  .catch(error => {
+    // Handle errors
+    console.error('Error retrieving ingredient ID:', error);
+  });
+},
+
+
 		imageUrl(img) {
 			return require(`@/assets/img/${img}`);
 		},

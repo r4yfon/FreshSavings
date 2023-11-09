@@ -1,9 +1,9 @@
 <template>
-  <NavBar v-if="!this.$route.meta.hideNavBar" />
   <main :class="[this.$route.meta.hideNavBar ? 'bg-white' : 'bg-light']" :style="[
     { 'min-height': $route.meta.hideNavBar ? '100vh' : 'calc(100vh - 75px)' },
-    { 'margin-top': $route.meta.hideNavBar ? '0' : '75px' }
+    { 'margin-top': $route.meta.hideNavBar ? '0' : '74px' },
   ]">
+    <NavBar v-if="!this.$route.meta.hideNavBar" />
     <RouterView />
   </main>
   <!-- <Footer v-if="!this.$route.meta.hideNavBar" /> -->

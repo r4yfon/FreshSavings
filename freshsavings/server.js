@@ -93,6 +93,7 @@ app.get("/get_all_ingredients", (req, res) => {
     res.json(results);
   });
 });
+
 app.get("/get_all_products", (req, res) => {
   // Query the database to retrieve ingredients
   connection.query(
@@ -389,6 +390,60 @@ app.get("/get-distance", async (req, res) => {
     res.status(500).json({ error: "An error occurred" });
   }
 });
+
+app.post('/add_inventory_item', (req, res) => {
+  const { aid, iid, expiring_in, qty, ExpiryDate } = req.body; // Extract data from the request body
+
+  // Construct the SQL query to insert a new row into the AccountInventory table
+  const sql = `INSERT INTO freshsavings.AccountInventory (aid, iid, expiring_in, qty, ExpiryDate) VALUES ('${aid}', '${iid}', ${expiring_in}, ${qty}, '${ExpiryDate}')`;
+
+  // Execute the SQL query
+  connection.query(sql, (err, result) => {
+    if (err) {
+      console.error('Error adding item to inventory:', err);
+      return res.status(500).send('Error adding item to inventory');
+    }
+
+    console.log('New inventory item added to AccountInventory');
+
+    // Query the database to get the newly added item
+    const fetchNewItemSQL = `SELECT * FROM freshsavings.AccountInventory WHERE aid = '${aid}' AND iid = '${iid}'`;
+    connection.query(fetchNewItemSQL, (fetchErr, fetchResult) => {
+      if (fetchErr) {
+        console.error('Error fetching newly added item:', fetchErr);
+        return res.status(500).send('Error fetching newly added item');
+      }
+
+      const newItem = fetchResult[0]; // Assuming the query result is an array with a single item
+      res.status(200).json(newItem); // Send the newly added item as the response
+    });
+  });
+});
+
+app.get("/get_ingredient_id_by_name", (req, res) => {
+  const ingredientName = req.query.name;
+
+  connection.query(
+    "SELECT iid FROM freshsavings.Ingredient WHERE iname = ?",
+    [ingredientName],
+    (err, results) => {
+      if (err) {
+        console.error("Error querying the database:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+        return;
+      }
+
+      if (results.length > 0) {
+        const ingredientId = results[0].iid;
+        res.json({ iid: ingredientId });
+      } else {
+        res.json({ iid: null });
+      }
+    }
+  );
+});
+
+
 
 
 
