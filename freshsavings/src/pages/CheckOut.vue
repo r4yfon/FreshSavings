@@ -375,6 +375,7 @@ export default {
     timing:"", 
     date:"",
     products: [3, 2, 11],
+    totalCost: [],
     productList: {},
     AddressList: [],
     subtotalCost: 0,
@@ -397,11 +398,8 @@ export default {
   computed: {
     calculateTotalPrice(){
       let total = 0
-      for(let product in this.productList){
-        console.log("Before entering function:")
-        console.log(this.CalculatePrice(this.productList[product].Price, this.productList[product].Quantity))
-        total += this.CalculatePrice(this.productList[product].Price, this.productList[product].Quantity);
-        console.log(total)
+      for(let i of this.totalCost){
+        total += parseFloat(i)
       }
       return total
     }
@@ -461,9 +459,9 @@ export default {
           if(!this.AddressList.includes(response.data[0].postalcode)){
             this.AddressList.push(response.data[0].postalcode)
           }
-          
+          this.totalCost.push(this.CalculatePrice(response.data[0].selling_price, response.data[0].selling_quantity))
           this.productList[pid] = prod
-          console.log(this.productList)
+          console.log(this.totalCost)
           
         })
         .catch(function (error) {
@@ -476,6 +474,7 @@ export default {
       this.productList = {};
       this.subtotalCost = 0;
       this.AddressList = [];
+      this.totalCost = [];
       for(let pid of prods){
         this.Retrieval(pid);
       }
