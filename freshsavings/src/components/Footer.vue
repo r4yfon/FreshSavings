@@ -8,7 +8,8 @@ import { Icon } from "@iconify/vue"
     <div class="row justify-content-center">
       <div class="col text-center">
         <a class="navbar-brand" href="#">
-          <img src="../assets/img/logo.webp" alt="Your Logo" height="64" class="d-inline-block align-text-top">
+          <img src="../assets/img/logo.webp" alt="Your Logo" height="64"
+            class="d-inline-block align-text-top img-fluid px-3">
         </a>
         <div class="d-flex gap-3 align-items-center justify-content-center text-uppercase fw-semibold">
           <a href="/404-page-not-found" class="text-decoration-none text-success">About</a>

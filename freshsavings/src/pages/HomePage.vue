@@ -43,14 +43,19 @@ import { Icon } from "@iconify/vue";
       <h1 class="mb-3">The ideal assistant in your kitchen</h1>
       <div class="row row-cols-1 row-cols-md-3 g-2">
         <div class="col mb-4" v-for="feature in featuresAndDescriptions" :key="feature">
-          <div class="p-3 h-100 d-flex justify-content-between align-items-start flex-column">
-            <img :src="require(`@/assets/img/${feature.imageUrl}`)" class="object-fit-contain icon-glass-bg p-2 mb-3"
-              height="80" width="80" />
-            <h5 class="text-start fw-semibold">{{ feature.feature }}</h5>
-            <p class="text-start w-md-75" style="text-wrap: balance">
-              {{ feature.description }}
-            </p>
-            <a :href="'#anchor-' + feature.redirect" class="btn btn-success" role="button"> Learn more </a>
+          <div class="p-3 h-100 d-flex justify-content-between align-items-start   flex-column">
+            <div class="d-flex justify-content-start flex-column">
+
+              <img :src="require(`@/assets/img/${feature.imageUrl}`)" class="object-fit-contain icon-glass-bg p-2 mb-3"
+                height="80" width="80" />
+              <h5 class="text-start fw-semibold">{{ feature.feature }}</h5>
+              <p class="text-start w-md-75" style="text-wrap: balance">
+                {{ feature.description }}
+              </p>
+            </div>
+            <a :href="'#anchor-' + feature.redirect" class="btn btn-success" role="button">
+              Learn more
+            </a>
           </div>
         </div>
       </div>
@@ -99,13 +104,18 @@ import { Icon } from "@iconify/vue";
               <div class="col-12 col-lg-6 order-5">
                 <h1
                   class="rounded-4 p-5 p-lg-3 d-flex justify-content-center align-items-center fw-bold fs-1 shadow h-100 glass-card text-light">
-                  ...and get notified when they are about to expire </h1>
-
+                  ...and get notified when they are about to expire
+                </h1>
               </div>
 
-              <div class="col order-5" style="aspect-ratio: 1/1;">
-                <div class="rounded-4 p-3 shadow h-100 d-flex justify-content-center align-items-center"
-                  style="background: linear-gradient(135deg, rgb(99, 99, 104) 0%, rgb(36, 36, 36) 100%);">
+              <div class="col order-5" style="aspect-ratio: 1/1">
+                <div class="rounded-4 p-3 shadow h-100 d-flex justify-content-center align-items-center" style="
+                    background: linear-gradient(
+                      135deg,
+                      rgb(99, 99, 104) 0%,
+                      rgb(36, 36, 36) 100%
+                    );
+                  ">
                   <img :src="require('@/assets/img/notification.gif')" class="img-fluid" />
                 </div>
               </div>
@@ -142,63 +152,205 @@ import { Icon } from "@iconify/vue";
     <span class="anchor" id="anchor-recipe-generator"></span>
     <div class="parallax vh-100" id="parallax-recipe-generator">
       <div class="container">
-        <h1 class="fw-bold text-start text-light pt-5 pb-4">Recipe Generator</h1>
-        <!-- <div class="row"> -->
+        <h1 class="fw-bold text-start text-light pt-5 pb-4">
+          Recipe Generator
+        </h1>
+        <div class="d-flex justify-content-end mb-4">
+          <div class="icon-glass-bg speech top p-4">
+            <h2 class="m-0">Never worry about what you can cook with our Recipe Generator</h2>
+          </div>
+        </div>
         <div class="accordion col-12 col-md-9 col-lg-7 col-xl-6">
           <div class="accordion-item">
             <div class="accordion-header">
-              <button type="button" class="accordion-button fs-5" data-bs-toggle="collapse" data-bs-target="#collapse"
-                aria-expanded="true" aria-control="collapse">
-                Simply select
+              <button type="button" class="accordion-button fs-3 fw-semibold" data-bs-toggle="collapse"
+                data-bs-target="#collapse" aria-expanded="true" aria-control="collapse">
+                It is as easy as selecting
               </button>
               <div id="collapse" class="accordion-collapse collapse show">
                 <div class="accordion-body p-3">
-                  <button type="button" class="btn text-light bg-success m-1 p-2 fs-5" data-bs-toggle="button">
+                  <button type="button" class="btn text-light bg-success m-1 p-2 fs-5">
                     the
                     <span class="badge rounded-pill text-bg-warning">3</span>
                   </button>
-                  <button type="button" class="btn btn-outline-success m-1 p-2 active fs-5"
-                    data-bs-toggle="button">ingredients</button>
-                  <button type="button" class="btn btn-outline-success m-1 p-2 active fs-5"
-                    data-bs-toggle="button">you</button>
-                  <!-- <button type="button" class="btn btn-outline-success m-1 p-2 active fs-5"
-                    data-bs-toggle="button">have</button>
-                  <button type="button" class="btn btn-outline-success m-1 p-2 active fs-5"
-                    data-bs-toggle="button">or</button> -->
-                  <button type="button" class="btn btn-outline-success m-1 p-2 fs-5" data-bs-toggle="button">want</button>
-                  <button type="button" class="btn btn-outline-success m-1 p-2 fs-5" data-bs-toggle="button">to</button>
-                  <button type="button" class="btn btn-outline-success m-1 p-2 fs-5" data-bs-toggle="button">use</button>
+                  <button type="button" class="btn btn-outline-success m-1 p-2 active fs-5" data-bs-toggle="button">
+                    ingredients
+                  </button>
+                  <button type="button" class="btn btn-outline-success m-1 p-2 active fs-5" data-bs-toggle="button">
+                    you
+                  </button>
+                  <button type="button" class="btn btn-outline-success m-1 p-2 fs-5" data-bs-toggle="button">
+                    want
+                  </button>
+                  <button type="button" class="btn btn-outline-success m-1 p-2 fs-5" data-bs-toggle="button">
+                    to
+                  </button>
+                  <button type="button" class="btn btn-outline-success m-1 p-2 fs-5" data-bs-toggle="button">
+                    use
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <!-- </div> -->
 
         <div class="mt-3 d-flex justify-content-end">
-          <div class="paper rounded-4 p-3">
+          <div class="paper rounded-3 p-3">
             <h3 class="paper-content text-start fs-3 fw-semibold p-2">
-
-              and we will recommend suitable recipes for you
+              and we will recommend suitable recipes for you!
             </h3>
           </div>
         </div>
       </div>
-
-
     </div>
-    <div class=" parallax vh-100" style="
-        background-image: url(https://images.unsplash.com/photo-1580137189272-c9379f8864fd?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
-      "></div>
-  </section>
 
-  <section>
-    <div class="background">
-      <div class="background-container">
-        <div class="background-artwork"></div>
-      </div>
-      <div class="content">
-        <h3>Hello The quick brown fox jumps over the lazy dog</h3>
+    <!-- marketplace -->
+    <span class="anchor" id="anchor-marketplace"></span>
+    <div class="parallax vh-100" style="
+        background-image: url(https://images.unsplash.com/photo-1580137189272-c9379f8864fd?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
+      ">
+      <div class="container-fluid">
+        <h1 class="fw-bold text-middle text-light pt-5 pb-4">Marketplace</h1>
+        <div class="row row-cols-2 row-cols-lg-4 g-2">
+
+          <div class="p-2">
+            <div class="css-card col p-0">
+              <img :src="require('@/assets/img/banana.webp')" class="img-fluid object-fit-cover" />
+              <div class="card__content">
+                <p class="card__title">Card Title</p>
+                <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                  tempor
+                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="p-2">
+            <div class="css-card col p-0">
+              <img :src="require('@/assets/img/banana.webp')" class="img-fluid object-fit-cover" />
+              <div class="card__content">
+                <p class="card__title">Card Title</p>
+                <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                  tempor
+                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="p-2">
+            <div class="css-card col p-0">
+              <img :src="require('@/assets/img/banana.webp')" class="img-fluid object-fit-cover" />
+              <div class="card__content">
+                <p class="card__title">Card Title</p>
+                <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                  tempor
+                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="p-2">
+            <div class="css-card col p-0">
+              <img :src="require('@/assets/img/banana.webp')" class="img-fluid object-fit-cover" />
+              <div class="card__content">
+                <p class="card__title">Card Title</p>
+                <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                  tempor
+                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col p-0">
+            <div class="p-2 mb-2">
+              <div class="css-card col">
+                <img :src="require('@/assets/img/banana.webp')" class="img-fluid object-fit-cover" />
+                <div class="card__content">
+                  <p class="card__title">Card Title</p>
+                  <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                    tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="p-2">
+              <div class="css-card col">
+                <img :src="require('@/assets/img/banana.webp')" class="img-fluid object-fit-cover" />
+                <div class="card__content">
+                  <p class="card__title">Card Title</p>
+                  <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                    tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col p-0">
+            <div class="p-2 mb-2">
+              <div class="css-card col">
+                <img :src="require('@/assets/img/banana.webp')" class="img-fluid object-fit-cover" />
+                <div class="card__content">
+                  <p class="card__title">Card Title</p>
+                  <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                    tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="p-2">
+              <div class="css-card col">
+                <img :src="require('@/assets/img/banana.webp')" class="img-fluid object-fit-cover" />
+                <div class="card__content">
+                  <p class="card__title">Card Title</p>
+                  <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                    tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col round-4 bg-danger mt-3 mb-2 px-4" id="marketplace-card">
+            dsvdsv
+          </div>
+
+          <div class="col p-0">
+            <div class="p-2 mb-2">
+              <div class="css-card col p-0">
+                <img :src="require('@/assets/img/banana.webp')" class="img-fluid object-fit-cover" />
+                <div class="card__content">
+                  <p class="card__title">Card Title</p>
+                  <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                    tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="p-2">
+              <div class="css-card col p-0">
+                <img :src="require('@/assets/img/banana.webp')" class="img-fluid object-fit-cover" />
+                <div class="card__content">
+                  <p class="card__title">Card Title</p>
+                  <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                    tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -214,21 +366,21 @@ export default {
           description:
             "Keeping track of your groceries with our Inventory Tracker means that you never have to discard expired food items anymore.",
           imageUrl: "shelf.webp",
-          redirect: 'inventory-tracker'
+          redirect: "inventory-tracker",
         },
         {
           feature: "Recipe Generator",
           description:
-            "Need inspiration on what to cook? Simply select the ingredients you want to use and our Recipe Generator will do the rest for you.",
+            "Need inspiration on what to cook? Simply select the ingredients you have and our Recipe Generator will do the rest for you.",
           imageUrl: "recipe_book.webp",
-          redirect: 'recipe-generator'
+          redirect: "recipe-generator",
         },
         {
           feature: "Marketplace",
           description:
             "Gone are the days of discarding expired food items. Be notified when items are expiring, and let us help you sell them should you want to.",
           imageUrl: "trade.webp",
-          redirect: 'marketplace'
+          redirect: "marketplace",
         },
       ],
       cards: [
@@ -526,12 +678,12 @@ a {
   @media only screen and (max-device-width: 991px) {
     background-attachment: scroll;
   }
-}
 
-#parallax-recipe-generator {
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('../assets/img/cooking.webp') no-repeat center;
-  background-size: cover;
-
+  &#parallax-recipe-generator {
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+      url("../assets/img/cooking.webp") no-repeat fixed center;
+    background-size: cover;
+  }
 }
 
 .paper {
@@ -543,7 +695,7 @@ a {
   /* margin: 0 auto; */
   background: #fafafa;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, .3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   overflow: hidden;
 
   @media (min-width: 767px) {
@@ -552,7 +704,7 @@ a {
 }
 
 .paper:before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   bottom: 0;
@@ -560,7 +712,7 @@ a {
   width: 40px;
   background: radial-gradient(#575450 6px, transparent 7px) repeat-y;
   background-size: 30px 30px;
-  border-right: 3px solid #D44147;
+  border-right: 3px solid #d44147;
   box-sizing: border-box;
 }
 
@@ -570,7 +722,112 @@ a {
   right: 0;
   bottom: 30px;
   left: 40px;
-  background: linear-gradient(transparent, transparent 36px, #91D1D3 36px);
+  background: linear-gradient(transparent, transparent 36px, #91d1d3 36px);
   background-size: 38px 38px;
+}
+
+/* (A) SPEECH BOX */
+.speech {
+  /* (A1) FONT */
+  /* (A2) COLORS */
+  color: #fff;
+  /* background-color: #a53d38; */
+
+  /* (A3) DIMENSIONS + POSITION */
+  position: relative;
+  padding: 20px;
+  border-radius: 10px;
+  /* margin: 50px auto; */
+  /* max-width: 320px; */
+}
+
+/* (B) ADD SPEECH "CALLOUT TAIL" */
+/* (B1) USE ::AFTER TO CREATE THE "TAIL" */
+.speech::after {
+  /* (B1-1) ATTACH TRANSPARENT BORDERS */
+  content: "";
+  border: 20px solid transparent;
+
+  /* (B1-2) NECESSARY TO POSITION THE "TAIL" */
+  position: absolute;
+}
+
+/* (C) DIFFERENT TAIL POSITIONS */
+/* (C1) TOP */
+.top.speech::after {
+  /* (C1-1) UP TRIANGLE */
+  border-bottom-color: rgba(255, 255, 255, 0.18);
+  border-top: 0;
+
+  /* (C1-2) POSITION AT TOP */
+  top: -21px;
+  right: 8%;
+  /* margin-left: -20px; */
+}
+
+.css-card {
+  position: relative;
+  /* width: 300px; */
+  /* height: 200px; */
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  perspective: 1000px;
+  /* box-shadow: 0 0 0 5px #ffffff80; */
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.css-card svg {
+  /* width: 48px; */
+  fill: #333;
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.css-card:hover {
+  /* transform: scale(); */
+  box-shadow: 0 8px 16px rgba(255, 255, 255, 0.2);
+}
+
+.card__content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #f2f2f2;
+  transform: translateY(350px);
+  transform-origin: bottom;
+  transition: all linear 0.1s;
+}
+
+.css-card:hover .card__content {
+  transform: rotateX(0deg);
+}
+
+.card__title {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+  font-weight: 700;
+}
+
+.css-card:hover svg {
+  scale: 0;
+}
+
+.card__description {
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: #777;
+  line-height: 1.4;
+}
+
+#marketplace-card {
+  border-radius: 18px;
 }
 </style>
