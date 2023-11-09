@@ -15,7 +15,6 @@ const accountStorage = useAccountStorage();
 
 
 <template>
-  {{ accountStorage.intoCart(cart)}}
 <div v-if="!loaded">
   <div class="d-flex justify-content-center mt-4" v-if="showLoadingIndicator">
         <div class="spinner-grow text-success mt-4" role="status">
