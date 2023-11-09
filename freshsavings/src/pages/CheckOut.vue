@@ -308,29 +308,30 @@
                     </div>
                   </div>
                   <hr class="line">
-                  <div class="d-flex justify-content-between information"><span>Subtotal</span><span>${{calculateTotalPrice}}</span></div>
-                  <div class="d-flex justify-content-between information" v-if="AddressList.length == 2 && Unit != ''"><span>Shipping</span><span>$2.00</span></div>
+                  <div class="d-flex justify-content-between information"><span>Subtotal</span><span>${{parseFloat(calculateTotalPrice).toFixed(2)}}</span></div>
+                  <div class="d-flex justify-content-between information" v-if="AddressList.length == 2 "><span>Shipping</span><span>$2.00</span></div>
                   <div class="d-flex justify-content-between information" v-if="AddressList.length == 2">
                     <span>Total(Incl. taxes)</span>
-                    <span>${{ parseFloat(subtotalCost) + 2}}</span>
+                    <span>${{ parseFloat(calculateTotalPrice + 2).toFixed(2)}}</span>
                   </div>
-                  <div class="d-flex justify-content-between information" v-if="AddressList.length == 3 && Unit != ''"><span>Shipping</span><span>$4.00</span></div>
+                  <div class="d-flex justify-content-between information" v-if="AddressList.length == 3 "><span>Shipping</span><span>$4.00</span></div>
                   <div class="d-flex justify-content-between information" v-if="AddressList.length == 3">
                     <span>Total(Incl. taxes)</span>
-                    <span>${{ parseFloat(subtotalCost) + 4 }}</span>
+                    <span>${{ parseFloat(calculateTotalPrice + 4).toFixed(2) }}</span>
                   </div>
-                  <div class="d-flex justify-content-between information" v-if="AddressList.length >= 4 && Unit != ''"><span>Shipping</span><span>$6.00</span></div>
+                  <div class="d-flex justify-content-between information" v-if="AddressList.length >= 4 "><span>Shipping</span><span>$6.00</span></div>
                   <div class="d-flex justify-content-between information" v-if="AddressList.length >= 4">
                     <span>Total(Incl. taxes)</span>
-                    <span>${{ parseFloat(subtotalCost) + 6 }}</span>
+                    <span>${{parseFloat(calculateTotalPrice + 6).toFixed(2)}}</span>
                   </div>
-                  <div class="d-flex justify-content-between information" v-if="AddressList.length == 1 && Unit != ''">
+                  <div class="d-flex justify-content-between information" v-if="AddressList.length == 1 && Unit !== ''"><span>Shipping</span><span>$2.00</span></div>
+                  <div class="d-flex justify-content-between information" v-if="AddressList.length == 1 && Unit !== ''">
                     <span>Total(Incl. taxes)</span>
-                    <span>${{ parseFloat(subtotalCost) + 2}}</span>
+                    <span>${{parseFloat(calculateTotalPrice + 2).toFixed(2)}}</span>
                   </div>
-                  <div class="d-flex justify-content-between information" v-if="AddressList.length == 1 && Unit == ''">
+                  <div class="d-flex justify-content-between information" v-if="AddressList.length == 1 && Unit === ''">
                     <span>Total(Incl. taxes)</span>
-                    <span>${{ parseFloat(subtotalCost) + 2}}</span>
+                    <span>${{ parseFloat(calculateTotalPrice).toFixed(2)}}</span>
                   </div>
                   <button type="button" class="btn btn-block btn-lg btn-work">
                     <div class="d-flex justify-content-between">
