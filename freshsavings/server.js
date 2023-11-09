@@ -187,6 +187,49 @@ app.get("/get_user_inventory_items/:userid", (req, res) => {
     }
   );
 });
+app.post("/afterCheckOut/:aid/:arrPid", (req, res) => {
+  const aid = parseInt(req.params.aid);
+  const arrPid = req.body.arrPid.map(pid => parseInt(pid));
+  for(const pid of arrPid){
+    const pid = parseInt(pid);
+    connection.query(
+      "select Ingredient.iid, selling_quantity, ExpiryDate, emoji from freshsavings.Posting and freshsavings.Ingredients where Posting.iid = Ingredients.iid Posting.pid = ?",
+      [pid],
+      (err, results) => {
+        if (err) {
+          console.error("Error querying the database:", err);
+          res.status(500).json({ error: "Internal Server Error" });
+          return;
+        }
+        const { iid, selling_quantity, ExpiryDate, emoji } = results[0];
+        connection.query(
+          "INSERT INTO freshsavings.AccountInventory (aid, iid, expiring_in, qty, ExpiryDate, emoji) VALUES (?, ?, ?, ?, ?, ?)",
+          [aid, iid, 1, selling_quantity, ExpiryDate, emoji],
+          (err, results) => {
+            if (err) {
+              console.error("Error querying the database:", err);
+              res.status(500).json({ error: "Internal Server Error" });
+              return;
+            }
+            
+        }
+      );
+      connection.query(
+        "DELETE FROM freshsavings.Posting WHERE pid = ?",
+        [pid],
+        (err, results) => {
+          if (err) {
+            console.error("Error querying the database:", err);
+            res.status(500).json({ error: "Internal Server Error" });
+            return;
+          }
+      }
+    );
+    }
+  );
+  }
+
+})
 
 app.all("/login", (req, res) => {
   if (req.method === "GET") {

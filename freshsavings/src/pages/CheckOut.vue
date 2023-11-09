@@ -34,7 +34,7 @@
                 
 
                 <!-- 2.Delivery Options -->
-                <div class="accordion mb-3" :id="'accordianSelf'">
+                <div class="accordion mb-3" :id="'accordianSelf1'">
                   <div class="accordion-item">
                     <div class="accordion-header">
                       <button type="button" class="accordion-button d-flex align-items-center" data-bs-toggle="collapse"
@@ -107,7 +107,7 @@
 
                 
                   
-                <div class="accordion my-3" :id="'accordianSelf'" v-if="AddressList.length <= 1">
+                <div class="accordion my-3" :id="'accordianSelf2'" v-if="AddressList.length <= 1">
                   <div class="accordion-item">
                     <div class="accordion-header">
                       <button type="button" class="accordion-button d-flex align-items-center collapsed" data-bs-toggle="collapse"
@@ -331,7 +331,13 @@
                     <span>Total(Incl. taxes)</span>
                     <span>${{ parseFloat(calculateTotalPrice).toFixed(2)}}</span>
                   </div>
-                  <button type="button" class="btn btn-block btn-lg btn-work">
+                  <a href="./confirmation-page" v-if='products.length >= 1'><button  type="button" class="btn btn-block btn-lg btn-work" @click='afterCheckOut(accountStorage.aid, products)'>
+                    <div class="d-flex justify-content-between">
+                      <span id="checkout">Checkout</span>
+                    </div>
+                  </button>
+                </a>
+                  <button v-else type="button" class="btn btn-block btn-lg btn-work disabled">
                     <div class="d-flex justify-content-between">
                       <span id="checkout">Checkout</span>
                     </div>
@@ -360,6 +366,7 @@
 <script>
 import NavBar from "@/components/NavBar.vue";
 import { GoogleMap, Marker, CustomMarker } from "vue3-google-map";
+import ConfirmationPage from './ConfirmationPage.vue';
 
 
 export default {
@@ -486,6 +493,18 @@ export default {
         this.Retrieval(pid);
       }
     },
+    async afterCheckOut(aid, arrPid) {
+      // try {
+      //   const response = await axios.post(`http://your-api-base-url/afterCheckOut/${aid}/${arrPid.join(',')}`, {
+      //     arrPid,
+      //   });
+
+      //   console.log(response.data);
+      // } catch (error) {
+      //   console.error('Error:', error);
+      // }
+          useAccountStorage().cart = [];
+    },
   },
 }
 
@@ -502,8 +521,9 @@ export default {
   box-sizing: border-box;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 } */
-#delete1 {
 
+#delete1:hover {
+  color: red;
 }
 .container {
   max-width: 1200px;
