@@ -116,11 +116,16 @@ import thirdImage from '@/assets/img/quality.png'
     <h3 class="text-center fw-bold">Categories</h3>
 
     <!-- Container for categories / swiper -->
-    <div class="container-fluid  d-flex justify-content-between">
-      <div style="background-color: #FFCFD3;" v-for="category of categories" :key="category.categoryName"
-        class="border rounded  p-3 d-flex flex-column justify-content-between col-2 align-items-center">
+    <div class="container-fluid  d-flex justify-content-around">
+      <div v-for="category of categories" :key="category.categoryName" class="col-2">
+        <button v-if="!this.chooseCategories.includes(category.categoryName)" class="btn btn-transparent w-100 border rounded p-3 d-flex flex-column justify-content-between align-items-center" @click="addToCategoriesChosen(category.categoryName)">
         <img :src=imageUrl(category.imgLink) style="width:50px" />
         <p class="mb-0 mt-3 fw-bold" style="color:#83468F">{{ category.categoryName }}</p>
+      </button>
+        <button style='background-color: #FFCFD3' v-else class="btn btn-transparent w-100 border rounded p-3 d-flex flex-column justify-content-between align-items-center" @click="RemoveFromCategoriesChosen(category.categoryName)">
+        <img :src=imageUrl(category.imgLink) style="width:50px" />
+        <p class="mb-0 mt-3 fw-bold" style="color:#83468F">{{ category.categoryName }}</p>
+      </button>
       </div>
     </div>
 
@@ -129,7 +134,7 @@ import thirdImage from '@/assets/img/quality.png'
       <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-start">
         <template v-for="product of groceryItems" :key="product.iname">
           
-          <div v-if="product.posting_status == 'Active' && cart.indexOf(product.pid) == -1 && searched(product.iname) && distancetrack(product.pid)"
+          <div v-if="product.posting_status == 'Active' && cart.indexOf(product.pid) == -1 && searched(product.iname) && distancetrack(product.pid) && this.chooseCategories.includes(product.icat)"
             class="col mb-5">
             <!--<div v-if="product.posting_status == 'Active' && cart.indexOf(product.pid) == -1 && searched(product.iname) && checkDistance(product.a_lat, product.a_long)" class="col mb-5">-->
 
@@ -220,7 +225,7 @@ import thirdImage from '@/assets/img/quality.png'
 
 <script>
 export default {
-  name: "marketplaceHome",
+  name: "MarketPlace",
   data() {
     return {
       loaded: false,
@@ -234,6 +239,7 @@ export default {
       buyerPostalCode: undefined,
       showadd: false,
       showdel: false,
+      chooseCategories: ['Fish', 'Fruits', "Dairy", "Meat"],
       firstImageUrl: firstImage,
       secondImageUrl: secondImage,
       thirdImageUrl: thirdImage,
@@ -242,27 +248,24 @@ export default {
       groceryItems: [],
       categories: [
         {
-          categoryName: "Fruits",
-          imgLink: "fruits.png",
-        },
-        {
-          categoryName: "Vegetables",
-          imgLink: "vegetable.png",
-        },
-        {
           categoryName: "Dairy",
           imgLink: "milk.png",
+        },
+        {
+          categoryName: "Fish",
+
+          imgLink: "fish.png",
+        },
+        {
+          categoryName: "Fruits",
+          imgLink: "fruits.png",
         },
         {
           categoryName: "Meat",
 
           imgLink: "barbecue.png",
         },
-        {
-          categoryName: "Bakery",
-
-          imgLink: "bread.png",
-        },
+        
       ],
     };
   },
@@ -286,7 +289,21 @@ export default {
     
   },
   methods: {
-    
+    addToCategoriesChosen(cat){
+      this.chooseCategories.push(cat)
+    },
+    InsideCategories(cat){
+      return this.chooseCategories.includes(cat)
+    },
+    RemoveFromCategoriesChosen(cat){
+      let arr = [];
+      for (let i of this.chooseCategories){
+        if(i != cat){
+          arr.push(i)
+        }
+      }
+      this.chooseCategories = arr
+    },
     async GetPostingsAndAddDistance() {
   try {
     this.getSession()

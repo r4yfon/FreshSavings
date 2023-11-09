@@ -23,7 +23,7 @@
                     <router-link v-else to="/login" class="nav-link">Inventory</router-link>
                 </li>
                 <li class="nav-item align-self-center">
-                    <a class="nav-link" href="marketplace">Marketplace</a>
+                    <a class="nav-link" href="/marketplace">Marketplace</a>
                 </li>
             </ul>
 

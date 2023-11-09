@@ -8,6 +8,8 @@ import RecipeGenerator from "../pages/RecipeGenerator.vue";
 import InventoryTracker from "../pages/InventoryTracker.vue";
 import PageNotFound from "../pages/PageNotFound.vue";
 import HomePage from "../pages/HomePage.vue";
+import ConfirmationPage from "../pages/ConfirmationPage.vue";
+import MarketPlace from "../pages/Marketplace.vue";
 
 const routes = [
   // {
@@ -22,8 +24,8 @@ const routes = [
   },
   {
     path: "/marketplace",
-    name: "Marketplace",
-    component: Marketplace,
+    name: "MarketPlace",
+    component: MarketPlace,
   },
   {
     path: "/checkout",
@@ -62,9 +64,11 @@ const routes = [
     path: "/404-page-not-found",
     name: "PageNotFound",
     component: PageNotFound,
-    meta: {
-      hideNavBar: true,
-    },
+  },
+  {
+    path: "/confirmation-page",
+    name: "ConfirmationPage",
+    component: ConfirmationPage,
   },
 ];
 
