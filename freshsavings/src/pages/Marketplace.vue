@@ -17,12 +17,14 @@ const accountStorage = useAccountStorage();
 <template>
 
   <div class="d-flex justify-content-center" v-if="!loaded">
-        <div class="spinner-grow text-success" role="status">
+        <div class="spinner-grow text-success mt-4" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
   </div>
 
 <div v-else-if="loaded">
+
+
   <section style="padding-top: 20px;">
     <div class="container-fluid ">
       <div class="row">
@@ -431,7 +433,7 @@ async AddinDistance() {
       setTimeout(() => {
         this.showdel = false;
       }, 700); // Hide the toast after 2 seconds
-      accountStorage.RemoveCart(pid)
+      
 
     },
     distancetrack(pid){
