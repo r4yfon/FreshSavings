@@ -15,16 +15,14 @@ const accountStorage = useAccountStorage();
 
 
 <template>
-<div v-if="!loaded">
-  <div class="d-flex justify-content-center mt-4" v-if="showLoadingIndicator">
-        <div class="spinner-grow text-success mt-4" role="status">
+
+  <div class="d-flex justify-content-center" v-if="!loaded">
+        <div class="spinner-grow text-success" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
-      </div>
   </div>
-<div v-if="loaded">
 
-
+<div v-else-if="loaded">
   <section style="padding-top: 20px;">
     <div class="container-fluid ">
       <div class="row">

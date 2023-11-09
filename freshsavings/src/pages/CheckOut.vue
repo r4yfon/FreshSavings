@@ -47,12 +47,17 @@
                     </div>
                     <div :id="'product'" class="accordion-collapse collapse show">
                       <div class="accordion-body d-flex flex-wrap">
-                        <div class="container">
+                        <div class="empty-container" v-if="accountStorage.cart.length == 0">
+                        
+                        <img id='empty' class='mx-auto' :src="imageUrl('empty.gif')">
+                      </div>
+                        <div v-else class="container">
                           <div class="header-container">
                   <p class="mb-1 custom-text">Product</p>
                   <p class="mb-1 custom-text">Quantity</p>
                   <p class="mb-1 custom-text">Price</p>
                 </div>
+                
                 <div v-for="(product, idx) of productList" :key="idx">
                 
                 <div class="card mb-3">
@@ -542,6 +547,19 @@ export default {
 /* .summary p {
   margin-bottom: 15px;
 } */
+
+.empty-container{
+  width: 100%; /* Make the container take the full width of its parent */
+  height: 0; /* Initially set the height to 0 */
+  padding-bottom: 60%; /* Set the aspect ratio you desire (e.g., 60% for a 2:1 ratio) */
+  position: relative; /* Position is relative to the container */
+}
+
+#empty{position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;}
 .map-container {
   width: 100%; /* Make the container take the full width of its parent */
   height: 0; /* Initially set the height to 0 */
