@@ -2,9 +2,12 @@
   import AccordionPanel from '../components/AccordianPanel.vue';
   import { ref } from 'vue';
   import { createApp } from 'vue'
-  import  VueGoogleMaps from '@fawmi/vue-google-maps';
+  import VueGoogleMaps from 'vue3-google-map';
+  import { useLoadScript } from 'vue3-google-map';
   import axios from 'axios';
+  
 </script>
+
 
 <template>
   <div>
@@ -53,7 +56,7 @@
                   <p class="mb-1 custom-text">Price</p>
                 </div>
                 <div v-for="(product, idx) of productList" :key="idx">
-                  
+                
                 <div class="card mb-3">
                   <div class="card-body">
                     <div class="d-flex justify-content-between">
@@ -64,17 +67,17 @@
                         </div>
                         <div class="ms-3">
                           <b>
-                            <h7>{{ product.Name }}</h7>
+                            <h6>{{ product.Name }}</h6>
                           </b>
                           <p class="small mb-0">Address: {{ product.Address }}</p>
                         </div>
                       </div>
                       <div class="d-flex flex-row align-items-center">
                         <div style="width: 90px;">
-                          <h7 class="fw-normal mb-0">{{ product.Quantity }}</h7>
+                          <h6 class="fw-normal mb-0">{{ product.Quantity }}</h6>
                         </div>
                         <div style="width: 90px;">
-                          <h7 class="mb-0">{{CalculatePrice(product.Price, product.Quantity)}}</h7>
+                          <h6 class="mb-0">{{CalculatePrice(product.Price, product.Quantity)}}</h6>
                         </div>
                         <div style="width: 50px;">
                           <svg @click="deleteCard(idx)" id="delete1" xmlns="http://www.w3.org/2000/svg" width="16"
@@ -106,7 +109,7 @@
 
                 
                   
-                <div class="accordion my-3" :id="'accordianSelf'">
+                <div class="accordion my-3" :id="'accordianSelf'" v-if="AddressList.length <= 1">
                   <div class="accordion-item">
                     <div class="accordion-header">
                       <button type="button" class="accordion-button d-flex align-items-center collapsed" data-bs-toggle="collapse"
@@ -117,7 +120,7 @@
                         </p>
                       </button>
                     </div>
-                    <div :id="'self'" class="accordion-collapse collapse">
+                    <div :id="'self'" class="accordion-collapse collapse" >
                       <div class="accordion-body d-flex flex-wrap">
                         <div class="container">
                           <div>
@@ -217,7 +220,9 @@
                           type="text"
                           id="state"
                           name="state"
+                          v-model="Unit"
                         />
+                        
                       </div>
                       </div>
                     </div>
@@ -240,7 +245,23 @@
                     </div>
                     <div :id="'collapseMap'" class="accordion-collapse collapse">
                       <div class="accordion-body d-flex flex-wrap">
-                        Maps
+                        <div class='map-container'>
+                          <GoogleMap id="map"
+                          api-key="AIzaSyBaK6fapQE5NMhxj0ZZdKcQsn9o1xhZf3M"
+  :center="center"
+  :zoom="14"
+  map-type-id="terrain"
+  
+>
+<Marker :options="{ position: center }"></Marker>
+<CustomMarker :options="{position: marking.position}" v-for="(marking, idx) of productList" :key="idx">
+      <div style="text-align: center">
+        <img :src="imageUrl(marking.Image)" width="50" height="50" />
+      </div>
+    </CustomMarker>
+</GoogleMap>
+                        </div>
+
                       </div>
                     </div>
                   </div>
@@ -287,11 +308,29 @@
                     </div>
                   </div>
                   <hr class="line">
-                  <div class="d-flex justify-content-between information"><span>Subtotal</span><span>$3000.00</span></div>
-                  <div class="d-flex justify-content-between information" v-if="shippingfee"><span>Shipping</span><span>$20.00</span></div>
-                  <div class="d-flex justify-content-between information">
+                  <div class="d-flex justify-content-between information"><span>Subtotal</span><span>${{calculateTotalPrice}}</span></div>
+                  <div class="d-flex justify-content-between information" v-if="AddressList.length == 2 && Unit != ''"><span>Shipping</span><span>$2.00</span></div>
+                  <div class="d-flex justify-content-between information" v-if="AddressList.length == 2">
                     <span>Total(Incl. taxes)</span>
-                    <span>$3020.00</span>
+                    <span>${{ parseFloat(subtotalCost) + 2}}</span>
+                  </div>
+                  <div class="d-flex justify-content-between information" v-if="AddressList.length == 3 && Unit != ''"><span>Shipping</span><span>$4.00</span></div>
+                  <div class="d-flex justify-content-between information" v-if="AddressList.length == 3">
+                    <span>Total(Incl. taxes)</span>
+                    <span>${{ parseFloat(subtotalCost) + 4 }}</span>
+                  </div>
+                  <div class="d-flex justify-content-between information" v-if="AddressList.length >= 4 && Unit != ''"><span>Shipping</span><span>$6.00</span></div>
+                  <div class="d-flex justify-content-between information" v-if="AddressList.length >= 4">
+                    <span>Total(Incl. taxes)</span>
+                    <span>${{ parseFloat(subtotalCost) + 6 }}</span>
+                  </div>
+                  <div class="d-flex justify-content-between information" v-if="AddressList.length == 1 && Unit != ''">
+                    <span>Total(Incl. taxes)</span>
+                    <span>${{ parseFloat(subtotalCost) + 2}}</span>
+                  </div>
+                  <div class="d-flex justify-content-between information" v-if="AddressList.length == 1 && Unit == ''">
+                    <span>Total(Incl. taxes)</span>
+                    <span>${{ parseFloat(subtotalCost) + 2}}</span>
                   </div>
                   <button type="button" class="btn btn-block btn-lg btn-work">
                     <div class="d-flex justify-content-between">
@@ -308,13 +347,7 @@
         <div class="row">
           <div class="col-12">
             <template>
-  <GMapMap
-      :center="center"
-      :zoom="7"
-      map-type-id="terrain"
-      style="width: 100vw; height: 900px"
-  >
-  </GMapMap>
+  
 </template>
           </div>
           
@@ -327,37 +360,58 @@
 
 <script>
 import NavBar from "@/components/NavBar.vue";
+import { GoogleMap, Marker, CustomMarker } from "vue3-google-map";
 
 export default {
+  
   name: "CheckOut",
   components: {
     NavBar,
+    
   },
   data: () => ({
     isLoggedIn: false,
     loading: false,
     timing:"", 
     date:"",
-    products: [3, 2, 5],
+    products: [3, 2, 11],
     productList: {},
-    Addresses: [],
+    AddressList: [],
+    subtotalCost: 0,
+    Unit: "",
     
-    center: {lat: 51.093048, lng: 6.842120},
+    center: {lat: 1.38756183636332, lng: 103.761055818184},
+    markers: {},
+          
   }),
   created() {
 		this.checkLoginStatus();
+    this.RetrieveAll(this.products)
     
 	},
   mounted(){
-    this.RetrieveAll()
-  },
-  computed: {
+    
     
   },
+  
+  computed: {
+    calculateTotalPrice(){
+      let total = 0
+      for(let product in this.productList){
+        console.log("Before entering function:")
+        console.log(this.CalculatePrice(this.productList[product].Price, this.productList[product].Quantity))
+        total += this.CalculatePrice(this.productList[product].Price, this.productList[product].Quantity);
+        console.log(total)
+      }
+      return total
+    }
+  },
   methods: {
+    
     CalculatePrice(p, qty){
       
-      return parseFloat(p) * qty
+      console.log("after..")
+      return parseFloat(parseFloat(p).toFixed(2) * qty).toFixed(2)
     },
     checkLoginStatus() {
 			const sessionData = JSON.parse(localStorage.getItem('session'));
@@ -370,7 +424,17 @@ export default {
 		},
     deleteCard(pid) {
       // Use appropriate logic to delete the card based on the card number
-      delete this.productList[pid]
+      let arr = [];
+      for(let i of this.products){
+        if(i != pid){
+          arr.push(i)
+        }
+      }
+      this.products = arr;
+      console.log('after delete')
+      console.log(this.products)
+      this.RetrieveAll(this.products)
+      
       
     },
     
@@ -385,24 +449,34 @@ export default {
         .then((response) => {
           
           let prod = {};
-          let add = []
+          let add = {}
           prod['Address'] = response.data[0].postalcode;
           prod['Name'] = response.data[0].iname;
           prod['Price'] = response.data[0].selling_price;
           prod['Quantity'] = response.data[0].selling_quantity;
           prod['Image'] = response.data[0].image;
-          add.push(response.data[0].a_lat);
-          add.push(response.data[0].a_long);
-          this.Addresses.push(add)
+          add['lat'] = parseFloat(response.data[0].a_lat);
+          add['lng'] = parseFloat(response.data[0].a_long);
+          prod['position'] = add
+          if(!this.AddressList.includes(response.data[0].postalcode)){
+            this.AddressList.push(response.data[0].postalcode)
+          }
+          
           this.productList[pid] = prod
           console.log(this.productList)
+          
         })
         .catch(function (error) {
           console.log(error);
         });
     },
-    RetrieveAll(){
-      for(let pid of this.products){
+    RetrieveAll(prods){
+      console.log("RetrievalAll here")
+      console.log(prods);
+      this.productList = {};
+      this.subtotalCost = 0;
+      this.AddressList = [];
+      for(let pid of prods){
         this.Retrieval(pid);
       }
     },
@@ -440,7 +514,21 @@ export default {
 /* .summary p {
   margin-bottom: 15px;
 } */
+.map-container {
+  width: 100%; /* Make the container take the full width of its parent */
+  height: 0; /* Initially set the height to 0 */
+  padding-bottom: 60%; /* Set the aspect ratio you desire (e.g., 60% for a 2:1 ratio) */
+  position: relative; /* Position is relative to the container */
+}
 
+/* Make the map fill the entire container */
+#map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
 
 form {
   padding: 20px 0;
