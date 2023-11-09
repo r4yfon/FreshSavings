@@ -494,7 +494,15 @@ export default {
       }
     },
     async afterCheckOut(aid, arrPid) {
-      console.log("hello")
+      // try {
+      //   const response = await axios.post(`http://your-api-base-url/afterCheckOut/${aid}/${arrPid.join(',')}`, {
+      //     arrPid,
+      //   });
+
+      //   console.log(response.data);
+      // } catch (error) {
+      //   console.error('Error:', error);
+      // }
     },
   },
 }
