@@ -171,8 +171,8 @@ app.get("/get_all_recipes", (req, res) => {
 app.get("/get_user_inventory_items", (req, res) => {
   const userid = 1; // aid of currently logged-in user
   connection.query(
-    // TODO: make query more specific after finalising the data to fetch
-    "SELECT a.aid, a.iid, i.iname, a.qty FROM freshsavings.AccountInventory a, freshsavings.Ingredient i WHERE a.iid = i.iid AND a.aid = ?",
+    // TODO: make query more specific after finalising the data to fetch 
+    "SELECT a.aid, a.iid, i.iname, a.qty, a.expiring_in, a.ExpiryDate, i.icat, a.emoji FROM freshsavings.AccountInventory a, freshsavings.Ingredient i WHERE a.iid = i.iid AND a.aid = ?",
     [userid],
     (err, results) => {
       if (err) {
@@ -341,6 +341,54 @@ app.get("/get-distance", async (req, res) => {
     res.status(500).json({ error: "An error occurred" });
   }
 });
+
+// TO DO: check if it's right
+// app.put('/insertNewInventoryItem', (req, res) => {
+//   const updatedData = req.body;
+
+//   // Perform the SQL update operation
+//   const AccountInventoryQuery = 'INSERT INTO freshsavings.AccountInventory(aid,iid, expiring_in, qty, ExpiryDate, emoji) VALUES (?, ?, 3, ?, ?, ?);';
+//   const IngredientQuery = 'INSERT INTO freshsavings.Ingredient(iid, iname, icat) VALUES (?,?,?,?); '
+
+//   connection.beginTransaction((err) => {
+//     if (err) {
+//       console.error('Error starting transaction:', err);
+//       res.status(500).send('Internal Server Error');
+//       return;
+//     }
+
+//     connection.query(AccountInventoryQuery, [aid,iid, expiring_in, qty, ExpiryDate], (error, productResults) => {
+//       if (error) {
+//         return connection.rollback(() => {
+//           console.error('Error inserting data into products:', error);
+//           res.status(500).send('Internal Server Error');
+//         });
+//       }
+
+//       const productId = productResults.insertId;
+
+//       connection.query(IngredientQuery, [iid, iname, icat], (inventoryError) => {
+//         if (inventoryError) {
+//           return connection.rollback(() => {
+//             console.error('Error inserting data into inventory:', inventoryError);
+//             res.status(500).send('Internal Server Error');
+//           });
+//         }
+
+//         connection.commit((commitError) => {
+//           if (commitError) {
+//             return connection.rollback(() => {
+//               console.error('Error committing transaction:', commitError);
+//               res.status(500).send('Internal Server Error');
+//             });
+//           }
+
+//           res.status(200).send('Data inserted successfully');
+//         });
+//       });
+//     });
+//   });
+// });
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

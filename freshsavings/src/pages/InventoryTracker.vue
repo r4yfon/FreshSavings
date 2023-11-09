@@ -204,16 +204,7 @@ export default {
 			// TO DO: Retrieve aid -> fname
 			user: '',
 
-			// TO DO: Retrieve from a method called getInventoryItems()
-			items: [
-				{ name: "Grape", category: 'Fruits', expiring_in: '5', quantity: '3', emoji: '🍇' },
-				{ name: "Milk", category: 'Dairy', expiring_in: '3', quantity: '3', emoji: '🥛' },
-				{ name: "Chicken", category: 'Meat', expiring_in: '2', quantity: '3', emoji: '🐓' },
-				{ name: "Fish", category: 'Fish', expiring_in: '10', quantity: '3', emoji: '🐟' },
-				{ name: "Apple", category: 'Fruits', expiring_in: '2', quantity: '3', emoji: '🍎' },
-				{ name: "Cheese", category: 'Dairy', expiring_in: '0', quantity: '3', emoji: '🧀' },
-				{ name: "Beef", category: 'Meat', expiring_in: '8', quantity: '3', emoji: '🐄' },
-			],
+			items: [],
 
 			// Form inputs 
 			ingredient_name: '',
@@ -329,26 +320,68 @@ export default {
 			return style;		
 		},
 
-		//  TO DO: Insert new item into database 
-		// (aid, iid, iname, icat, expiring_in (fix a number since not impt), quantity, emoji (to be added into db))
-		insertItem() {
-			if (
-				this.ingredient_name == "" ||
-				this.ingredient_quantity == "" ||
-				this.category == ""
-			) {
-				alert("Please fill out all fields");
-				return;
-			};
+		// ALL SQL STATEMENTS
+		// Retrieves record of all Inventory Items in an Array 
+		// getInventoryItems() {
+		// 	axios
+		// 	.get("http://localhost:3000/get_user_inventory_items")
+		// 	.then((response) => {
+		// 	let newItems = [];
+		// 	for (let item of response.data) {
+		// 		const currentDate = new Date();
+		// 		var futureDate = new Date(item.ExpiryDate);
+		// 		var timeDifference = futureDate.getTime() - currentDate.getTime();
+		// 		var daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 
-			const expiring_in = this.calculateRemainingDays; 
-			console.log(expiring_in); 
+		// 		newItems.push({
+		// 			name: item.iname,
+		// 			category: item.icat,
+		// 			expiring_in: daysDifference,
+		// 			quantity: item.qty,
+		// 			// emoji: item.emoji, need to add into database
+		// 		})
+		// 	};
+		// 	this.newItems = items;
+		// });
+		// },
+
+		// Insert new item into databases - Ingredient and AccountInventory 
+		// insertItem() {
+		// 	if (
+		// 		this.ingredient_name == "" ||
+		// 		this.ingredient_quantity == "" ||
+		// 		this.category == ""
+		// 	) {
+		// 		alert("Please fill out all fields");
+		// 		return;
+		// 	};
+
+		// 	const expiring_in = this.calculateRemainingDays; 
+		// 	this.formAction('clear');
+		// 	this.formAction('close'); 
+
+		// 	// Your logic to update the SQL table
+		// 	const updatedData = {
+		// 		iname: this.ingredient_name,
+		// 		icat: this.selectedCategory,
+		// 		expiring_in: expiring_in, 
+		// 		qty: this.ingredient_quantity,
+		// 		emoji: this.selectedEmoji,// havent include yet 
+		// 	};
+
+		// 	// Make an HTTP PUT request to the server-side endpoint
+		// 	axios.put('/insertNewInventoryItem', updatedData)
+		// 		.then(response => {
+		// 		// Handle the response if needed
+		// 		console.log('Table updated successfully', response.data);
+		// 		})
+		// 		.catch(error => {
+		// 		// Handle errors
+		// 		console.error('Error updating table', error);
+		// 		});
+		// 	}
+		// },
 			
-			this.items.push({ "name": this.ingredient_name, "category": this.selectedCategory, "expiring_in": expiring_in, "quantity": this.ingredient_quantity, "emoji": this.selectedEmoji });
-			this.formAction('clear');
-			this.formAction('close'); 
-		},
-
 		formAction(action){
 			if (action == 'open'){
 				document.getElementById("myForm").style.display = "block";
