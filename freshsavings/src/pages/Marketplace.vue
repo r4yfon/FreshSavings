@@ -325,7 +325,7 @@ async GetDistanceAPI(Lat, Lng) {
   const destLat = Lat; // Replace with your destination's latitude
   const destLng = Lng; // Replace with your destination's longitude
   const units = 'metric'; // Units of measurement
-  const apiKey = 'AIzaSyBaK6fapQE5NMhxj0ZZdKcQsn9o1xhZf3M'; // Your API key
+  const apiKey = process.env.GOOGLEMAPS_API_KEY; // Your API key
 
   const url = `http://localhost:3000/get-distance?originLat=${originLat}&originLng=${originLng}&destLat=${destLat}&destLng=${destLng}&units=${units}&apiKey=${apiKey}`;
 
