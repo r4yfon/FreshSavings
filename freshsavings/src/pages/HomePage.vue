@@ -802,7 +802,7 @@ a {
   background-color: #f2f2f2;
   transform: translateY(350px);
   transform-origin: bottom;
-  transition: all linear 0.1s;
+  transition: all 0.2s cubic-bezier(0.175, 0.5, 0.32, 1);
 }
 
 .css-card:hover .card__content {
