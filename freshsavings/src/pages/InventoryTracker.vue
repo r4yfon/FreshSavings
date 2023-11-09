@@ -35,7 +35,7 @@ import { Icon } from "@iconify/vue";
 						<span class="mb-0 fw-bold">{{ category.categoryName }}</span>
 					</div>
 				</div>
-				<button class="open-button" @click="openForm()"> + New item</button>
+				<button class="open-button" @click="formAction('open')"> + New item</button>
 			</div>
 		</div>
 
@@ -45,7 +45,7 @@ import { Icon } from "@iconify/vue";
 
 				<h3 class="fw-bold" style="text-align: center">
 					Item Tracking 
-					<button id='close' @click="closeForm()">close</button>
+					<button id='close' @click="formAction('close')">close</button>
 				</h3>
 				
 
@@ -91,8 +91,8 @@ import { Icon } from "@iconify/vue";
 				</div> 
 
 				<div>
-					<button type="button" class="btn add" @click="add()">Add</button>
-					<button type="button" class="btn cancel" @click="clearForm()">Clear</button>
+					<button type="button" class="btn add" @click="insertItem()">Add</button>
+					<button type="button" class="btn cancel" @click="formAction('clear')">Clear</button>
 				</div>
 
 			</form>
@@ -111,21 +111,20 @@ import { Icon } from "@iconify/vue";
 			<div class="projects" name="projects">
 				<template v-for="(item, idx) in sortedArray" :key="item.name">
 				<TransitionGroup class="project" v-if="currentFilter === item.category || currentFilter === 'All'">
-					<div class="col-lg-4 col-md-6 col-sm-12" style="padding-bottom: 3px;">
-					<div :style="item.expiring_in <= 2 ? 'border: solid red; border-radius: 8px; width:260px': ''">
+					<div class="col-lg-4 col-md-6 col-sm-12" style="padding-bottom: 10px;">
+					<div :style="item.expiring_in <= 2 ? 'border: solid 2px red; border-radius: 1rem; width:264px': ''">
 						<div class="card" :style="computedItemStyle(item.emoji)">
-							<div >
 								<div class="card-title d-flex justify-content-between" :id="'card-title-' + idx">
-									<div class="emoji">
+									<div class="emoji emoji-hover">
 										{{ item.emoji }}
 									</div>
 									<div id="counter" style="display:inline-flex; ">
-										<button type="button" class="btn btn-outline-secondary" style="border: none" v-if="item.quantity>0" @click="item.quantity--">-</button>
+										<button type="button" class="btn btn-outline-secondary" style="border: none" v-if="item.quantity>0" @click="modifyItemQty(idx, 'minus')">-</button>
 										<button type="button" class="btn btn-outline-secondary" style="border: none" v-else>-</button>
 										<span class="circle">
 											x {{ item.quantity }}	
 										</span>
-										<button type="button" class="btn btn-outline-secondary" style="border: none" @click="item.quantity++">+</button>
+										<button type="button" class="btn btn-outline-secondary" style="border: none" @click="modifyItemQty(idx, 'add')">+</button>
 										
 									</div>
 								</div>
@@ -134,7 +133,7 @@ import { Icon } from "@iconify/vue";
 									<p>
 										<span class="fw-bold" style="font-size:large">{{ item.name }}</span> 
 										<br/>
-										Expiring in <b>{{ item.expiring_in }}</b> days
+										Expiring in <span class="fw-bold" style="font-size: large;">{{ item.expiring_in }}</span> days
 									</p>
 								</div>
 								
@@ -142,7 +141,7 @@ import { Icon } from "@iconify/vue";
 								<!-- Button trigger modal -->
 								<div class="d-flex">
 									<div class="col-lg-6 col-md-6 col-sm-6">
-										<button type="button" class="btn btn-danger" style="display:block; width:100%" @click="removePost(idx)">
+										<button type="button" class="btn btn-danger" style="display:block; width:100%" @click="removePost()">
 											Remove
 										</button>
 									</div>
@@ -185,7 +184,6 @@ import { Icon } from "@iconify/vue";
 									</div>
 								</div>
 								</div>
-								</div>
 							</div>
 						</div>
 					</TransitionGroup>
@@ -204,8 +202,11 @@ export default {
 		return {
 			isLoggedIn: true,
 			currentFilter: 'All',
+
+			// TO DO: Retrieve aid 
 			user: '',
 
+			// TO DO: Retrieve from a method called getInventoryItems()
 			items: [
 				{ name: "Grape", category: 'Fruits', expiring_in: '5', quantity: '3', emoji: '🍇' },
 				{ name: "Milk", category: 'Dairy', expiring_in: '3', quantity: '3', emoji: '🥛' },
@@ -216,6 +217,7 @@ export default {
 				{ name: "Beef", category: 'Meat', expiring_in: '8', quantity: '3', emoji: '🐄' },
 			],
 
+			// Form inputs 
 			ingredient_name: '',
 			ingredient_quantity: '',
 			ingredient_purchase_date: '',
@@ -224,7 +226,7 @@ export default {
 			selectedCategory: 'Fruits',
 			selectedEmoji: '',
 
-			// hard-coded
+			// Hard-Coded
 			categories: [
 				{ categoryName: "All", imgLink: "kitchen.png" },
 				// { categoryName: "Due Soon", imgLink: "duesoon.png" },
@@ -268,6 +270,14 @@ export default {
 					return [];
 			}
 		},
+
+		calculateRemainingDays(){
+			const currentDate = new Date();
+			var futureDate = new Date(this.ingredient_expiry_date);
+			var timeDifference = futureDate.getTime() - currentDate.getTime();
+			var daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+			return daysDifference; 
+		}
 		
 	},
 	methods: {
@@ -286,53 +296,8 @@ export default {
 		setFilter: function (filter) {
 			this.currentFilter = filter;
 		},
-		add() {
-			if (
-				this.ingredient_name == "" ||
-				this.ingredient_quantity == "" ||
-				this.category == ""
-			) {
-				alert("Please fill out all fields");
-				return;
-			};
-			const currentDate = new Date();
-			const futureDate = new Date(this.ingredient_expiry_date);
-			const timeDifference = futureDate.getTime() - currentDate.getTime();
-			const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-
-			this.items.push({ "name": this.ingredient_name, "category": this.selectedCategory, "expiring_in": daysDifference, "quantity": this.ingredient_quantity, "emoji": this.selectedEmoji });
-			this.ingredient_name = '';
-			this.ingredient_quantity = '';
-			this.selectedCategory = "";
-			this.ingredient_expiry_date = "";
-			this.selectedEmoji = "";
-			document.getElementById("myForm").style.display = "none";
-		},
-
-		openForm() {
-			document.getElementById("myForm").style.display = "block";
-		},
-
-		closeForm() {
-			document.getElementById("myForm").style.display = "none";
-		},
-
-		clearForm() {
-			this.ingredient_name = '';
-			this.ingredient_quantity = '';
-			this.selectedCategory = "Fruits";
-			this.ingredient_expiry_date = "";
-			this.selectedEmoji = "";
-		},
-		posted(idx) {
-			this.posting_status = 'Active';
-		},
-		removePost(idx) {
-			this.items.splice(idx, idx);
-		},
 		computedItemStyle(obj){
 			let style = {
-				'border-radius': '8px',
 			};
 
 			if ('🧀🧈🍋🍌🥔🌽'.includes(obj)) {
@@ -351,10 +316,71 @@ export default {
 				style.background = 'linear-gradient(to top left, #e2cfc4, 70%, white)';
 			}else if ('🐖'.includes(obj)){
 				style.background = 'linear-gradient(to top left, #ffacc5, 70%, white)';
-			}
-			console.log(style)			
+			}		
 			return style;		
-		}
+		},
+
+		//  TO DO: Insert new item into database 
+		// (aid, iid, iname, icat, expiring_in (fix a number since not impt), quantity, emoji (to be added into db))
+		insertItem() {
+			if (
+				this.ingredient_name == "" ||
+				this.ingredient_quantity == "" ||
+				this.category == ""
+			) {
+				alert("Please fill out all fields");
+				return;
+			};
+
+			const expiring_in = this.calculateRemainingDays; 
+			console.log(expiring_in); 
+			
+			this.items.push({ "name": this.ingredient_name, "category": this.selectedCategory, "expiring_in": expiring_in, "quantity": this.ingredient_quantity, "emoji": this.selectedEmoji });
+			this.formAction('clear');
+			this.formAction('close'); 
+		},
+
+		formAction(action){
+			if (action == 'open'){
+				document.getElementById("myForm").style.display = "block";
+			}
+			else if (action == 'close'){
+				document.getElementById("myForm").style.display = "none";
+			}
+			else if (action == 'clear'){
+				this.ingredient_name = '';
+				this.ingredient_quantity = '';
+				this.selectedCategory = "Fruits";
+				this.ingredient_expiry_date = "";
+				this.selectedEmoji = "";
+			}
+		},
+
+		modifyItemQty(idx, operator){
+			if (operator == 'add') {
+				this.items[idx].qty += number;
+				// check again
+			} else if (operator == 'minus' && this.items[idx].qty > 0) {
+				this.items[idx].qty -= number; 
+				// check again
+			}
+			if (items[idx].qty == 0){
+				this.removePost(); 
+			}
+			
+		},
+
+		// TO DO: remove this card information from the Table 'AccountInventory' completely 
+		removePost() {
+			this.items.splice(idx, idx);
+			// check again 
+		},
+
+		// TO DO: insert this card information to Table 'Posting'
+		posted(idx) {
+			this.posting_status = 'Active';
+		},
+
 	}
 }
 
@@ -416,7 +442,13 @@ export default {
 
 .card{
 	max-width:260px;
-	border-radius: 8px;
+	/* border-radius: 8px; */
+	position: relative;
+	padding: 1rem;
+	width: 350px;
+	box-shadow: -1px 15px 30px -12px rgb(32, 32, 32);
+	border-radius: 0.9rem;
+	cursor: pointer;
 	
 }
 
@@ -528,8 +560,13 @@ export default {
 }
 
 .emoji {
-	font-size: 2.5rem;
+	font-size: 2.7rem;
 	text-shadow: 0 -0.5rem 1rem #faf5f5, 0 0.5rem 1rem #999;
+}
+
+.emoji-hover:hover{
+  transform: scale(1.2); /* Increase the size on hover */
+  transition: transform 0.3s ease; /*Add a smooth transition */
 }
 
 #radios label {
