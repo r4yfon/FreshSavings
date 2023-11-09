@@ -225,7 +225,7 @@ import thirdImage from '@/assets/img/quality.png'
 
 <script>
 export default {
-  name: "marketplaceHome",
+  name: "MarketPlace",
   data() {
     return {
       loaded: false,
