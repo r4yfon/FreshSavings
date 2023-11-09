@@ -112,8 +112,7 @@ import { Icon } from "@iconify/vue";
 				<template v-for="(item, idx) in sortedArray" :key="item.name">
 				<TransitionGroup class="project" v-if="currentFilter === item.category || currentFilter === 'All'">
 					<div class="col-lg-4 col-md-6 col-sm-12" style="padding-bottom: 10px;">
-					<div :style="item.expiring_in <= 2 ? 'border: solid 2px red; border-radius: 1rem; width:264px': ''">
-						<div class="card" :style="computedItemStyle(item.emoji)">
+						<div class="card" :style="computedItemStyle(item)">
 								<div class="card-title d-flex justify-content-between" :id="'card-title-' + idx">
 									<div class="emoji emoji-hover">
 										{{ item.emoji }}
@@ -183,7 +182,6 @@ import { Icon } from "@iconify/vue";
 										</div>
 									</div>
 								</div>
-								</div>
 							</div>
 						</div>
 					</TransitionGroup>
@@ -203,7 +201,7 @@ export default {
 			isLoggedIn: true,
 			currentFilter: 'All',
 
-			// TO DO: Retrieve aid 
+			// TO DO: Retrieve aid -> fname
 			user: '',
 
 			// TO DO: Retrieve from a method called getInventoryItems()
@@ -297,26 +295,37 @@ export default {
 			this.currentFilter = filter;
 		},
 		computedItemStyle(obj){
-			let style = {
-			};
+			let style = {};
 
-			if ('🧀🧈🍋🍌🥔🌽'.includes(obj)) {
+			if ('🧀🧈🍋🍌🥔🌽'.includes(obj.emoji)) {
 				style.background = 'linear-gradient(to top left, #FBF8CC 70%, white)';
-			} else if ('🐟🐠'.includes(obj)) {
+			} else if ('🐟🐠'.includes(obj.emoji)) {
 				style.background = 'linear-gradient(to top left, #8EECF5 70%, white)';
-			} else if ('🦑🍇🫐🍆'.includes(obj)) {
+			} else if ('🦑🍇🫐🍆'.includes(obj.emoji)) {
 				style.background = 'linear-gradient(to top left, #CFBAF0 70%, white)';
-			} else if ('🍈🍏🍐🥝🫒🥑🫑🥒🥬🥦'.includes(obj)) {
+			} else if ('🍈🍏🍐🥝🫒🥑🫑🥒🥬🥦'.includes(obj.emoji)) {
 				style.background = 'linear-gradient(to top left, #b9fbc0 70%, white)';
-			} else if ('🦀🦞🦐🍉🍎🍒🍓🍅'.includes(obj)){
+			} else if ('🦀🦞🦐🍉🍎🍒🍓🍅'.includes(obj.emoji)){
 				style.background ='linear-gradient(to top left, #ffb5a7 , 70%, white)';
-			} else if ('🍍🍗🍑🥕'.includes(obj)){
+			} else if ('🍍🍗🍑🥕'.includes(obj.emoji)){
 				style.background = 'linear-gradient(to top left, #fec89a, 70%, white)';
-			} else if ('🥥🍖🥓🐓'.includes(obj)){
+			} else if ('🥥🍖🥓🐓'.includes(obj.emoji)){
 				style.background = 'linear-gradient(to top left, #e2cfc4, 70%, white)';
-			}else if ('🐖'.includes(obj)){
+			}else if ('🐖'.includes(obj.emoji)){
 				style.background = 'linear-gradient(to top left, #ffacc5, 70%, white)';
-			}		
+			}
+			else {
+				style.background = 'linear-gradient(to top left, #F8F6F4, 70%, white)';
+			}
+
+			if (obj.expiring_in <= 2 && obj.expiring_in >= 0){
+				style.border = 'solid 5px orange';
+				style.borderRadius = '1rem';
+			}
+			else if (obj.expiring_in < 0){
+				style.border = 'solid 5px orange';
+				style.borderRadius = '1rem';
+			}
 			return style;		
 		},
 
@@ -356,6 +365,7 @@ export default {
 			}
 		},
 
+		// TO DO: update table of new data 
 		modifyItemQty(idx, operator){
 			if (operator == 'add') {
 				this.items[idx].qty += number;
@@ -444,7 +454,7 @@ export default {
 	max-width:260px;
 	/* border-radius: 8px; */
 	position: relative;
-	padding: 1rem;
+	padding: 0.7em;
 	width: 350px;
 	box-shadow: -1px 15px 30px -12px rgb(32, 32, 32);
 	border-radius: 0.9rem;
