@@ -1,6 +1,8 @@
 <script setup>
 import { Icon } from "@iconify/vue";
 import axios from "axios";
+import { useAccountStorage } from '../main.js';
+const accountStorage = useAccountStorage();
 </script>
 
 <template>
@@ -316,6 +318,7 @@ export default {
 
     // upon clicking "Populate Inventory" button, selects items in user's inventory and filters suitable recipes
     selectInventoryItems() {
+      
       this.ingredientNameQty = {};
       // show loading indicator
       if (!(this.alreadyPopuatedFromInventory)) {
@@ -323,7 +326,7 @@ export default {
         const duration = 1500;
         setTimeout(() => {
           this.showLoadingIndicator = false;
-          axios.get("http://localhost:3000/get_user_inventory_items").then((response) => {
+          axios.get("http://localhost:3000/get_user_inventory_items/" + useAccountStorage().aid).then((response) => {
             for (let ingredient of response.data) {
               let ingredientInameIid = [ingredient.iname, ingredient.iid];
               let ingredientQty = ingredient.qty;

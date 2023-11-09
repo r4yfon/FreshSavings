@@ -1,5 +1,9 @@
 <script setup>
 import { Icon } from "@iconify/vue";
+import { useAccountStorage } from '../main.js';
+import axios from 'axios';
+// import { useAccountStorage } from '../main.js';
+const accountStorage = useAccountStorage();
 
 </script>
 
@@ -10,7 +14,7 @@ import { Icon } from "@iconify/vue";
 		<div class="container-fluid ">
 			<div class="row">
 				<h1 class="text-center fw-bold mb-4">
-					{{ user }}'s Food Inventory
+					{{ accountStorage.name }}'s Food Inventory
 					<Icon icon="mdi:human-welcome" />
 				</h1>
 			</div>
@@ -109,8 +113,8 @@ import { Icon } from "@iconify/vue";
 
 		<div class="row justify-content-start container-fluid">
 			<div class="projects" name="projects">
-				<template v-for="(item, idx) in sortedArray" :key="item.name">
-				<TransitionGroup class="project" v-if="currentFilter === item.category || currentFilter === 'All'">
+				<template v-for="(item, idx) in sortedArray" :key="item.iname">
+				<TransitionGroup class="project" v-if="currentFilter === item.icat || currentFilter === 'All'">
 					<div class="col-lg-4 col-md-6 col-sm-12" style="padding-bottom: 10px;">
 						<div class="card" :style="computedItemStyle(item)">
 								<div class="card-title d-flex justify-content-between" :id="'card-title-' + idx">
@@ -118,10 +122,10 @@ import { Icon } from "@iconify/vue";
 										{{ item.emoji }}
 									</div>
 									<div id="counter" style="display:inline-flex; ">
-										<button type="button" class="btn btn-outline-secondary" style="border: none" v-if="item.quantity>0" @click="modifyItemQty(idx, 'minus')">-</button>
+										<button type="button" class="btn btn-outline-secondary" style="border: none" v-if="item.qty>0" @click="modifyItemQty(idx, 'minus')">-</button>
 										<button type="button" class="btn btn-outline-secondary" style="border: none" v-else>-</button>
 										<span class="circle">
-											x {{ item.quantity }}	
+											x {{ item.qty }}	
 										</span>
 										<button type="button" class="btn btn-outline-secondary" style="border: none" @click="modifyItemQty(idx, 'add')">+</button>
 										
@@ -130,7 +134,7 @@ import { Icon } from "@iconify/vue";
 								
 								<div class="card-body">
 									<p>
-										<span class="fw-bold" style="font-size:large">{{ item.name }}</span> 
+										<span class="fw-bold" style="font-size:large">{{ item.iname }}</span> 
 										<br/>
 										Expiring in <span class="fw-bold" style="font-size: large;">{{ item.expiring_in }}</span> days
 									</p>
@@ -205,6 +209,7 @@ export default {
 			user: '',
 
 			items: [],
+			// inventoryItems: [],
 
 			// Form inputs 
 			ingredient_name: '',
@@ -236,15 +241,20 @@ export default {
 	},
 	created() {
 		this.checkLoginStatus();
+		this.fetchItems();
 	},
 	computed: {
 		sortedArray() {
-			let sortedItems = this.items;
+			let sortedItems = this.items.filter(item => {
+			return item.icat === this.currentFilter || this.currentFilter === 'All';
+			});
 			sortedItems = sortedItems.sort((a, b) => {
-				return a.expiring_in - b.expiring_in;
-			})
+			return a.expiring_in - b.expiring_in;
+			});
 			return sortedItems;
 		},
+
+
 		getEmojis() {
 			switch (this.selectedCategory) {
 				case 'Fruits':
@@ -279,12 +289,26 @@ export default {
 			this.isLoggedIn = false;
 			}
 		},
+		fetchItems() {
+			// Replace the URL with the appropriate route for getting user inventory items
+			const userId = useAccountStorage().aid; // Replace with the actual user ID
+			axios
+				.get(`http://localhost:3000/get_user_inventory_items/${userId}`)
+				.then((response) => {
+				this.items = response.data; // Store the fetched inventory items in the data property
+				console.log('Inventory items:', this.items);
+				})
+				.catch((error) => {
+				console.error('Error occurred while fetching inventory items:', error);
+				});
+			},
 		imageUrl(img) {
 			return require(`@/assets/img/${img}`);
 		},
 		setFilter: function (filter) {
 			this.currentFilter = filter;
 		},
+
 		computedItemStyle(obj){
 			let style = {};
 
@@ -324,8 +348,7 @@ export default {
 		// Retrieves record of all Inventory Items in an Array 
 		// getInventoryItems() {
 		// 	axios
-		// 	.get("http://localhost:3000/get_user_inventory_items")
-		// 	.then((response) => {
+		// 	.axios.get("http://localhost:3000/get_user_inventory_items/" + useAccountStorage().aid).then((response) =>
 		// 	let newItems = [];
 		// 	for (let item of response.data) {
 		// 		const currentDate = new Date();

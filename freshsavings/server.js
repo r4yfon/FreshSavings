@@ -13,6 +13,8 @@ axios.defaults.withCredentials = true;
 
 const url = "http://localhost:3000/test_session";
 
+
+
 // Make a GET request to the test_session endpoint
 axios
   .get(url, {
@@ -168,11 +170,13 @@ app.get("/get_all_recipes", (req, res) => {
   );
 });
 
-app.get("/get_user_inventory_items", (req, res) => {
-  const userid = 1; // aid of currently logged-in user
+app.get("/get_user_inventory_items/:userid", (req, res) => {
+  const userid = parseInt(req.params.userid);
+  
+  // aid of currently logged-in user
   connection.query(
     // TODO: make query more specific after finalising the data to fetch 
-    "SELECT a.aid, a.iid, i.iname, a.qty, a.expiring_in, a.ExpiryDate, i.icat, a.emoji FROM freshsavings.AccountInventory a, freshsavings.Ingredient i WHERE a.iid = i.iid AND a.aid = ?",
+    "SELECT a.aid, a.iid, i.iname, a.qty, a.expiring_in, a.ExpiryDate, i.icat FROM freshsavings.AccountInventory a JOIN freshsavings.Ingredient i ON a.iid = i.iid WHERE a.aid = ?;",
     [userid],
     (err, results) => {
       if (err) {
@@ -208,6 +212,7 @@ app.all("/login", (req, res) => {
           if (results[0].password === password) {
             // Login successful, store the user data in the session
             req.session.user = results[0];
+            
             console.log("User data stored in session:", req.session.user); // Log the user data in the session
             res.json({
               message: "Login successful",
@@ -341,6 +346,9 @@ app.get("/get-distance", async (req, res) => {
     res.status(500).json({ error: "An error occurred" });
   }
 });
+
+
+
 
 // TO DO: check if it's right
 // app.put('/insertNewInventoryItem', (req, res) => {
