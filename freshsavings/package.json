@@ -30,11 +30,13 @@
     "sass-loader": "^13.3.2",
     "typeorm": "^0.3.17",
     "typescript": "^5.2.2",
-    "vue": "^3.2.13",
+    "vue": "^3.3.7",
     "vue-datepicker-next": "^1.0.3",
     "vue-google-signin-button": "^1.0.4",
     "vue-google-signin-button-directive": "^1.0.3",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "vue2-google-maps": "^0.10.7",
+    "vue3-google-map": "^0.18.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

@@ -306,7 +306,7 @@ async GetDistanceAPI(Lat, Lng) {
   const destLat = Lat; // Replace with your destination's latitude
   const destLng = Lng; // Replace with your destination's longitude
   const units = 'metric'; // Units of measurement
-  const apiKey = ''; // Your API key
+  const apiKey = 'AIzaSyBaK6fapQE5NMhxj0ZZdKcQsn9o1xhZf3M'; // Your API key
 
   const url = `http://localhost:3000/get-distance?originLat=${originLat}&originLng=${originLng}&destLat=${destLat}&destLng=${destLng}&units=${units}&apiKey=${apiKey}`;
 
@@ -390,8 +390,8 @@ async AddinDistance() {
     productImageUrl() {
       return require(`@/assets/img/${this.productimage}`);
     },
-    totalCost(a, b) {
-      return (a * b).toFixed(2);
+    totalCost(p, qty) {
+      return parseFloat(parseFloat(p).toFixed(2) * qty).toFixed(2)
     },
     Added(pid) {
       this.cart.push(pid);
