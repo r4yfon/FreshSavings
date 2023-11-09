@@ -48,21 +48,20 @@ const accountStorage = useAccountStorage();
 			<form class="form-container">
 
 				<h3 class="fw-bold" style="text-align: center">
-					Item Tracking 
+					Item Tracking
 					<button id='close' @click="formAction('close')">close</button>
 				</h3>
-				
+
 
 				<div class="mb-3 py-2">
 					<label for="formName" class="form-label">Item Name</label>
-					<input type="text" class="form-control" id="formName" placeholder="Enter product name"
-						v-model="ingredient_name" required>
+					<input type="text" class="form-control" id="formName" placeholder="Enter product name" v-model="ingredient_name"
+						required>
 				</div>
 
 				<div class="mb-3">
 					<label for="formQty" class="form-label">Item Quantity</label>
-					<input type="number" class="form-control" id="formQty" placeholder="0" v-model="ingredient_quantity"
-						required>
+					<input type="number" class="form-control" id="formQty" placeholder="0" v-model="ingredient_quantity" required>
 				</div>
 
 				<div class="mb-3">
@@ -85,14 +84,15 @@ const accountStorage = useAccountStorage();
 					<div :id="radios">
 						<div v-for="emoji in getEmojis" :key="emoji">
 							<div v-for="(e, idx) in emoji" :key="idx" style="display:inline-block">
-							<label class="form-check-label" :for="'emojiRadio-' + idx">
-								<input type="radio" name="emoji" :value="e" class="form-check-input" :id="'emojiRadio-' + idx" v-model="selectedEmoji">
-								<span>{{ e }}</span>
-							</label>
+								<label class="form-check-label" :for="'emojiRadio-' + idx">
+									<input type="radio" name="emoji" :value="e" class="form-check-input" :id="'emojiRadio-' + idx"
+										v-model="selectedEmoji">
+									<span>{{ e }}</span>
+								</label>
 							</div>
 						</div>
 					</div>
-				</div> 
+				</div>
 
 				<div>
 					<button type="button" class="btn add" @click="insertItem()">Add</button>
@@ -103,8 +103,8 @@ const accountStorage = useAccountStorage();
 		</div>
 
 		<!-- If there are no items -->
-		<div class="row container justify-content-center" v-if="items==''" style="padding-top: 10px;">
-			<img :src="imageUrl('inventorytracker.webp')" style="width:50%"/>
+		<div class="row container justify-content-center" v-if="items == ''" style="padding-top: 10px;">
+			<img :src="imageUrl('inventorytracker.webp')" style="width:50%" />
 			<h3 class="text-center">Record the food items you have to get started.</h3>
 			<p class="text-center">Let's not make all these food go to waste!</p>
 		</div>
@@ -112,34 +112,81 @@ const accountStorage = useAccountStorage();
 		<!-- Product card  -->
 
 		<div class="row justify-content-start container-fluid">
+
+			<!-- example inventory card -->
+			<div class="col-4" v-for="card in cards" :key="card" style="height: 360px; width: 360px;">
+				<div :style="{ background: card.background }"
+					class="rounded-4 p-3 d-flex flex-column justify-content-between shadow h-100">
+					<div class="d-flex justify-content-between align-items-center">
+						<div class="fs-1">{{ card.icon }}</div>
+						<div class="d-flex gap-2 align-items-center">
+							<button type="button" class="btn btn-outline-light rounded-circle d-flex align-items-center"
+								style="height: 32px; width: 32px;">-</button>
+							<div
+								class="p-2 rounded-circle lh-1 fs-4 fw-bold d-flex justify-content-center align-items-center inventory-qty"
+								:style="{ color: card.qty_color }">
+								x{{ card.qty }}
+							</div>
+							<button type="button" class="btn btn-outline-light rounded-circle d-flex align-items-center"
+								style="height: 32px; width: 32px;">+</button>
+						</div>
+					</div>
+					<div>
+						<div class="text-start fs-4 fw-semibold">
+							{{ card.item }}
+						</div>
+						<div class="text-start text-secondary-emphasis">
+							Fresh for {{ card.expiry }} more days
+						</div>
+						<div class="btn-group w-100 mt-2">
+							<!-- <div class="col-lg-6 col-md-6 col-sm-6"> -->
+							<button type="button" class="btn btn-danger" style="display:block; width:100%" @click="removePost()">
+								Remove
+							</button>
+							<!-- </div> -->
+							<!-- <div class="col-lg-6 col-md-6 col-sm-6"> -->
+							<button type="button" class="btn btn-success" style="display:block; width:100%" data-bs-toggle="modal"
+								data-bs-target="#openModal-{{ idx }}">
+								Sell
+							</button>
+
+							<!-- </div> -->
+						</div>
+					</div>
+				</div>
+			</div>
+
+
 			<div class="projects" name="projects">
 				<template v-for="(item, idx) in sortedArray" :key="item.iname">
-				<TransitionGroup class="project" v-if="currentFilter === item.icat || currentFilter === 'All'">
-					<div class="col-lg-4 col-md-6 col-sm-12" style="padding-bottom: 10px;">
-						<div class="card" :style="computedItemStyle(item)">
+					<TransitionGroup class="project" v-if="currentFilter === item.icat || currentFilter === 'All'">
+						<div class="col-lg-4 col-md-6 col-sm-12" style="padding-bottom: 10px;">
+							<div class="card" :style="computedItemStyle(item)">
 								<div class="card-title d-flex justify-content-between" :id="'card-title-' + idx">
 									<div class="emoji emoji-hover">
 										{{ item.emoji }}
 									</div>
 									<div id="counter" style="display:inline-flex; ">
-										<button type="button" class="btn btn-outline-secondary" style="border: none" v-if="item.qty>0" @click="modifyItemQty(idx, 'minus')">-</button>
+										<button type="button" class="btn btn-outline-secondary" style="border: none" v-if="item.qty > 0"
+											@click="modifyItemQty(idx, 'minus')">-</button>
 										<button type="button" class="btn btn-outline-secondary" style="border: none" v-else>-</button>
 										<span class="circle">
-											x {{ item.qty }}	
+											x {{ item.qty }}
 										</span>
-										<button type="button" class="btn btn-outline-secondary" style="border: none" @click="modifyItemQty(idx, 'add')">+</button>
-										
+										<button type="button" class="btn btn-outline-secondary" style="border: none"
+											@click="modifyItemQty(idx, 'add')">+</button>
+
 									</div>
 								</div>
-								
+
 								<div class="card-body">
 									<p>
-										<span class="fw-bold" style="font-size:large">{{ item.iname }}</span> 
-										<br/>
+										<span class="fw-bold" style="font-size:large">{{ item.iname }}</span>
+										<br />
 										Expiring in <span class="fw-bold" style="font-size: large;">{{ item.expiring_in }}</span> days
 									</p>
 								</div>
-								
+
 								<!-- Modal  -->
 								<!-- Button trigger modal -->
 								<div class="d-flex">
@@ -156,32 +203,29 @@ const accountStorage = useAccountStorage();
 
 									</div>
 								</div>
-								
+
 								<!-- Modal Opened -->
 								<div class="modal fade" :id="'#openModal-' + idx" tabindex="-1" aria-labelledby="openModalLabel"
 									aria-hidden="true">
 									<div class="modal-dialog">
 										<div class="modal-content">
 											<div class="modal-header">
-												<h1 class="modal-title fs-5" :id="'ModalLabel'+ idx">Listing Details</h1>
-												<button type="button" class="btn-close" data-bs-dismiss="modal"
-													aria-label="Close"></button>
+												<h1 class="modal-title fs-5" :id="'ModalLabel' + idx">Listing Details</h1>
+												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 											</div>
 											<div class="modal-body">
-												<label :for="'FormControlInput1'+idx" class="form-label">Selling Price</label>
+												<label :for="'FormControlInput1' + idx" class="form-label">Selling Price</label>
 												<div class="input-group mb-3">
 													<span class="input-group-text" id="addon-wrapping">$</span>
-													<input type="number" class="form-control" :id="'FormControlInput1'+idx"
-														placeholder="3.00">
+													<input type="number" class="form-control" :id="'FormControlInput1' + idx" placeholder="3.00">
 												</div>
 												<div class="mb-3">
-													<label :for="'FormControlInput2'+idx" class="form-label">Upload photo of product</label>
-													<input type="file" class="form-control" :id="'FormControlInput2'+idx">
+													<label :for="'FormControlInput2' + idx" class="form-label">Upload photo of product</label>
+													<input type="file" class="form-control" :id="'FormControlInput2' + idx">
 												</div>
 											</div>
 											<div class="modal-footer">
-												<button type="button" class="btn btn-primary"
-													@click="posted(idx)">Post</button>
+												<button type="button" class="btn btn-primary" @click="posted(idx)">Post</button>
 											</div>
 										</div>
 									</div>
@@ -211,7 +255,7 @@ export default {
 			items: [],
 			// inventoryItems: [],
 
-			// Form inputs 
+			// Form inputs
 			ingredient_name: '',
 			ingredient_quantity: '',
 			ingredient_purchase_date: '',
@@ -236,6 +280,17 @@ export default {
 				{ fruit: ['🍇', '🍈', '🍉', '🍊', '🍋', '🍌', '🍍', '🍎', '🥭', '🍏', '🍐', '🍑', '🍒', '🍓', '🫐', '🥝', '🍅', '🫒', '🥥', '🥑', '🍆', '🥔', '🥕', '🌽', '🫑', '🥒', '🥬', '🥦',] },
 				{ meat: ['🍖', '🍗', '🥩', '🥓', '🐄', '🐖', '🐓', '🐏'] },
 			],
+			cards: [
+				{
+					icon: "🥬",
+					qty: 4,
+					item: "Lettuce",
+					expiry: 3,
+					background:
+						"linear-gradient(135deg, rgb(202, 236, 172) 0%, rgb(131, 208, 197) 100%)",
+					qty_color: "rgb(160, 220, 187)",
+				},
+			]
 
 		}
 	},
@@ -246,10 +301,10 @@ export default {
 	computed: {
 		sortedArray() {
 			let sortedItems = this.items.filter(item => {
-			return item.icat === this.currentFilter || this.currentFilter === 'All';
+				return item.icat === this.currentFilter || this.currentFilter === 'All';
 			});
 			sortedItems = sortedItems.sort((a, b) => {
-			return a.expiring_in - b.expiring_in;
+				return a.expiring_in - b.expiring_in;
 			});
 			return sortedItems;
 		},
@@ -270,23 +325,23 @@ export default {
 			}
 		},
 
-		calculateRemainingDays(){
+		calculateRemainingDays() {
 			const currentDate = new Date();
 			var futureDate = new Date(this.ingredient_expiry_date);
 			var timeDifference = futureDate.getTime() - currentDate.getTime();
 			var daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-			return daysDifference; 
+			return daysDifference;
 		}
-		
+
 	},
 	methods: {
 		checkLoginStatus() {
 			const sessionData = JSON.parse(localStorage.getItem('session'));
 			if (sessionData && sessionData.user && sessionData.user.email) {
-			// Assuming that the presence of the user's email indicates a valid login session
-			this.isLoggedIn = true;
+				// Assuming that the presence of the user's email indicates a valid login session
+				this.isLoggedIn = true;
 			} else {
-			this.isLoggedIn = false;
+				this.isLoggedIn = false;
 			}
 		},
 		fetchItems() {
@@ -295,13 +350,13 @@ export default {
 			axios
 				.get(`http://localhost:3000/get_user_inventory_items/${userId}`)
 				.then((response) => {
-				this.items = response.data; // Store the fetched inventory items in the data property
-				console.log('Inventory items:', this.items);
+					this.items = response.data; // Store the fetched inventory items in the data property
+					console.log('Inventory items:', this.items);
 				})
 				.catch((error) => {
-				console.error('Error occurred while fetching inventory items:', error);
+					console.error('Error occurred while fetching inventory items:', error);
 				});
-			},
+		},
 		imageUrl(img) {
 			return require(`@/assets/img/${img}`);
 		},
@@ -309,7 +364,7 @@ export default {
 			this.currentFilter = filter;
 		},
 
-		computedItemStyle(obj){
+		computedItemStyle(obj) {
 			let style = {};
 
 			if ('🧀🧈🍋🍌🥔🌽'.includes(obj.emoji)) {
@@ -320,32 +375,32 @@ export default {
 				style.background = 'linear-gradient(to top left, #CFBAF0 70%, white)';
 			} else if ('🍈🍏🍐🥝🫒🥑🫑🥒🥬🥦'.includes(obj.emoji)) {
 				style.background = 'linear-gradient(to top left, #b9fbc0 70%, white)';
-			} else if ('🦀🦞🦐🍉🍎🍒🍓🍅'.includes(obj.emoji)){
-				style.background ='linear-gradient(to top left, #ffb5a7 , 70%, white)';
-			} else if ('🍍🍗🍑🥕'.includes(obj.emoji)){
+			} else if ('🦀🦞🦐🍉🍎🍒🍓🍅'.includes(obj.emoji)) {
+				style.background = 'linear-gradient(to top left, #ffb5a7 , 70%, white)';
+			} else if ('🍍🍗🍑🥕'.includes(obj.emoji)) {
 				style.background = 'linear-gradient(to top left, #fec89a, 70%, white)';
-			} else if ('🥥🍖🥓🐓'.includes(obj.emoji)){
+			} else if ('🥥🍖🥓🐓'.includes(obj.emoji)) {
 				style.background = 'linear-gradient(to top left, #e2cfc4, 70%, white)';
-			}else if ('🐖'.includes(obj.emoji)){
+			} else if ('🐖'.includes(obj.emoji)) {
 				style.background = 'linear-gradient(to top left, #ffacc5, 70%, white)';
 			}
 			else {
 				style.background = 'linear-gradient(to top left, #F8F6F4, 70%, white)';
 			}
 
-			if (obj.expiring_in <= 2 && obj.expiring_in >= 0){
+			if (obj.expiring_in <= 2 && obj.expiring_in >= 0) {
 				style.border = 'solid 5px orange';
 				style.borderRadius = '1rem';
 			}
-			else if (obj.expiring_in < 0){
+			else if (obj.expiring_in < 0) {
 				style.border = 'solid 5px orange';
 				style.borderRadius = '1rem';
 			}
-			return style;		
+			return style;
 		},
 
 		// ALL SQL STATEMENTS
-		// Retrieves record of all Inventory Items in an Array 
+		// Retrieves record of all Inventory Items in an Array
 		// getInventoryItems() {
 		// 	axios
 		// 	.axios.get("http://localhost:3000/get_user_inventory_items/" + useAccountStorage().aid).then((response) =>
@@ -368,7 +423,7 @@ export default {
 		// });
 		// },
 
-		// Insert new item into databases - Ingredient and AccountInventory 
+		// Insert new item into databases - Ingredient and AccountInventory
 		// insertItem() {
 		// 	if (
 		// 		this.ingredient_name == "" ||
@@ -379,17 +434,17 @@ export default {
 		// 		return;
 		// 	};
 
-		// 	const expiring_in = this.calculateRemainingDays; 
+		// 	const expiring_in = this.calculateRemainingDays;
 		// 	this.formAction('clear');
-		// 	this.formAction('close'); 
+		// 	this.formAction('close');
 
 		// 	// Your logic to update the SQL table
 		// 	const updatedData = {
 		// 		iname: this.ingredient_name,
 		// 		icat: this.selectedCategory,
-		// 		expiring_in: expiring_in, 
+		// 		expiring_in: expiring_in,
 		// 		qty: this.ingredient_quantity,
-		// 		emoji: this.selectedEmoji,// havent include yet 
+		// 		emoji: this.selectedEmoji,// havent include yet
 		// 	};
 
 		// 	// Make an HTTP PUT request to the server-side endpoint
@@ -404,15 +459,15 @@ export default {
 		// 		});
 		// 	}
 		// },
-			
-		formAction(action){
-			if (action == 'open'){
+
+		formAction(action) {
+			if (action == 'open') {
 				document.getElementById("myForm").style.display = "block";
 			}
-			else if (action == 'close'){
+			else if (action == 'close') {
 				document.getElementById("myForm").style.display = "none";
 			}
-			else if (action == 'clear'){
+			else if (action == 'clear') {
 				this.ingredient_name = '';
 				this.ingredient_quantity = '';
 				this.selectedCategory = "Fruits";
@@ -421,25 +476,25 @@ export default {
 			}
 		},
 
-		// TO DO: update table of new data 
-		modifyItemQty(idx, operator){
+		// TO DO: update table of new data
+		modifyItemQty(idx, operator) {
 			if (operator == 'add') {
 				this.items[idx].qty += number;
 				// check again
 			} else if (operator == 'minus' && this.items[idx].qty > 0) {
-				this.items[idx].qty -= number; 
+				this.items[idx].qty -= number;
 				// check again
 			}
-			if (items[idx].qty == 0){
-				this.removePost(); 
+			if (items[idx].qty == 0) {
+				this.removePost();
 			}
-			
+
 		},
 
-		// TO DO: remove this card information from the Table 'AccountInventory' completely 
+		// TO DO: remove this card information from the Table 'AccountInventory' completely
 		removePost() {
 			this.items.splice(idx, idx);
-			// check again 
+			// check again
 		},
 
 		// TO DO: insert this card information to Table 'Posting'
@@ -506,8 +561,8 @@ export default {
 	z-index: -1;
 }
 
-.card{
-	max-width:260px;
+.card {
+	max-width: 260px;
 	/* border-radius: 8px; */
 	position: relative;
 	padding: 0.7em;
@@ -515,7 +570,7 @@ export default {
 	box-shadow: -1px 15px 30px -12px rgb(32, 32, 32);
 	border-radius: 0.9rem;
 	cursor: pointer;
-	
+
 }
 
 .card-body {
@@ -630,14 +685,23 @@ export default {
 	text-shadow: 0 -0.5rem 1rem #faf5f5, 0 0.5rem 1rem #999;
 }
 
-.emoji-hover:hover{
-  transform: scale(1.2); /* Increase the size on hover */
-  transition: transform 0.3s ease; /*Add a smooth transition */
+.emoji-hover:hover {
+	transform: scale(1.2);
+	/* Increase the size on hover */
+	transition: transform 0.3s ease;
+	/*Add a smooth transition */
 }
 
 #radios label {
 	cursor: pointer;
 	position: relative;
+}
+
+.inventory-qty {
+	height: 52px;
+	/* width: 60px; */
+	aspect-ratio: 1/1;
+	background-color: rgba(255, 255, 255, 0.7);
 }
 
 
@@ -671,48 +735,45 @@ input[type="radio"]:checked+span {
 	position: relative;
 	border: 1px;
 	padding: 0;
-	width: 2em; 
+	width: 2em;
 	border-radius: 50%;
 	background: transparent;
 	color: #1da1f2;
 	text-indent: 100%;
 	cursor: pointer;
-	left:2rem;
-	bottom:0.5rem; 
+	left: 2rem;
+	bottom: 0.5rem;
 }
-	
+
 #close:focus {
 	outline: solid 0 transparent;
 	box-shadow: 0 0 0 2px #8ed0f9
 }
-	
+
 #close:hover {
 	background: rgba(29, 161, 142, .1)
 }
-	
-#close:before, #close:after {
+
+#close:before,
+#close:after {
 	position: absolute;
-	top: 15%; left: calc(50% - .0625em);
-	width: .125em; height: 70%;
+	top: 15%;
+	left: calc(50% - .0625em);
+	width: .125em;
+	height: 70%;
 	border-radius: .125em;
 	transform: rotate(45deg);
 	background: currentcolor;
 	content: ''
 }
-	
-#close:after { 
-	transform: rotate(-45deg); 
+
+#close:after {
+	transform: rotate(-45deg);
 }
 
-#counter button{
+#counter button {
 	background-color: transparent;
 	outline: none;
 	color: black;
 }
-
-
-
-
-
 </style>
-
