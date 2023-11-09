@@ -1,3 +1,4 @@
+
 <template>
     <div id="app">
       <div class="lottie-container" ref="lottie"></div>
@@ -14,6 +15,7 @@
   <script>
   import lottie from 'lottie-web';
   import animationData from '@/assets/img/confirmation.json'; // Update the path accordingly
+  
   export default {
   mounted() {
     this.animation = lottie.loadAnimation({

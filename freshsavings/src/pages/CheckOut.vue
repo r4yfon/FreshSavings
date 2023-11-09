@@ -1,18 +1,16 @@
 <script setup>
-  import AccordionPanel from '../components/AccordianPanel.vue';
   import { ref } from 'vue';
-  import { createApp } from 'vue'
-  import VueGoogleMaps from 'vue3-google-map';
-  import { useLoadScript } from 'vue3-google-map';
   import axios from 'axios';
-  
+  import { useAccountStorage } from '../main.js';
+  const accountStorage = useAccountStorage();
 </script>
 
 
 <template>
+  {{ accountStorage.aid }}
   <div>
     <!-- <NavBar /> -->
-
+    
     <section class="h-100 p-5">
       <h2 class="pb-3" id="heading">Cart</h2>
       
@@ -363,6 +361,7 @@
 import NavBar from "@/components/NavBar.vue";
 import { GoogleMap, Marker, CustomMarker } from "vue3-google-map";
 
+
 export default {
   
   name: "CheckOut",
@@ -375,7 +374,7 @@ export default {
     loading: false,
     timing:"", 
     date:"",
-    products: [3, 2, 11],
+    products: useAccountStorage().cart,
     totalCost: [],
     productList: {},
     AddressList: [],
@@ -390,6 +389,7 @@ export default {
 		this.checkLoginStatus();
     this.RetrieveAll(this.products)
     
+    
 	},
   mounted(){
     
@@ -397,14 +397,19 @@ export default {
   },
   
   computed: {
+    
     calculateTotalPrice(){
       let total = 0
       for(let i of this.totalCost){
         total += parseFloat(i)
       }
       return total
+    },
+    cart(){
+      return this.carts.cart;
     }
   },
+
   methods: {
     
     CalculatePrice(p, qty){
@@ -429,6 +434,7 @@ export default {
           arr.push(i)
         }
       }
+      useAccountStorage().cart = arr
       this.products = arr;
       console.log('after delete')
       console.log(this.products)
@@ -496,7 +502,9 @@ export default {
   box-sizing: border-box;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 } */
+#delete1 {
 
+}
 .container {
   max-width: 1200px;
   margin: 0 auto;

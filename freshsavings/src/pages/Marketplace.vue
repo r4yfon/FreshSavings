@@ -9,11 +9,13 @@ import firstImage from '@/assets/img/sale.png'
 import secondImage from '@/assets/img/trusted.png'
 import thirdImage from '@/assets/img/quality.png'
 
-
+import { useAccountStorage } from '../main.js';
+const accountStorage = useAccountStorage();
 </script>
 
 
 <template>
+  {{ accountStorage.intoCart(cart)}}
 <div v-if="loaded">
 
 
@@ -416,7 +418,7 @@ async AddinDistance() {
       setTimeout(() => {
         this.showadd = false;
       }, 700); // Hide the toast after 2 seconds
-
+      
     },
     Remove(pid) {
       let a = this.cart.indexOf(pid);
@@ -425,7 +427,7 @@ async AddinDistance() {
       setTimeout(() => {
         this.showdel = false;
       }, 700); // Hide the toast after 2 seconds
-
+      accountStorage.RemoveCart(pid)
 
     },
     distancetrack(pid){

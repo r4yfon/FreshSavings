@@ -1,6 +1,7 @@
 <script setup>
 import { Icon } from "@iconify/vue";
-
+import { useAccountStorage } from '../main.js';
+const accountStorage = useAccountStorage();
 </script>
 
 <template>

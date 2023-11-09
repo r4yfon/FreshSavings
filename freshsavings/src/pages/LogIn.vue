@@ -5,7 +5,8 @@ import getGoogleUrl from '../auth/getGoogleUrl.js';
 import { ref, onMounted } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import router from '../router/index.js';
-
+import { useAccountStorage } from '../main.js';
+const accountStorage = useAccountStorage();
 
 const from = ref('default'); // Define the from variable here
 
@@ -29,6 +30,8 @@ const handleLogin = async () => {
     localStorage.setItem('user', JSON.stringify(user));
 	console.log("User data stored in local storage:", user);
 	console.log("Session data from the response:", response.data.session);
+	accountStorage.set(response.data.session.user.aid)
+
 	localStorage.setItem('session', JSON.stringify(sessionData));
         console.log('Session data stored in local storage:', sessionData);
 		router.push('/inventory-tracker');
