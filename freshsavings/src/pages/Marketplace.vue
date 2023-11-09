@@ -16,6 +16,13 @@ const accountStorage = useAccountStorage();
 
 <template>
   {{ accountStorage.intoCart(cart)}}
+<div v-if="!loaded">
+  <div class="d-flex justify-content-center mt-4" v-if="showLoadingIndicator">
+        <div class="spinner-grow text-success mt-4" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+  </div>
 <div v-if="loaded">
 
 
@@ -246,7 +253,7 @@ export default {
       secondImageUrl: secondImage,
       thirdImageUrl: thirdImage,
       searching: "",
-      cart: [],
+      cart: useAccountStorage().cart,
       groceryItems: [],
       categories: [
         {
