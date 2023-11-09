@@ -15,8 +15,14 @@ const accountStorage = useAccountStorage();
 
 
 <template>
-  {{ accountStorage.intoCart(cart)}}
-<div v-if="loaded">
+
+  <div class="d-flex justify-content-center" v-if="!loaded">
+        <div class="spinner-grow text-success mt-4" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+  </div>
+
+<div v-else-if="loaded">
 
 
   <section style="padding-top: 20px;">
@@ -246,7 +252,7 @@ export default {
       secondImageUrl: secondImage,
       thirdImageUrl: thirdImage,
       searching: "",
-      cart: [],
+      cart: useAccountStorage().cart,
       groceryItems: [],
       categories: [
         {
@@ -427,7 +433,7 @@ async AddinDistance() {
       setTimeout(() => {
         this.showdel = false;
       }, 700); // Hide the toast after 2 seconds
-      accountStorage.RemoveCart(pid)
+      
 
     },
     distancetrack(pid){

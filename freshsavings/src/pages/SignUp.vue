@@ -5,7 +5,8 @@ import getGoogleUrl from '../auth/getGoogleUrl.js';
 import { ref, onMounted } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import router from '../router/index.js';
-
+import { useAccountStorage } from '../main.js';
+const accountStorage = useAccountStorage();
 
 const from = ref('default'); // Define the from variable here
 
@@ -28,6 +29,8 @@ const handleSignUp = async () => {
       if (user) {
         localStorage.setItem('user', JSON.stringify(user));
         console.log('User data stored in local storage:', user);
+		accountStorage.set(response.data.session.user.aid, response.data.session.user.fname, response.data.session.user.a_lat, response.data.session.user.a_long)
+
       } else {
         console.error('No user data found in the response.');
       }

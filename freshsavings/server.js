@@ -176,7 +176,7 @@ app.get("/get_user_inventory_items/:userid", (req, res) => {
   // aid of currently logged-in user
   connection.query(
     // TODO: make query more specific after finalising the data to fetch 
-    "SELECT a.aid, a.iid, i.iname, a.qty, a.expiring_in, a.ExpiryDate, i.icat, a.emoji FROM freshsavings.AccountInventory a, freshsavings.Ingredient i WHERE a.iid = i.iid AND a.aid = ?",
+    "SELECT a.aid, a.iid, i.iname, a.qty, a.expiring_in, a.ExpiryDate, i.icat FROM freshsavings.AccountInventory a JOIN freshsavings.Ingredient i ON a.iid = i.iid WHERE a.aid = ?;",
     [userid],
     (err, results) => {
       if (err) {
@@ -187,6 +187,49 @@ app.get("/get_user_inventory_items/:userid", (req, res) => {
     }
   );
 });
+app.post("/afterCheckOut/:aid/:arrPid", (req, res) => {
+  const aid = parseInt(req.params.aid);
+  const arrPid = req.body.arrPid.map(pid => parseInt(pid));
+  for(const pid of arrPid){
+    const pid = parseInt(pid);
+    connection.query(
+      "select Ingredient.iid, selling_quantity, ExpiryDate, emoji from freshsavings.Posting and freshsavings.Ingredients where Posting.iid = Ingredients.iid Posting.pid = ?",
+      [pid],
+      (err, results) => {
+        if (err) {
+          console.error("Error querying the database:", err);
+          res.status(500).json({ error: "Internal Server Error" });
+          return;
+        }
+        const { iid, selling_quantity, ExpiryDate, emoji } = results[0];
+        connection.query(
+          "INSERT INTO freshsavings.AccountInventory (aid, iid, expiring_in, qty, ExpiryDate, emoji) VALUES (?, ?, ?, ?, ?, ?)",
+          [aid, iid, 1, selling_quantity, ExpiryDate, emoji],
+          (err, results) => {
+            if (err) {
+              console.error("Error querying the database:", err);
+              res.status(500).json({ error: "Internal Server Error" });
+              return;
+            }
+            
+        }
+      );
+      connection.query(
+        "DELETE FROM freshsavings.Posting WHERE pid = ?",
+        [pid],
+        (err, results) => {
+          if (err) {
+            console.error("Error querying the database:", err);
+            res.status(500).json({ error: "Internal Server Error" });
+            return;
+          }
+      }
+    );
+    }
+  );
+  }
+
+})
 
 app.all("/login", (req, res) => {
   if (req.method === "GET") {
@@ -346,6 +389,9 @@ app.get("/get-distance", async (req, res) => {
     res.status(500).json({ error: "An error occurred" });
   }
 });
+
+
+
 
 // TO DO: check if it's right
 app.post('/insertNewInventoryItem', (req, res) => {
