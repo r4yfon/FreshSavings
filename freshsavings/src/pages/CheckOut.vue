@@ -1,19 +1,18 @@
 <script setup>
-  import { ref } from 'vue';
-  import axios from 'axios';
-  import { useAccountStorage } from '../main.js';
-  const accountStorage = useAccountStorage();
+import { ref } from 'vue';
+import axios from 'axios';
+import { useAccountStorage } from '../main.js';
+const accountStorage = useAccountStorage();
 </script>
 
 
 <template>
-  
   <div>
     <!-- <NavBar /> -->
-    
+
     <section class="h-100 p-5">
       <h2 class="pb-3" id="heading">Cart</h2>
-      
+
       <div class="container py-2 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
           <div class="col-lg-12">
@@ -31,7 +30,7 @@
                     <p class="mb-1 text-center">Price</p>
                   </div>
                 </div> -->
-                
+
 
                 <!-- 2.Delivery Options -->
                 <div class="accordion mb-3" :id="'accordianSelf1'">
@@ -39,7 +38,8 @@
                     <div class="accordion-header">
                       <button type="button" class="accordion-button d-flex align-items-center" data-bs-toggle="collapse"
                         :data-bs-target="'#product'" aria-expanded="false" :aria-controls="'collapse'">
-                        <img class="category-image" style="width:100px;height:100px" :src="imageUrl('shoppingcartgif.gif')" />
+                        <img class="category-image" style="width:100px;height:100px"
+                          :src="imageUrl('shoppingcartgif.gif')" />
                         <p class="mx-3 my-auto text-capitalize">
                           Products
                         </p>
@@ -48,61 +48,62 @@
                     <div :id="'product'" class="accordion-collapse collapse show">
                       <div class="accordion-body d-flex flex-wrap">
                         <div class="empty-container" v-if="accountStorage.cart.length == 0">
-                        
-                        <img id='empty' class='mx-auto' :src="imageUrl('empty.gif')">
-                      </div>
+
+                          <img id='empty' class='mx-auto' :src="imageUrl('empty.gif')">
+                        </div>
                         <div v-else class="container">
                           <div class="header-container">
-                  <p class="mb-1 custom-text">Product</p>
-                  <p class="mb-1 custom-text">Quantity</p>
-                  <p class="mb-1 custom-text">Price</p>
-                </div>
-                
-                <div v-for="(product, idx) of productList" :key="idx">
-                
-                <div class="card mb-3">
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                      <div class="d-flex flex-row align-items-center">
-                        <div>
-                          <img :src="imageUrl(product.Image)" class="img-fluid rounded-3" alt="Shopping item"
-                            style="width: 65px;">
-                        </div>
-                        <div class="ms-3">
-                          <b>
-                            <h6>{{ product.Name }}</h6>
-                          </b>
-                          <p class="small mb-0">Address: {{ product.Address }}</p>
+                            <p class="mb-1 custom-text">Product</p>
+                            <p class="mb-1 custom-text">Quantity</p>
+                            <p class="mb-1 custom-text">Price</p>
+                          </div>
+
+                          <div v-for="(product, idx) of productList" :key="idx">
+
+                            <div class="card mb-3">
+                              <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                  <div class="d-flex flex-row align-items-center">
+                                    <div>
+                                      <img :src="imageUrl(product.Image)" class="img-fluid rounded-3" alt="Shopping item"
+                                        style="width: 65px;">
+                                    </div>
+                                    <div class="ms-3">
+                                      <b>
+                                        <h6>{{ product.Name }}</h6>
+                                      </b>
+                                      <p class="small mb-0">Address: {{ product.Address }}</p>
+                                    </div>
+                                  </div>
+                                  <div class="d-flex flex-row align-items-center">
+                                    <div style="width: 90px;">
+                                      <h6 class="fw-normal mb-0">{{ product.Quantity }}</h6>
+                                    </div>
+                                    <div style="width: 90px;">
+                                      <h6 class="mb-0">{{ CalculatePrice(product.Price, product.Quantity) }}</h6>
+                                    </div>
+                                    <div style="width: 50px;">
+                                      <svg @click="deleteCard(idx)" id="delete1" xmlns="http://www.w3.org/2000/svg"
+                                        width="16" height="16" fill="currentColor" class="bi bi-trash"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                          d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                                        <path
+                                          d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                                      </svg>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+
+
+
+
                         </div>
                       </div>
-                      <div class="d-flex flex-row align-items-center">
-                        <div style="width: 90px;">
-                          <h6 class="fw-normal mb-0">{{ product.Quantity }}</h6>
-                        </div>
-                        <div style="width: 90px;">
-                          <h6 class="mb-0">{{CalculatePrice(product.Price, product.Quantity)}}</h6>
-                        </div>
-                        <div style="width: 50px;">
-                          <svg @click="deleteCard(idx)" id="delete1" xmlns="http://www.w3.org/2000/svg" width="16"
-                            height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                            <path
-                              d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
-                            <path
-                              d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-                
-
-                
-
-                      </div>
-                    </div>
                     </div>
                   </div>
                 </div>
@@ -110,53 +111,55 @@
                   <p class="mb-1 custom-text">Delivery Options</p>
                 </div>
 
-                
-                  
+
+
                 <div class="accordion my-3" :id="'accordianSelf2'" v-if="AddressList.length <= 1">
                   <div class="accordion-item">
                     <div class="accordion-header">
-                      <button type="button" class="accordion-button d-flex align-items-center collapsed" data-bs-toggle="collapse"
-                        :data-bs-target="'#self'" aria-expanded="false" :aria-controls="'collapse'">
+                      <button type="button" class="accordion-button d-flex align-items-center collapsed"
+                        data-bs-toggle="collapse" :data-bs-target="'#self'" aria-expanded="false"
+                        :aria-controls="'collapse'">
                         <img class="category-image" style="width:100px;height:100px" :src="imageUrl('pickup.gif')" />
                         <p class="mx-3 my-auto text-capitalize">
                           Self Pick Up
                         </p>
                       </button>
                     </div>
-                    <div :id="'self'" class="accordion-collapse collapse" >
+                    <div :id="'self'" class="accordion-collapse collapse">
                       <div class="accordion-body d-flex flex-wrap">
                         <div class="container">
                           <div>
-                        <p> Store Name, Address, Opening Hours </p>
-                      </div>
-                      <div>
-                        <p>
-                          Choose a pickup time!
-                        </p>
-                      </div>
-                      <!-- Calendar -->
-                      <section>
-                        <input type="date" v-model="date" inline auto-apply/>
-                        <select required name="timing" id="timing" v-model="timing">
-                          <option value="9am-12pm">9am-12pm</option>
-                          <option value="12pm-3pm">12pm-3pm</option>
-                          <option value="3pm-6pm">3pm-6pm</option>
-                          <option value="6pm-9pm">6pm-9pm</option>
-                          <option value="9pm-11pm">9pm-11pm</option>
-                        </select>
-                        <p> Your selected day is {{date}} and selected timeslot is {{timing}}</p>
+                            <p> Store Name, Address, Opening Hours </p>
+                          </div>
+                          <div>
+                            <p>
+                              Choose a pickup time!
+                            </p>
+                          </div>
+                          <!-- Calendar -->
+                          <section>
+                            <input type="date" v-model="date" inline auto-apply />
+                            <select required name="timing" id="timing" v-model="timing">
+                              <option value="9am-12pm">9am-12pm</option>
+                              <option value="12pm-3pm">12pm-3pm</option>
+                              <option value="3pm-6pm">3pm-6pm</option>
+                              <option value="6pm-9pm">6pm-9pm</option>
+                              <option value="9pm-11pm">9pm-11pm</option>
+                            </select>
+                            <p> Your selected day is {{ date }} and selected timeslot is {{ timing }}</p>
 
-                      </section>
+                          </section>
+                        </div>
                       </div>
-                    </div>
                     </div>
                   </div>
                 </div>
                 <div class="accordion my-3" :id="'accordionDelivery'">
                   <div class="accordion-item">
                     <div class="accordion-header">
-                      <button type="button" class="accordion-button d-flex align-items-center collapsed" data-bs-toggle="collapse"
-                        :data-bs-target="'#delivery'" aria-expanded="false" :aria-controls="'collapse'">
+                      <button type="button" class="accordion-button d-flex align-items-center collapsed"
+                        data-bs-toggle="collapse" :data-bs-target="'#delivery'" aria-expanded="false"
+                        :aria-controls="'collapse'">
                         <img class="category-image" style="width:100px;height:100px" :src="imageUrl('cycling.gif')" />
                         <p class="mx-3 my-auto text-capitalize">
                           Delivery
@@ -166,69 +169,42 @@
                     <div :id="'delivery'" class="accordion-collapse collapse">
                       <div class="accordion-body d-flex flex-wrap">
                         <div class="container">
-                        <h5> Contact Details </h5>
-                      <div class=" col input">
-                        <label
-                          class="font-semibold"
-                          for="fullName">Full Name</label>
-                        <input
-                          class="block inner-shadow rounded border-2 w-full mt-2 p-1"
-                          type="text"
-                          id="fullName"
-                          name="fullName"
-                        />
+                          <h5> Contact Details </h5>
+                          <div class=" col input">
+                            <label class="font-semibold" for="fullName">Full Name</label>
+                            <input class="block inner-shadow rounded border-2 w-full mt-2 p-1" type="text" id="fullName"
+                              name="fullName" />
+                          </div>
+                          <div class="input mt-4">
+                            <label class="font-semibold" for="email">Email</label>
+                            <input class="block inner-shadow rounded border-2 w-3/5 mt-2 p-1" type="text" id="email"
+                              name="email" />
+                          </div>
+                          <div class="input mt-4">
+                            <label class="font-semibold" for="phoneNumber">Phone Number</label>
+                            <input class="block inner-shadow rounded border-2 w-1/2 mt-2 p-1" type="text" id="phoneNumber"
+                              name="phoneNumber" />
+                          </div>
+                          <br />
+                          <h5> Address Details </h5>
+                          <div class="input">
+                            <label class="font-semibold" for="address">Address</label>
+                            <input class="block inner-shadow rounded border-2 w-full mt-2 p-1" type="text" id="address"
+                              name="address" />
+                          </div>
+                          <div class="input mt-4">
+                            <label class="font-semibold" for="city">Postal Code</label>
+                            <input class="block inner-shadow rounded border-2 w-full mt-2 p-1" type="text" id="city"
+                              name="city" />
+                          </div>
+                          <div class="input mt-4">
+                            <label class="font-semibold" for="state">Unit No.</label>
+                            <input class="block inner-shadow rounded border-2 w-1/2 mt-2 p-1" type="text" id="state"
+                              name="state" v-model="Unit" />
+
+                          </div>
+                        </div>
                       </div>
-                      <div class="input mt-4">
-                        <label class="font-semibold" for="email">Email</label>
-                        <input
-                          class="block inner-shadow rounded border-2 w-3/5 mt-2 p-1"
-                          type="text"
-                          id="email"
-                          name="email"
-                        />
-                      </div>
-                      <div class="input mt-4">
-                        <label class="font-semibold" for="phoneNumber">Phone Number</label>
-                        <input
-                          class="block inner-shadow rounded border-2 w-1/2 mt-2 p-1"
-                          type="text"
-                          id="phoneNumber"
-                          name="phoneNumber"
-                        />
-                      </div>
-                      <br/>
-                      <h5> Address Details </h5>
-                      <div class="input">
-                        <label class="font-semibold" for="address">Address</label>
-                        <input
-                          class="block inner-shadow rounded border-2 w-full mt-2 p-1"
-                          type="text"
-                          id="address"
-                          name="address"
-                        />
-                      </div>
-                      <div class="input mt-4">
-                        <label class="font-semibold" for="city">Postal Code</label>
-                        <input
-                          class="block inner-shadow rounded border-2 w-full mt-2 p-1"
-                          type="text"
-                          id="city"
-                          name="city"
-                        />
-                      </div>
-                      <div class="input mt-4">
-                        <label class="font-semibold" for="state">Unit No.</label>
-                        <input
-                          class="block inner-shadow rounded border-2 w-1/2 mt-2 p-1"
-                          type="text"
-                          id="state"
-                          name="state"
-                          v-model="Unit"
-                        />
-                        
-                      </div>
-                      </div>
-                    </div>
                     </div>
                   </div>
                 </div>
@@ -238,8 +214,9 @@
                 <div class="accordion my-3" :id="'accordionMap'">
                   <div class="accordion-item">
                     <div class="accordion-header">
-                      <button type="button" class="accordion-button d-flex align-items-center collapsed" data-bs-toggle="collapse"
-                        :data-bs-target="'#collapseMap'" aria-expanded="false" :aria-controls="'collapse'">
+                      <button type="button" class="accordion-button d-flex align-items-center collapsed"
+                        data-bs-toggle="collapse" :data-bs-target="'#collapseMap'" aria-expanded="false"
+                        :aria-controls="'collapse'">
                         <img class="category-image" style="width:100px;height:100px" :src="imageUrl('maps.gif')" />
                         <p class="mx-3 my-auto text-capitalize">
                           Display Locations on Maps
@@ -249,20 +226,16 @@
                     <div :id="'collapseMap'" class="accordion-collapse collapse">
                       <div class="accordion-body d-flex flex-wrap">
                         <div class='map-container'>
-                          <GoogleMap id="map"
-                          api-key="AIzaSyBaK6fapQE5NMhxj0ZZdKcQsn9o1xhZf3M"
-  :center="center"
-  :zoom="14"
-  map-type-id="terrain"
-  
->
-<Marker :options="{ position: center }"></Marker>
-<CustomMarker :options="{position: marking.position}" v-for="(marking, idx) of productList" :key="idx">
-      <div style="text-align: center">
-        <img :src="imageUrl(marking.Image)" width="50" height="50" />
-      </div>
-    </CustomMarker>
-</GoogleMap>
+                          <GoogleMap id="map" api-key="AIzaSyBaK6fapQE5NMhxj0ZZdKcQsn9o1xhZf3M" :center="center"
+                            :zoom="14" map-type-id="terrain">
+                            <Marker :options="{ position: center }"></Marker>
+                            <CustomMarker :options="{ position: marking.position }" v-for="(marking, idx) of productList"
+                              :key="idx">
+                              <div style="text-align: center">
+                                <img :src="imageUrl(marking.Image)" width="50" height="50" />
+                              </div>
+                            </CustomMarker>
+                          </GoogleMap>
                         </div>
 
                       </div>
@@ -272,7 +245,7 @@
 
 
               </div>
-              <div id="sticky" class="col-lg-5" >
+              <div id="sticky" class="col-lg-5">
                 <div class="payment-info">
                   <div class="d-flex justify-content-between align-items-center">
                     <span>Card details</span>
@@ -311,37 +284,43 @@
                     </div>
                   </div>
                   <hr class="line">
-                  <div class="d-flex justify-content-between information"><span>Subtotal</span><span>${{parseFloat(calculateTotalPrice).toFixed(2)}}</span></div>
-                  <div class="d-flex justify-content-between information" v-if="AddressList.length == 2 "><span>Shipping</span><span>$2.00</span></div>
+                  <div class="d-flex justify-content-between information">
+                    <span>Subtotal</span><span>${{ parseFloat(calculateTotalPrice).toFixed(2) }}</span></div>
+                  <div class="d-flex justify-content-between information" v-if="AddressList.length == 2">
+                    <span>Shipping</span><span>$2.00</span></div>
                   <div class="d-flex justify-content-between information" v-if="AddressList.length == 2">
                     <span>Total(Incl. taxes)</span>
-                    <span>${{ parseFloat(calculateTotalPrice + 2).toFixed(2)}}</span>
+                    <span>${{ parseFloat(calculateTotalPrice + 2).toFixed(2) }}</span>
                   </div>
-                  <div class="d-flex justify-content-between information" v-if="AddressList.length == 3 "><span>Shipping</span><span>$4.00</span></div>
+                  <div class="d-flex justify-content-between information" v-if="AddressList.length == 3">
+                    <span>Shipping</span><span>$4.00</span></div>
                   <div class="d-flex justify-content-between information" v-if="AddressList.length == 3">
                     <span>Total(Incl. taxes)</span>
                     <span>${{ parseFloat(calculateTotalPrice + 4).toFixed(2) }}</span>
                   </div>
-                  <div class="d-flex justify-content-between information" v-if="AddressList.length >= 4 "><span>Shipping</span><span>$6.00</span></div>
+                  <div class="d-flex justify-content-between information" v-if="AddressList.length >= 4">
+                    <span>Shipping</span><span>$6.00</span></div>
                   <div class="d-flex justify-content-between information" v-if="AddressList.length >= 4">
                     <span>Total(Incl. taxes)</span>
-                    <span>${{parseFloat(calculateTotalPrice + 6).toFixed(2)}}</span>
+                    <span>${{ parseFloat(calculateTotalPrice + 6).toFixed(2) }}</span>
                   </div>
-                  <div class="d-flex justify-content-between information" v-if="AddressList.length == 1 && Unit !== ''"><span>Shipping</span><span>$2.00</span></div>
+                  <div class="d-flex justify-content-between information" v-if="AddressList.length == 1 && Unit !== ''">
+                    <span>Shipping</span><span>$2.00</span></div>
                   <div class="d-flex justify-content-between information" v-if="AddressList.length == 1 && Unit !== ''">
                     <span>Total(Incl. taxes)</span>
-                    <span>${{parseFloat(calculateTotalPrice + 2).toFixed(2)}}</span>
+                    <span>${{ parseFloat(calculateTotalPrice + 2).toFixed(2) }}</span>
                   </div>
                   <div class="d-flex justify-content-between information" v-if="AddressList.length == 1 && Unit === ''">
                     <span>Total(Incl. taxes)</span>
-                    <span>${{ parseFloat(calculateTotalPrice).toFixed(2)}}</span>
+                    <span>${{ parseFloat(calculateTotalPrice).toFixed(2) }}</span>
                   </div>
-                  <a href="./confirmation-page" v-if='products.length >= 1'><button  type="button" class="btn btn-block btn-lg btn-work" @click='afterCheckOut(accountStorage.aid, products)'>
-                    <div class="d-flex justify-content-between">
-                      <span id="checkout">Checkout</span>
-                    </div>
-                  </button>
-                </a>
+                  <a href="./confirmation-page" v-if='products.length >= 1'><button type="button"
+                      class="btn btn-block btn-lg btn-work" @click='afterCheckOut(accountStorage.aid, products)'>
+                      <div class="d-flex justify-content-between">
+                        <span id="checkout">Checkout</span>
+                      </div>
+                    </button>
+                  </a>
                   <button v-else type="button" class="btn btn-block btn-lg btn-work disabled">
                     <div class="d-flex justify-content-between">
                       <span id="checkout">Checkout</span>
@@ -357,10 +336,10 @@
         <div class="row">
           <div class="col-12">
             <template>
-  
-</template>
+
+            </template>
           </div>
-          
+
         </div>
       </div>
     </section>
@@ -375,74 +354,74 @@ import ConfirmationPage from './ConfirmationPage.vue';
 
 
 export default {
-  
+
   name: "CheckOut",
   components: {
     NavBar,
-    
+
   },
   data: () => ({
     isLoggedIn: false,
     loading: false,
-    timing:"", 
-    date:"",
+    timing: "",
+    date: "",
     products: useAccountStorage().cart,
     totalCost: [],
     productList: {},
     AddressList: [],
     subtotalCost: 0,
     Unit: "",
-    
-    center: {lat: useAccountStorage().lat, lng: useAccountStorage().lng},
+
+    center: { lat: useAccountStorage().lat, lng: useAccountStorage().lng },
     markers: {},
-          
+
   }),
   created() {
-		this.checkLoginStatus();
+    this.checkLoginStatus();
     this.RetrieveAll(this.products)
-    
-    
-	},
-  mounted(){
-    
-    
+
+
   },
-  
+  mounted() {
+
+
+  },
+
   computed: {
-    
-    calculateTotalPrice(){
+
+    calculateTotalPrice() {
       let total = 0
-      for(let i of this.totalCost){
+      for (let i of this.totalCost) {
         total += parseFloat(i)
       }
       return total
     },
-    cart(){
+    cart() {
       return this.carts.cart;
     }
   },
 
   methods: {
-    
-    CalculatePrice(p, qty){
-      
+
+    CalculatePrice(p, qty) {
+
       console.log("after..")
       return parseFloat(parseFloat(p).toFixed(2) * qty).toFixed(2)
     },
     checkLoginStatus() {
-			const sessionData = JSON.parse(localStorage.getItem('session'));
-			if (sessionData && sessionData.user && sessionData.user.email) {
-			// Assuming that the presence of the user's email indicates a valid login session
-			this.isLoggedIn = true;
-			} else {
-			this.isLoggedIn = false;
-			}
-		},
+      const sessionData = JSON.parse(localStorage.getItem('session'));
+      if (sessionData && sessionData.user && sessionData.user.email) {
+        // Assuming that the presence of the user's email indicates a valid login session
+        this.isLoggedIn = true;
+      } else {
+        this.isLoggedIn = false;
+      }
+    },
     deleteCard(pid) {
       // Use appropriate logic to delete the card based on the card number
       let arr = [];
-      for(let i of this.products){
-        if(i != pid){
+      for (let i of this.products) {
+        if (i != pid) {
           arr.push(i)
         }
       }
@@ -451,20 +430,20 @@ export default {
       console.log('after delete')
       console.log(this.products)
       this.RetrieveAll(this.products)
-      
-      
+
+
     },
-    
+
     imageUrl(name) {
       return require(`@/assets/img/${name}`);
       // console.log(name);
     },
-    
-    Retrieval(pid){
+
+    Retrieval(pid) {
       axios
         .get("http://localhost:3000/get_product_description/" + pid)
         .then((response) => {
-          
+
           let prod = {};
           let add = {}
           prod['Address'] = response.data[0].postalcode;
@@ -475,26 +454,26 @@ export default {
           add['lat'] = parseFloat(response.data[0].a_lat);
           add['lng'] = parseFloat(response.data[0].a_long);
           prod['position'] = add
-          if(!this.AddressList.includes(response.data[0].postalcode)){
+          if (!this.AddressList.includes(response.data[0].postalcode)) {
             this.AddressList.push(response.data[0].postalcode)
           }
           this.totalCost.push(this.CalculatePrice(response.data[0].selling_price, response.data[0].selling_quantity))
           this.productList[pid] = prod
           console.log(this.totalCost)
-          
+
         })
         .catch(function (error) {
           console.log(error);
         });
     },
-    RetrieveAll(prods){
+    RetrieveAll(prods) {
       console.log("RetrievalAll here")
       console.log(prods);
       this.productList = {};
       this.subtotalCost = 0;
       this.AddressList = [];
       this.totalCost = [];
-      for(let pid of prods){
+      for (let pid of prods) {
         this.Retrieval(pid);
       }
     },
@@ -504,12 +483,12 @@ export default {
         const response = await axios.post(`http://localhost:3000/afterCheckOut/${aid}/${arrPid.join(',')}`, {
           arrPid,
         });
-        
+
 
       } catch (error) {
         console.error('Error:', error);
       }
-          
+
     },
   },
 }
@@ -520,6 +499,10 @@ export default {
 
 
 <style scoped>
+img {
+  object-fit: contain;
+}
+
 /* Add your CSS styles here */
 /* * {
   margin: 0;
@@ -531,6 +514,7 @@ export default {
 #delete1:hover {
   color: red;
 }
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -549,23 +533,34 @@ export default {
   margin-bottom: 15px;
 } */
 
-.empty-container{
-  width: 100%; /* Make the container take the full width of its parent */
-  height: 0; /* Initially set the height to 0 */
-  padding-bottom: 60%; /* Set the aspect ratio you desire (e.g., 60% for a 2:1 ratio) */
-  position: relative; /* Position is relative to the container */
+.empty-container {
+  width: 100%;
+  /* Make the container take the full width of its parent */
+  height: 0;
+  /* Initially set the height to 0 */
+  padding-bottom: 60%;
+  /* Set the aspect ratio you desire (e.g., 60% for a 2:1 ratio) */
+  position: relative;
+  /* Position is relative to the container */
 }
 
-#empty{position: absolute;
+#empty {
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;}
+  height: 100%;
+}
+
 .map-container {
-  width: 100%; /* Make the container take the full width of its parent */
-  height: 0; /* Initially set the height to 0 */
-  padding-bottom: 60%; /* Set the aspect ratio you desire (e.g., 60% for a 2:1 ratio) */
-  position: relative; /* Position is relative to the container */
+  width: 100%;
+  /* Make the container take the full width of its parent */
+  height: 0;
+  /* Initially set the height to 0 */
+  padding-bottom: 60%;
+  /* Set the aspect ratio you desire (e.g., 60% for a 2:1 ratio) */
+  position: relative;
+  /* Position is relative to the container */
 }
 
 /* Make the map fill the entire container */
@@ -657,10 +652,12 @@ a:hover {
   border: none !important;
   /* Remove the border */
 }
+
 #sticky {
   position: sticky;
-  z-index:5;
+  z-index: 5;
 }
+
 .payment-info {
   background: #508E46;
   padding: 30px;
@@ -809,5 +806,4 @@ label.radio input:checked+span {
   margin: 0;
   padding: 10px;
 }
-
 </style>
