@@ -494,52 +494,69 @@ app.get("/get_ingredient_id_by_name", (req, res) => {
 
 
 // TO DO: check if it's right
-// app.put('/insertNewInventoryItem', (req, res) => {
-//   const updatedData = req.body;
+app.post('/insertNewInventoryItem', (req, res) => {
+  const updatedData = req.body;
 
-//   // Perform the SQL update operation
-//   const AccountInventoryQuery = 'INSERT INTO freshsavings.AccountInventory(aid,iid, expiring_in, qty, ExpiryDate, emoji) VALUES (?, ?, 3, ?, ?, ?);';
-//   const IngredientQuery = 'INSERT INTO freshsavings.Ingredient(iid, iname, icat) VALUES (?,?,?,?); '
+  // Perform the SQL update operation
+  const AccountInventoryQuery = 'INSERT INTO freshsavings.AccountInventory(aid,iid, expiring_in, qty, ExpiryDate, emoji) VALUES (?, ?, 3, ?, ?, ?);';
+  const IngredientQuery = 'INSERT INTO freshsavings.Ingredient(iid, iname, icat) VALUES (?,?,?,?); '
 
-//   connection.beginTransaction((err) => {
-//     if (err) {
-//       console.error('Error starting transaction:', err);
-//       res.status(500).send('Internal Server Error');
-//       return;
-//     }
+  connection.beginTransaction((err) => {
+    if (err) {
+      console.error('Error starting transaction:', err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
 
-//     connection.query(AccountInventoryQuery, [aid,iid, expiring_in, qty, ExpiryDate], (error, productResults) => {
-//       if (error) {
-//         return connection.rollback(() => {
-//           console.error('Error inserting data into products:', error);
-//           res.status(500).send('Internal Server Error');
-//         });
-//       }
+    connection.query(AccountInventoryQuery, [aid,iid, expiring_in, qty, ExpiryDate], (error, productResults) => {
+      if (error) {
+        return connection.rollback(() => {
+          console.error('Error inserting data into products:', error);
+          res.status(500).send('Internal Server Error');
+        });
+      }
 
-//       const productId = productResults.insertId;
 
-//       connection.query(IngredientQuery, [iid, iname, icat], (inventoryError) => {
-//         if (inventoryError) {
-//           return connection.rollback(() => {
-//             console.error('Error inserting data into inventory:', inventoryError);
-//             res.status(500).send('Internal Server Error');
-//           });
-//         }
+      connection.query(IngredientQuery, [iid, iname, icat], (inventoryError) => {
+        if (inventoryError) {
+          return connection.rollback(() => {
+            console.error('Error inserting data into inventory:', inventoryError);
+            res.status(500).send('Internal Server Error');
+          });
+        }
 
-//         connection.commit((commitError) => {
-//           if (commitError) {
-//             return connection.rollback(() => {
-//               console.error('Error committing transaction:', commitError);
-//               res.status(500).send('Internal Server Error');
-//             });
-//           }
+        connection.commit((commitError) => {
+          if (commitError) {
+            return connection.rollback(() => {
+              console.error('Error committing transaction:', commitError);
+              res.status(500).send('Internal Server Error');
+            });
+          }
 
-//           res.status(200).send('Data inserted successfully');
-//         });
-//       });
-//     });
-//   });
-// });
+          res.status(200).send('Data inserted successfully');
+        });
+      });
+    });
+  });
+});
+
+app.delete('/delete-data', (req, res) => {
+  const dataToDelete = req.body;
+
+  // Use a SQL query to delete data from your database
+  const sql = 'DELETE FROM freshsavings.AccountInventory WHERE aid = ? and iid =  ?';
+
+  // Execute the SQL query with the data to delete
+  yourDatabaseConnection.query(sql, [dataToDelete.id], (error, results) => {
+    if (error) {
+      console.error('Error deleting data:', error);
+      res.status(500).send('Error deleting data');
+    } else {
+      console.log('Data deleted successfully');
+      res.status(200).send('Data deleted successfully');
+    }
+  });
+});
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

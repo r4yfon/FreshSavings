@@ -4,6 +4,7 @@ import { useAccountStorage } from '../main.js';
 import axios from 'axios';
 // import { useAccountStorage } from '../main.js';
 const accountStorage = useAccountStorage();
+let successMessage = '';
 
 </script>
 
@@ -44,7 +45,7 @@ const accountStorage = useAccountStorage();
 		</div>
 
 		<!-- Add-items Form -->
-		<div class="form-popup" id="myForm">
+		<div class="form-popup" id="myForm" v-if="!successMessage">
 			<form class="form-container">
 
 				<h3 class="fw-bold" style="text-align: center">
@@ -70,7 +71,7 @@ const accountStorage = useAccountStorage();
 						<option>Fruits</option>
 						<option>Dairy</option>
 						<option>Fish</option>
-						<option>Meats</option>
+						<option>Meat</option>
 					</select>
 				</div>
 
@@ -100,6 +101,10 @@ const accountStorage = useAccountStorage();
 				</div>
 
 			</form>
+		</div>
+
+		<div v-if="successMessage" class="success-message">
+			{{ successMessage }}
 		</div>
 
 		<!-- If there are no items -->
@@ -146,12 +151,39 @@ const accountStorage = useAccountStorage();
 							<!-- </div> -->
 							<!-- <div class="col-lg-6 col-md-6 col-sm-6"> -->
 							<button type="button" class="btn btn-success" style="display:block; width:100%" data-bs-toggle="modal"
-								data-bs-target="#openModal-{{ idx }}">
+								data-bs-target="#openModal">
 								Sell
 							</button>
 
 							<!-- </div> -->
 						</div>
+
+						<!-- Modal Opened -->
+						<div class="modal fade" id="openModal" tabindex="-1" aria-labelledby="openModalLabel"
+									aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h1 class="modal-title fs-5" :id="'ModalLabel' + idx">Listing Details</h1>
+												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+											</div>
+											<div class="modal-body">
+												<label :for="'FormControlInput1' + idx" class="form-label">Selling Price</label>
+												<div class="input-group mb-3">
+													<span class="input-group-text" id="addon-wrappifng">$</span>
+													<input type="number" class="form-control" :id="'FormControlInput1' + idx" placeholder="3.00">
+												</div>
+												<div class="mb-3">
+													<label :for="'FormControlInput2' + idx" class="form-label">Upload photo of product</label>
+													<input type="file" class="form-control" :id="'FormControlInput2' + idx">
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-primary" @click="posted(item.iid)">Post</button>
+											</div>
+										</div>
+									</div>
+								</div>
 					</div>
 				</div>
 			</div>
@@ -197,7 +229,7 @@ const accountStorage = useAccountStorage();
 									</div>
 									<div class="col-lg-6 col-md-6 col-sm-6">
 										<button type="button" class="btn btn-success" style="display:block; width:100%" data-bs-toggle="modal"
-											data-bs-target="#openModal-{{ idx }}">
+											data-bs-target="#openModal">
 											Sell
 										</button>
 
@@ -205,7 +237,7 @@ const accountStorage = useAccountStorage();
 								</div>
 
 								<!-- Modal Opened -->
-								<div class="modal fade" :id="'#openModal-' + idx" tabindex="-1" aria-labelledby="openModalLabel"
+								<div class="modal fade" :id="openModal" tabindex="-1" aria-labelledby="openModalLabel"
 									aria-hidden="true">
 									<div class="modal-dialog">
 										<div class="modal-content">
@@ -254,6 +286,7 @@ export default {
 
 			items: [],
 			// inventoryItems: [],
+			successMessage: '',
 
 			// Form inputs
 			ingredient_name: '',
@@ -280,17 +313,19 @@ export default {
 				{ fruit: ['🍇', '🍈', '🍉', '🍊', '🍋', '🍌', '🍍', '🍎', '🥭', '🍏', '🍐', '🍑', '🍒', '🍓', '🫐', '🥝', '🍅', '🫒', '🥥', '🥑', '🍆', '🥔', '🥕', '🌽', '🫑', '🥒', '🥬', '🥦',] },
 				{ meat: ['🍖', '🍗', '🥩', '🥓', '🐄', '🐖', '🐓', '🐏'] },
 			],
-			cards: [
-				{
-					icon: "🥬",
-					qty: 4,
-					item: "Lettuce",
-					expiry: 3,
-					background:
-						"linear-gradient(135deg, rgb(202, 236, 172) 0%, rgb(131, 208, 197) 100%)",
-					qty_color: "rgb(160, 220, 187)",
-				},
-			]
+
+			// DO NOT DELETE THIS
+			// cards: [
+			// 	{
+			// 		icon: "🥬",
+			// 		qty: 4,
+			// 		item: "Lettuce",
+			// 		expiry: 3,
+			// 		background:
+			// 			"linear-gradient(135deg, rgb(202, 236, 172) 0%, rgb(131, 208, 197) 100%)",
+			// 		qty_color: "rgb(160, 220, 187)",
+			// 	},
+			// ]
 
 		}
 	},
@@ -385,26 +420,32 @@ export default {
       name: itemName
     }
   })
-  .then(response => {
+  .then(async response => {
     const ingredientId = response.data.iid;
     if (ingredientId) {
       // Now you can use these variables to perform any necessary logic or actions
       // For example, you can use them in your axios POST request
 
-      axios.post('http://localhost:3000/add_inventory_item', {
-        aid: useAccountStorage().aid,
-        iid: ingredientId,
-        qty: itemQuantity,
-		expiring_in: this.calculateRemainingDays,
-        ExpiryDate: expiryDate,
-        // other data properties as needed
-      })
-      .then(response => {
-        // Handle the response if needed
-      })
-      .catch(error => {
+      try {
+        const postResponse = await axios.post('http://localhost:3000/add_inventory_item', {
+          aid: useAccountStorage().aid,
+          iid: ingredientId,
+          qty: itemQuantity,
+          expiring_in: this.calculateRemainingDays,
+          ExpiryDate: expiryDate,
+          // other data properties as needed
+        });
+
+        // Show success message and close the form
+        this.successMessage = 'Item added successfully!';
+        this.formAction('close');
+        setTimeout(() => {
+          this.successMessage = '';
+        }, 2000); // Hides the success message after 2 seconds
+      } catch (error) {
         // Handle errors
-      });
+        console.error('Error occurred while adding inventory item:', error);
+      }
     } else {
       console.error('Ingredient ID not found for the provided name:', itemName);
     }
@@ -458,67 +499,6 @@ export default {
 			return style;
 		},
 
-		// ALL SQL STATEMENTS
-		// Retrieves record of all Inventory Items in an Array
-		// getInventoryItems() {
-		// 	axios
-		// 	.axios.get("http://localhost:3000/get_user_inventory_items/" + useAccountStorage().aid).then((response) =>
-		// 	let newItems = [];
-		// 	for (let item of response.data) {
-		// 		const currentDate = new Date();
-		// 		var futureDate = new Date(item.ExpiryDate);
-		// 		var timeDifference = futureDate.getTime() - currentDate.getTime();
-		// 		var daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-
-		// 		newItems.push({
-		// 			name: item.iname,
-		// 			category: item.icat,
-		// 			expiring_in: daysDifference,
-		// 			quantity: item.qty,
-		// 			// emoji: item.emoji, need to add into database
-		// 		})
-		// 	};
-		// 	this.newItems = items;
-		// });
-		// },
-
-		// Insert new item into databases - Ingredient and AccountInventory
-		// insertItem() {
-		// 	if (
-		// 		this.ingredient_name == "" ||
-		// 		this.ingredient_quantity == "" ||
-		// 		this.category == ""
-		// 	) {
-		// 		alert("Please fill out all fields");
-		// 		return;
-		// 	};
-
-		// 	const expiring_in = this.calculateRemainingDays;
-		// 	this.formAction('clear');
-		// 	this.formAction('close');
-
-		// 	// Your logic to update the SQL table
-		// 	const updatedData = {
-		// 		iname: this.ingredient_name,
-		// 		icat: this.selectedCategory,
-		// 		expiring_in: expiring_in,
-		// 		qty: this.ingredient_quantity,
-		// 		emoji: this.selectedEmoji,// havent include yet
-		// 	};
-
-		// 	// Make an HTTP PUT request to the server-side endpoint
-		// 	axios.put('/insertNewInventoryItem', updatedData)
-		// 		.then(response => {
-		// 		// Handle the response if needed
-		// 		console.log('Table updated successfully', response.data);
-		// 		})
-		// 		.catch(error => {
-		// 		// Handle errors
-		// 		console.error('Error updating table', error);
-		// 		});
-		// 	}
-		// },
-
 		formAction(action) {
 			if (action == 'open') {
 				document.getElementById("myForm").style.display = "block";
@@ -552,7 +532,7 @@ export default {
 
 		// TO DO: remove this card information from the Table 'AccountInventory' completely
 		removePost() {
-			this.items.splice(idx, idx);
+			this.items.splice(idx, 1);
 			// check again
 		},
 		
@@ -571,7 +551,6 @@ export default {
 
 	}
 }
-
 </script>
 
 
