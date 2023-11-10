@@ -499,15 +499,14 @@ export default {
       }
     },
     async afterCheckOut(aid, arrPid) {
-      // try {
-      //   const response = await axios.post(`http://your-api-base-url/afterCheckOut/${aid}/${arrPid.join(',')}`, {
-      //     arrPid,
-      //   });
+      try {
+        const response = await axios.post(`http://localhost:3000/afterCheckOut/${aid}/${arrPid.join(',')}`, {
+          arrPid,
+        });
 
-      //   console.log(response.data);
-      // } catch (error) {
-      //   console.error('Error:', error);
-      // }
+      } catch (error) {
+        console.error('Error:', error);
+      }
           useAccountStorage().cart = [];
     },
   },

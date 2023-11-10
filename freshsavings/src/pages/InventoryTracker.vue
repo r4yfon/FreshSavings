@@ -216,7 +216,7 @@ const accountStorage = useAccountStorage();
 											<div class="modal-body">
 												<label :for="'FormControlInput1' + idx" class="form-label">Selling Price</label>
 												<div class="input-group mb-3">
-													<span class="input-group-text" id="addon-wrapping">$</span>
+													<span class="input-group-text" id="addon-wrappifng">$</span>
 													<input type="number" class="form-control" :id="'FormControlInput1' + idx" placeholder="3.00">
 												</div>
 												<div class="mb-3">
@@ -225,7 +225,7 @@ const accountStorage = useAccountStorage();
 												</div>
 											</div>
 											<div class="modal-footer">
-												<button type="button" class="btn btn-primary" @click="posted(idx)">Post</button>
+												<button type="button" class="btn btn-primary" @click="posted(item.iid)">Post</button>
 											</div>
 										</div>
 									</div>
@@ -555,10 +555,18 @@ export default {
 			this.items.splice(idx, idx);
 			// check again
 		},
-
+		
 		// TO DO: insert this card information to Table 'Posting'
-		posted(idx) {
+		async posted(iid) {
 			this.posting_status = 'Active';
+			try {
+        const response = await axios.post(`http://localhost:3000/InventorytoPosting/${useAccountStorage().aid}/${iid}`, {
+          
+        });
+
+      } catch (error) {
+        console.error('Error:', error);
+      }
 		},
 
 	}

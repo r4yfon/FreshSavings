@@ -97,7 +97,7 @@ app.get("/get_all_ingredients", (req, res) => {
 app.get("/get_all_products", (req, res) => {
   // Query the database to retrieve ingredients
   connection.query(
-    "select pid, Ingredient.iid, Ingredient.iname, selling_price, selling_quantity, fname, lname, said, Account.postalcode, Account.a_lat, Account.a_long, posting_status, icat, Ingredient.price, image from freshsavings.Posting, freshsavings.Account, freshsavings.Ingredient where Posting.said = Account.aid and Posting.iid = Ingredient.iid",
+    "select ExpiryDate, pid, Ingredient.iid, Ingredient.iname, selling_price, selling_quantity, fname, lname, said, Account.postalcode, Account.a_lat, Account.a_long, posting_status, icat, Ingredient.price, image from freshsavings.Posting, freshsavings.Account, freshsavings.Ingredient where Posting.said = Account.aid and Posting.iid = Ingredient.iid",
     (err, results) => {
       if (err) {
         console.error("Error querying the database:", err);
@@ -113,7 +113,7 @@ app.get("/get_product_description/:pid", (req, res) => {
   // Query the database to retrieve ingredients
   const pid = parseInt(req.params.pid);
   connection.query(
-    "select pid, Ingredient.iid, Ingredient.iname, selling_price, selling_quantity, fname, lname, said, Account.postalcode, Account.a_lat, Account.a_long, posting_status, icat, Ingredient.price, image from freshsavings.Posting, freshsavings.Account, freshsavings.Ingredient where Posting.said = Account.aid and Posting.iid = Ingredient.iid and Posting.pid = ?",
+    "select ExpiryDate, pid, Ingredient.iid, Ingredient.iname, selling_price, selling_quantity, fname, lname, said, Account.postalcode, Account.a_lat, Account.a_long, posting_status, icat, Ingredient.price, image from freshsavings.Posting, freshsavings.Account, freshsavings.Ingredient where Posting.said = Account.aid and Posting.iid = Ingredient.iid and Posting.pid = ?",
     [pid],
     (err, results) => {
       if (err) {
@@ -188,13 +188,57 @@ app.get("/get_user_inventory_items/:userid", (req, res) => {
     }
   );
 });
+app.post("/InventorytoPosting/:aid/:iid/:s_price", (req, res) => {
+  const aid = parseInt(req.params.aid);
+  const iid = parseInt(req.params.iid);
+  const s_price = parseFloat(req.params.s_price)
+  connection.query(
+    "SELECT Ingredient.iid, postingImage, qty, ExpiryDate FROM freshsavings.AccountInventory, freshsavings.Ingredient WHERE Ingredient.iid = AccountInventory.iid AND AccountInventory.aid = ? AND AccountInventory.iid = ?",
+    [aid, iid],
+    (err, results) => {
+      if (err) {
+        console.error("Error querying the database:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+        return;
+      }
+      console.log(results[0])
+      const { iid, postingImage, qty, ExpiryDate } = results[0];
+      Connection.query(
+        "INSERT INTO freshsavings.Posting (iid, expiring_in, selling_price, selling_quantity, said, posting_status, image, ExpiryDate VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        [iid, 1, s_price, qty, aid, 'Active', postingImage, ExpiryDate],
+        
+        (err, results) => {
+          if (err) {
+            console.error("Error querying the database:", err);
+            res.status(500).json({ error: "Internal Server Error" });
+            return;
+          }
+          Connection.query(
+            "DELETE FROM freshsavings.AccountInventory where aid = ? and iid = ?",
+            [aid, iid],
+            
+            (err, results) => {
+              if (err) {
+                console.error("Error querying the database:", err);
+                res.status(500).json({ error: "Internal Server Error" });
+                return;
+              }
+            }
+          )
+        }
+      )
+    })
+
+})
 app.post("/afterCheckOut/:aid/:arrPid", (req, res) => {
   const aid = parseInt(req.params.aid);
   const arrPid = req.body.arrPid.map(pid => parseInt(pid));
-  for(const pid of arrPid){
-    const pid = parseInt(pid);
+  console.log("params")
+  console.log(aid)
+  console.log(arrPid)
+  for (const pid of arrPid) {
     connection.query(
-      "select Ingredient.iid, selling_quantity, ExpiryDate, emoji from freshsavings.Posting and freshsavings.Ingredients where Posting.iid = Ingredients.iid Posting.pid = ?",
+      "SELECT Ingredient.iid, selling_quantity, ExpiryDate, emoji FROM freshsavings.Posting, freshsavings.Ingredient WHERE Posting.iid = Ingredient.iid AND Posting.pid = ?",
       [pid],
       (err, results) => {
         if (err) {
@@ -202,35 +246,36 @@ app.post("/afterCheckOut/:aid/:arrPid", (req, res) => {
           res.status(500).json({ error: "Internal Server Error" });
           return;
         }
+        console.log(results[0])
         const { iid, selling_quantity, ExpiryDate, emoji } = results[0];
+
         connection.query(
-          "INSERT INTO freshsavings.AccountInventory (aid, iid, expiring_in, qty, ExpiryDate, emoji) VALUES (?, ?, ?, ?, ?, ?)",
-          [aid, iid, 1, selling_quantity, ExpiryDate, emoji],
+          "INSERT INTO freshsavings.AccountInventory (aid, iid, expiring_in, qty, ExpiryDate) VALUES (?, ?, ?, ?, ?)",
+          [aid, iid, 1, selling_quantity, ExpiryDate],
           (err, results) => {
             if (err) {
               console.error("Error querying the database:", err);
               res.status(500).json({ error: "Internal Server Error" });
               return;
             }
-            
-        }
-      );
-      connection.query(
-        "DELETE FROM freshsavings.Posting WHERE pid = ?",
-        [pid],
-        (err, results) => {
-          if (err) {
-            console.error("Error querying the database:", err);
-            res.status(500).json({ error: "Internal Server Error" });
-            return;
+            connection.query(
+              "DELETE FROM freshsavings.Posting WHERE pid = ?",
+              [pid],
+              (err, results) => {
+                if (err) {
+                  console.error("Error querying the database:", err);
+                  res.status(500).json({ error: "Internal Server Error" });
+                  return;
+                }
+                res.json(results);
+            }
+          );
           }
+        );
       }
     );
-    }
-  );
   }
-
-})
+});
 
 app.all("/login", (req, res) => {
   if (req.method === "GET") {
