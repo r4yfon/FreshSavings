@@ -206,15 +206,13 @@ import { Icon } from "@iconify/vue";
 
     <!-- marketplace -->
     <span class="anchor" id="anchor-marketplace"></span>
-    <div class="parallax vh-100" style="
-        background-image: url(https://images.unsplash.com/photo-1580137189272-c9379f8864fd?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
-      ">
+    <div class="parallax pb-5" id="parallax-marketplace">
       <div class="container-fluid">
         <h1 class="fw-bold text-middle text-light pt-5 pb-4">Marketplace</h1>
-        <div class="row row-cols-2 row-cols-lg-4 g-2">
+        <div class="row row-cols-2 row-cols-lg-4">
 
           <div class="p-2">
-            <div class="css-card col p-0">
+            <div class="css-card col p-0 order-3 order-lg-1">
               <img :src="require('@/assets/img/banana.webp')" class="img-fluid object-fit-cover" />
               <div class="card__content">
                 <p class="card__title">Card Title</p>
@@ -226,8 +224,8 @@ import { Icon } from "@iconify/vue";
             </div>
           </div>
           <div class="p-2">
-            <div class="css-card col p-0">
-              <img :src="require('@/assets/img/banana.webp')" class="img-fluid object-fit-cover" />
+            <div class="css-card col p-0 order-3 order-lg-1">
+              <img :src="require('@/assets/img/yoghurt.webp')" class="img-fluid object-fit-cover" />
               <div class="card__content">
                 <p class="card__title">Card Title</p>
                 <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -238,8 +236,8 @@ import { Icon } from "@iconify/vue";
             </div>
           </div>
           <div class="p-2">
-            <div class="css-card col p-0">
-              <img :src="require('@/assets/img/banana.webp')" class="img-fluid object-fit-cover" />
+            <div class="css-card col p-0 order-3 order-lg-1">
+              <img :src="require('@/assets/img/salmon.webp')" class="img-fluid object-fit-cover" />
               <div class="card__content">
                 <p class="card__title">Card Title</p>
                 <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -250,8 +248,8 @@ import { Icon } from "@iconify/vue";
             </div>
           </div>
           <div class="p-2">
-            <div class="css-card col p-0">
-              <img :src="require('@/assets/img/banana.webp')" class="img-fluid object-fit-cover" />
+            <div class="css-card col p-0 order-3 order-lg-1">
+              <img :src="require('@/assets/img/orange.avif')" class="img-fluid object-fit-cover" />
               <div class="card__content">
                 <p class="card__title">Card Title</p>
                 <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -261,10 +259,10 @@ import { Icon } from "@iconify/vue";
               </div>
             </div>
           </div>
-          <div class="col p-0">
+          <div class="col p-0 order-3 order-lg-1">
             <div class="p-2 mb-2">
               <div class="css-card col">
-                <img :src="require('@/assets/img/banana.webp')" class="img-fluid object-fit-cover" />
+                <img :src="require('@/assets/img/shrimp.jpg')" class="img-fluid object-fit-cover" />
                 <div class="card__content">
                   <p class="card__title">Card Title</p>
                   <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -277,7 +275,7 @@ import { Icon } from "@iconify/vue";
             </div>
             <div class="p-2">
               <div class="css-card col">
-                <img :src="require('@/assets/img/banana.webp')" class="img-fluid object-fit-cover" />
+                <img :src="require('@/assets/img/kiw.jpeg')" class="img-fluid object-fit-cover" />
                 <div class="card__content">
                   <p class="card__title">Card Title</p>
                   <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -289,10 +287,10 @@ import { Icon } from "@iconify/vue";
               </div>
             </div>
           </div>
-          <div class="col p-0">
+          <div class="col p-0 order-3 order-lg-1">
             <div class="p-2 mb-2">
               <div class="css-card col">
-                <img :src="require('@/assets/img/banana.webp')" class="img-fluid object-fit-cover" />
+                <img :src="require('@/assets/img/cabbage.webp')" class="img-fluid object-fit-cover" />
                 <div class="card__content">
                   <p class="card__title">Card Title</p>
                   <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -305,7 +303,7 @@ import { Icon } from "@iconify/vue";
             </div>
             <div class="p-2">
               <div class="css-card col">
-                <img :src="require('@/assets/img/banana.webp')" class="img-fluid object-fit-cover" />
+                <img :src="require('@/assets/img/butter.avif')" class="img-fluid object-fit-cover" />
                 <div class="card__content">
                   <p class="card__title">Card Title</p>
                   <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -318,13 +316,21 @@ import { Icon } from "@iconify/vue";
             </div>
           </div>
 
-          <div class="col round-4 bg-danger mt-3 mb-2 px-4" id="marketplace-card">
-            dsvdsv
+          <!-- <div class="col mt-3 mb-2" id="marketplace-card"> -->
+          <div class="px-2 my-2 w-50 order-2" id="marketplace-card">
+            <div
+              class="rounded-4 glass-card h-100 px-4 py-5 text-light d-flex justify-content-center align-items-center flex-column">
+              <h2 class="mb-4 pb-3">Have food that you don't think you can finish before it expires?</h2>
+              <h3>Sell it to others in our marketplace and ensure it does not go to waste.</h3>
+              <hr class="w-100" />
+              <h2>Similarly, buy from others and enjoy greater savings as well.</h2>
+            </div>
           </div>
+          <!-- </div> -->
 
-          <div class="col p-0">
+          <!-- <div class="col p-0 order-3 order-lg-1">
             <div class="p-2 mb-2">
-              <div class="css-card col p-0">
+              <div class="css-card col p-0 order-3 order-lg-1">
                 <img :src="require('@/assets/img/banana.webp')" class="img-fluid object-fit-cover" />
                 <div class="card__content">
                   <p class="card__title">Card Title</p>
@@ -337,7 +343,7 @@ import { Icon } from "@iconify/vue";
               </div>
             </div>
             <div class="p-2">
-              <div class="css-card col p-0">
+              <div class="css-card col p-0 order-3 order-lg-1">
                 <img :src="require('@/assets/img/banana.webp')" class="img-fluid object-fit-cover" />
                 <div class="card__content">
                   <p class="card__title">Card Title</p>
@@ -349,7 +355,7 @@ import { Icon } from "@iconify/vue";
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -558,6 +564,13 @@ export default {
           qty_color: "rgb(166, 140, 255)",
         },
       ],
+      marketplaceCards: [
+        {
+          imgSrc: '1',
+          itemTitle: '2',
+          itemQty: '3',
+        },
+      ]
     };
   },
 };
@@ -684,6 +697,12 @@ a {
       url("../assets/img/cooking.webp") no-repeat fixed center;
     background-size: cover;
   }
+
+  &#parallax-marketplace {
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+      url("../assets/img/grocery_store_aisle.webp") no-repeat fixed center;
+    background-size: cover;
+  }
 }
 
 .paper {
@@ -768,8 +787,8 @@ a {
 .css-card {
   position: relative;
   /* width: 300px; */
-  /* height: 200px; */
-  background-color: #f2f2f2;
+  height: 300px;
+  background-color: #fff;
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -828,6 +847,11 @@ a {
 }
 
 #marketplace-card {
-  border-radius: 18px;
+  /* border-radius: 18px; */
+  width: 100% !important;
+
+  @media (min-width: 992px) {
+    width: 50% !important;
+  }
 }
 </style>
