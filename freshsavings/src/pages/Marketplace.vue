@@ -79,11 +79,12 @@ const accountStorage = useAccountStorage();
           </div>
 
           <div class="small-half flex-grow-0">
-            <div class="d-flex justify-content-between align-items-center mb-2">
+            <div
+              class="d-flex justify-content-between mb-2 flex-column align-items-start flex-md-row">
               <h5 class="text-start">Filter by category</h5>
               <button
                 type="button"
-                class="btn d-flex btn-link p-0 gap-2 text-decoration-none"
+                class="btn d-flex btn-link p-0 gap-2 text-decoration-none align-self-end"
                 :class="[
                   this.chooseCategories.length > 0
                     ? 'text-danger'
@@ -138,81 +139,50 @@ const accountStorage = useAccountStorage();
               </button>
             </div>
           </div>
-        </div>
-      </div>
 
-      <div class="container px-4 px-lg-5 mt-5">
-        <div
-          class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-start">
-          <template v-for="product of groceryItems" :key="product.iname">
+          <div class="small-half flex-grow-0">
+            <h5 class="text-start mt-lg-5">Filter by distance</h5>
             <div
-              v-if="
-                product.posting_status == 'Active' &&
-                cart.indexOf(product.pid) == -1 &&
-                searched(product.iname) &&
-                distancetrack(product.pid) &&
-                this.chooseCategories.includes(product.icat)
-              "
-              class="col mb-5">
-              <!--<div v-if="product.posting_status == 'Active' && cart.indexOf(product.pid) == -1 && searched(product.iname) && checkDistance(product.a_lat, product.a_long)" class="col mb-5">-->
-
-              <div class="card h-100">
-                <!-- Product image -->
-                <div class="css-card h-100">
-                  <img
-                    class="card-img-top h-100"
-                    :src="imageUrl(product.image)" />
-
-                  <div class="card__content">
-                    <h3 class="card__title">Product Details</h3>
-                    <h6 class="card__description">
-                      Address: {{ product.postalcode }}
-                    </h6>
-                    <h6 class="card__description">
-                      Expiring in: {{ GetExpiry(product.ExpiryDate) }} days
-                    </h6>
-                  </div>
-                </div>
-
-                <!-- Product details -->
-
-                <div class="card-body p-4">
-                  <div class="text-center">
-                    <!-- Product name -->
-                    <h5 class="fw-bolder text-center">
-                      {{ product.iname }} x{{ product.selling_quantity }}
-                    </h5>
-                    <!-- Product price -->
-                    <span class="fw-bold" style="font-size: 18px">
-                      ${{
-                        totalCost(
-                          product.selling_price,
-                          product.selling_quantity
-                        )
-                      }}</span
-                    >
-                    <span
-                      class="text-muted"
-                      style="text-decoration: line-through">
-                      ${{
-                        totalCost(product.price, product.selling_quantity)
-                      }}</span
-                    >
-                  </div>
-                </div>
-                <!-- Product actions -->
-                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                  <div class="text-center">
-                    <button
-                      class="btn btn-outline-dark mt-auto"
-                      @click="Added(product.pid)">
-                      Add
-                    </button>
-                  </div>
-                </div>
-              </div>
+              class="btn-group-vertical mt-2 w-100"
+              role="group"
+              aria-label="Vertical radio toggle button group">
+              <input
+                type="radio"
+                class="btn-check"
+                name="distanceFromUser"
+                id="500m"
+                autocomplete="off"
+                @click="changeDistance(500)" />
+              <label class="btn btn-outline-danger p-2" for="500m">500m</label>
+              <input
+                type="radio"
+                class="btn-check"
+                name="distanceFromUser"
+                id="1km"
+                autocomplete="off"
+                @click="changeDistance(1000)" />
+              <label class="btn btn-outline-danger p-2" for="1km">1km</label>
+              <input
+                type="radio"
+                class="btn-check"
+                name="distanceFromUser"
+                id="1.5km"
+                autocomplete="off"
+                @click="changeDistance(1500)" />
+              <label class="btn btn-outline-danger p-2" for="1.5km"
+                >1.5km</label
+              >
+              <input
+                type="radio"
+                class="btn-check"
+                name="distanceFromUser"
+                id="5km"
+                autocomplete="off"
+                checked
+                @click="changeDistance(5000)" />
+              <label class="btn btn-outline-danger p-2" for="5km">5km</label>
             </div>
-          </template>
+          </div>
         </div>
 
         <!-- right panel -->
@@ -249,7 +219,8 @@ const accountStorage = useAccountStorage();
                       :src="imageUrl(product.image)"
                       height="120" />
 
-                    <div class="card__content">
+                    <div
+                      class="card__content d-flex justify-content-center align-items-center flex-column">
                       <h3 class="card__title">Product Details</h3>
                       <h6 class="card__description">
                         Address: {{ product.postalcode }}
@@ -710,7 +681,7 @@ span {
   height: 100%;
   padding: 20px;
   box-sizing: border-box;
-  background-color: #f2f2f2;
+  background-color: #f7f7f7;
   transform: translateY(350px);
   transform-origin: bottom;
   transition: all 0.2s cubic-bezier(0.175, 0.5, 0.32, 1);
