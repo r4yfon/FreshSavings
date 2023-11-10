@@ -1,5 +1,5 @@
 <script setup>
-  import { ref } from 'vue';
+  import { ref, toHandlers } from 'vue';
   import axios from 'axios';
   import { useAccountStorage } from '../main.js';
   const accountStorage = useAccountStorage();
@@ -72,7 +72,7 @@
                           <b>
                             <h6>{{ product.Name }}</h6>
                           </b>
-                          <p class="small mb-0">Address: {{ product.Address }}</p>
+                          <p class="small mb-0 text-center">Address: {{ product.Address }}</p>
                         </div>
                       </div>
                       <div class="d-flex flex-row align-items-center">
@@ -273,7 +273,7 @@
 
               </div>
               <div id="sticky" class="col-lg-5" >
-                <div class="payment-info">
+                <div class="payment-info bg-success-subtle text-black">
                   <div class="d-flex justify-content-between align-items-center">
                     <span>Card details</span>
                   </div>
@@ -294,22 +294,46 @@
 
                   <div>
                     <label class="credit-card-label">Name on card</label><input type="text"
-                      class="form-control credit-inputs" placeholder="Name">
+                      class="form-control credit-inputs mb-1" v-model="cardName" placeholder="Name">
+                  </div>
+                  <div v-if="cardName != '' && cardName_errormsg.length != 0" class='m-0 p-0'>
+                    <div>
+                      <p v-for="err of cardName_errormsg" class='text-danger mb-1' style="font-size: 13px;">{{ err }}</p>
+                      
+                    </div>
                   </div>
                   <div>
                     <label class="credit-card-label">Card number</label><input type="text"
-                      class="form-control credit-inputs" placeholder="0000 0000 0000 0000">
+                      class="form-control credit-inputs mb-1" v-model="cardNumber" placeholder="0000 0000 0000 0000">
                   </div>
+                  <div v-if="cardNumber != '' && cardNumber_errormsg.length != 0" class='m-0 p-0'>
+         
+                    <p v-for="err of cardNumber_errormsg" class='text-danger mb-1' style="font-size: 13px;">{{ err }}</p>
+                    
+                    </div>
                   <div class="row">
                     <div class="col-md-6">
-                      <label class="credit-card-label">Date</label><input type="text" class="form-control credit-inputs"
+                      <label class="credit-card-label mb-0">Date</label><input v-model="cardDate" type="text" class="form-control credit-inputs mb-1"
                         placeholder="12/24">
+                        <div v-if="cardDate != '' && cardDate_errormsg.length != 0" >
+                    <div>
+                      
+                      <p v-for="err of cardDate_errormsg" class='text-danger m-1 p-0' style="font-size: 10px;">{{ err }}</p>
+                    </div>
+                    </div>
                     </div>
                     <div class="col-md-6">
-                      <label class="credit-card-label">CVV</label><input type="text" class="form-control credit-inputs"
+                      <label class="credit-card-label mb-0">CVV</label><input type="text" v-model="cardCVV" class="form-control credit-inputs mb-1"
                         placeholder="342">
+                        <div v-if="cardCVV != '' && cardCVV_errormsg.length != 0" >
+                    <div>
+                      <p v-for="err of cardCVV_errormsg" class='text-danger m-1 p-0' style="font-size: 10px;">{{ err }}</p>
+                    </div>
+                    </div>
                     </div>
                   </div>
+                  
+                  
                   <hr class="line">
                   <div class="d-flex justify-content-between information"><span>Subtotal</span><span>${{parseFloat(calculateTotalPrice).toFixed(2)}}</span></div>
                   <div class="d-flex justify-content-between information" v-if="AddressList.length == 2 "><span>Shipping</span><span>$2.00</span></div>
@@ -336,7 +360,8 @@
                     <span>Total(Incl. taxes)</span>
                     <span>${{ parseFloat(calculateTotalPrice).toFixed(2)}}</span>
                   </div>
-                  <a href="./confirmation-page" v-if='products.length >= 1'><button  type="button" class="btn btn-block btn-lg btn-work" @click='afterCheckOut(accountStorage.aid, products)'>
+                  <a href="./confirmation-page" v-if='products.length >= 1 && CheckCardDetails()'>
+                  <button  type="button" class="btn btn-block btn-lg btn-work" @click='afterCheckOut(accountStorage.aid, products)'>
                     <div class="d-flex justify-content-between">
                       <span id="checkout">Checkout</span>
                     </div>
@@ -350,19 +375,16 @@
 
                 </div>
               </div>
+              
 
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-12">
-            <template>
-  
-</template>
-          </div>
+        
           
-        </div>
+        
       </div>
+      
     </section>
 
   </div>
@@ -386,12 +408,23 @@ export default {
     loading: false,
     timing:"", 
     date:"",
+    checked: false,
     products: useAccountStorage().cart,
     totalCost: [],
     productList: {},
     AddressList: [],
     subtotalCost: 0,
     Unit: "",
+    cardName: "",
+    cardName_errormsg: [],
+    cardNumber_errormsg : [],
+    cardDate_errormsg : [],
+    cardCVV_errormsg : [],
+    cardNumber: "",
+    cardDate: "",
+    cardCVV: "",
+    
+
     
     center: {lat: useAccountStorage().lat, lng: useAccountStorage().lng},
     markers: {},
@@ -424,6 +457,85 @@ export default {
 
   methods: {
     
+    CheckCardDetails(){
+      
+      this.cardName_errormsg = [];
+      this.cardNumber_errormsg = [];
+      this.cardDate_errormsg = [];
+      this.cardCVV_errormsg = [];
+      const alphabets= "abcdefghijklmnopqrstuvwuxyz"
+      const specialCharacters = "!@#$%^&*()-_=+?|<>~";
+      if(this.cardName == ""){
+        this.cardName_errormsg.push("Empty Name");
+      }
+      else if(this.cardName != ""){
+        for(let i of specialCharacters){
+          
+          if(this.cardName.indexOf(i) != -1){
+            this.cardName_errormsg.push("Remove special characters");
+            break
+          }
+        }
+      }
+      
+      if(this.cardNumber.length != 16 ){
+        this.cardNumber_errormsg.push("Invalid card number")
+      }
+      else if(this.cardNumber.length == 16){
+        for(let i of specialCharacters){
+          if(this.cardNumber.indexOf(i) != -1){
+            console.log(i)
+            this.cardNumber_errormsg.push("Remove special characters");
+            break
+          }
+        }
+        for(let i of alphabets){
+          if(this.cardNumber.indexOf(i) != -1){
+            console.log(i)
+            this.cardNumber_errormsg.push("Remove alphabets");
+            break
+          }
+        }
+      }
+
+      if(!this.cardDate.includes("/")){
+        this.cardDate_errormsg.push("Invalid expiry date")
+      }
+
+      else if(this.cardDate.includes("/")){
+        let twoparts = this.cardDate.split("/")
+        for(let i of specialCharacters){
+          if(this.cardDate.indexOf(i) != -1){
+            this.cardDate_errormsg.push("Remove special characters");
+            break
+          }
+        }
+        if(parseInt(twoparts[0]) >= 13 || parseInt(twoparts[0]) < 1){
+          
+          this.cardDate_errormsg.push("Invalid expiry month")
+          
+        }
+        if(parseInt(twoparts[1]) >= 30 || parseInt(twoparts[1]) <= 22){
+          this.cardDate_errormsg.push("Invalid expiry year")
+        }
+      }
+      if(this.cardCVV == ""){
+        this.cardCVV_errormsg.push("Please key in your CVV")
+      }
+      if(parseInt(this.cardCVV) >= 1000 || parseInt(this.cardCVV) <= 99){
+        this.cardCVV_errormsg.push("Invalid card CVV")
+      }
+      for(let i of specialCharacters){
+          if(this.cardCVV.indexOf(i) != -1){
+            this.cardCVV_errormsg.push("Remove special characters");
+            break
+          }
+        }
+      if(this.cardCVV_errormsg.length > 0 || this.cardDate_errormsg.length > 0 || this.cardNumber_errormsg.length > 0 || this.cardName_errormsg.length > 0){
+        return false
+      }
+      return true
+      },
     CalculatePrice(p, qty){
       
       console.log("after..")

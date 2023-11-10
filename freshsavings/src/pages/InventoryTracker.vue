@@ -99,7 +99,9 @@ let successMessage = '';
 				</div>
 
 				<div>
+					<a href="./inventory-tracker">
 					<button type="button" class="btn add" @click="insertItem()">Add</button>
+				</a>
 					<button type="button" class="btn cancel" @click="formAction('clear')">Clear</button>
 				</div>
 
