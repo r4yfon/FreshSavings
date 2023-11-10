@@ -116,7 +116,7 @@ const accountStorage = useAccountStorage();
         <div class="row m-1 recipe-container row-cols-sm-2 row-cols-xxl-3">
           <div class="recipe p-1" v-for="recipe of suitableRecipes" :key="recipe">
             <a class="card text-decoration-none recipe-card px-0 h-100 justify-content-center" role="button"
-              href="../recipes/">
+              href="https://www.taste.com.au/recipes/pork-chops-baked-apples/0a0645bd-d0bc-414b-9d05-0fb29c1993b6">
               <div class="row g-0 align-items-center">
                 <div
                   class=" ps-1 col-md-4 text-center bg-white d-flex align-items-center justify-content-center recipe-img">
