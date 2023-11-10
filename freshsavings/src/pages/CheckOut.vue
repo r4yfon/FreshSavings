@@ -283,7 +283,7 @@
                     <span><img width="30" src="https://img.icons8.com/color/48/000000/mastercard.png" /></span>
                   </label>
 
-                  <label class="radio"> <input type="radio" name="card" value="payment"> <span><img width="30"
+                  <label class="radio" > <input type="radio" name="card" value="payment"> <span><img width="30"
                         src="https://img.icons8.com/officel/48/000000/visa.png" /></span> </label>
 
                   <label class="radio"> <input type="radio" name="card" value="payment"> <span><img width="30"
@@ -294,7 +294,7 @@
 
                   <div>
                     <label class="credit-card-label">Name on card</label><input type="text"
-                      class="form-control credit-inputs mb-1" v-model="cardName" placeholder="Name">
+                      class="form-control credit-inputs bg-white mb-1" v-model="cardName" placeholder="Name">
                   </div>
                   <div v-if="cardName != '' && cardName_errormsg.length != 0" class='m-0 p-0'>
                     <div>
@@ -303,8 +303,8 @@
                     </div>
                   </div>
                   <div>
-                    <label class="credit-card-label">Card number</label><input type="text"
-                      class="form-control credit-inputs mb-1" v-model="cardNumber" placeholder="0000 0000 0000 0000">
+                    <label class="credit-card-label ">Card number</label><input type="text"
+                      class="form-control credit-inputs bg-white mb-1" v-model="cardNumber" placeholder="0000000000000000">
                   </div>
                   <div v-if="cardNumber != '' && cardNumber_errormsg.length != 0" class='m-0 p-0'>
          
@@ -313,7 +313,7 @@
                     </div>
                   <div class="row">
                     <div class="col-md-6">
-                      <label class="credit-card-label mb-0">Date</label><input v-model="cardDate" type="text" class="form-control credit-inputs mb-1"
+                      <label class="credit-card-label  mb-0">Date</label><input v-model="cardDate" type="text" class="form-control credit-inputs bg-white mb-1"
                         placeholder="12/24">
                         <div v-if="cardDate != '' && cardDate_errormsg.length != 0" >
                     <div>
@@ -323,7 +323,7 @@
                     </div>
                     </div>
                     <div class="col-md-6">
-                      <label class="credit-card-label mb-0">CVV</label><input type="text" v-model="cardCVV" class="form-control credit-inputs mb-1"
+                      <label class="credit-card-label mb-0">CVV</label><input type="text" v-model="cardCVV" class="form-control credit-inputs bg-white mb-1"
                         placeholder="342">
                         <div v-if="cardCVV != '' && cardCVV_errormsg.length != 0" >
                     <div>
@@ -361,13 +361,13 @@
                     <span>${{ parseFloat(calculateTotalPrice).toFixed(2)}}</span>
                   </div>
                   <a href="./confirmation-page" v-if='products.length >= 1 && CheckCardDetails()'>
-                  <button  type="button" class="btn btn-block btn-lg btn-work" @click='afterCheckOut(accountStorage.aid, products)'>
+                  <button  type="button" class="btn btn-block btn-lg btn-work btn-outline-success" @click='afterCheckOut(accountStorage.aid, products)'>
                     <div class="d-flex justify-content-between">
                       <span id="checkout">Checkout</span>
                     </div>
                   </button>
                 </a>
-                  <button v-else type="button" class="btn btn-block btn-lg btn-work disabled">
+                  <button v-else type="button" class="btn btn-block btn-lg btn-work btn-outline-success disabled">
                     <div class="d-flex justify-content-between">
                       <span id="checkout">Checkout</span>
                     </div>
