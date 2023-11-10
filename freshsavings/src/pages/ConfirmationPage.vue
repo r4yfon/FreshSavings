@@ -1,14 +1,16 @@
 
 <template>
     <div id="app">
-      <div class="lottie-container" ref="lottie"></div>
+      <div class="lottie-wrapper">
+        <div class="lottie-container" ref="lottie"></div>
+      </div>
     </div>
-    <div class="container">
+    <div class="text">
         <h2>Thank you!</h2>
         <h3>Your order has been received.</h3>
     </div>
     <router-link to="/marketplace">
-        <button type="button" class="btn btn-success btn-lg" style="margin-top: -8%;">Continue Shopping</button>
+        <button type="button" class="btn btn-success btn-lg" style="margin-top: -10%;">Continue Shopping</button>
     </router-link>
   </template>
   
@@ -31,6 +33,9 @@
 };
 </script>
 <style scoped>
+.lottie-wrapper {
+  padding-top: 40px;
+}
 .lottie-container {
   display: flex;
   justify-content: center;
