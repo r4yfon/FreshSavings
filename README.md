@@ -34,7 +34,7 @@ We created `components` that were reused in various places and imported them whe
 
 ## Bootstrap & CSS
 
-We made use of the `12-point grid system` to help make our application responsive. We utilised Bootstrap features like `modal`, `accordian panel` and we styled our `cards` and `buttons` using CSS and icons from Iconify. 
+We made use of the `12-point grid system` to help make our application responsive. We utilised Bootstrap features like `modal`, `accordian panel` and we styled our `cards` and `buttons` using CSS and icons. We took ideas for our marketplace design from exisiting HTML templates such as [this](https://startbootstrap.com/template/shop-homepage)
 
 # Beyond the Lab
 
