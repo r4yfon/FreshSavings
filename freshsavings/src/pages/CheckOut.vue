@@ -504,7 +504,6 @@ export default {
           arrPid,
         });
 
-        console.log(response.data);
       } catch (error) {
         console.error('Error:', error);
       }

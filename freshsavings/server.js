@@ -191,10 +191,12 @@ app.get("/get_user_inventory_items/:userid", (req, res) => {
 app.post("/afterCheckOut/:aid/:arrPid", (req, res) => {
   const aid = parseInt(req.params.aid);
   const arrPid = req.body.arrPid.map(pid => parseInt(pid));
-
+  console.log("params")
+  console.log(aid)
+  console.log(arrPid)
   for (const pid of arrPid) {
     connection.query(
-      "SELECT Ingredient.iid, selling_quantity, ExpiryDate, emoji FROM freshsavings.Posting, freshsavings.Ingredients WHERE Posting.iid = Ingredients.iid AND Posting.pid = ?",
+      "SELECT Ingredient.iid, selling_quantity, ExpiryDate, emoji FROM freshsavings.Posting, freshsavings.Ingredient WHERE Posting.iid = Ingredient.iid AND Posting.pid = ?",
       [pid],
       (err, results) => {
         if (err) {
@@ -202,18 +204,30 @@ app.post("/afterCheckOut/:aid/:arrPid", (req, res) => {
           res.status(500).json({ error: "Internal Server Error" });
           return;
         }
-
+        console.log(results[0])
         const { iid, selling_quantity, ExpiryDate, emoji } = results[0];
 
         connection.query(
-          "INSERT INTO freshsavings.AccountInventory (aid, iid, expiring_in, qty, ExpiryDate, emoji) VALUES (?, ?, ?, ?, ?, ?)",
-          [aid, iid, 1, selling_quantity, ExpiryDate, emoji],
+          "INSERT INTO freshsavings.AccountInventory (aid, iid, expiring_in, qty, ExpiryDate) VALUES (?, ?, ?, ?, ?)",
+          [aid, iid, 1, selling_quantity, ExpiryDate],
           (err, results) => {
             if (err) {
               console.error("Error querying the database:", err);
               res.status(500).json({ error: "Internal Server Error" });
               return;
             }
+            connection.query(
+              "DELETE FROM freshsavings.Posting WHERE pid = ?",
+              [pid],
+              (err, results) => {
+                if (err) {
+                  console.error("Error querying the database:", err);
+                  res.status(500).json({ error: "Internal Server Error" });
+                  return;
+                }
+                res.json(results);
+            }
+          );
           }
         );
       }
