@@ -712,9 +712,6 @@ input:focus::placeholder {
 }
 
 .btn {
-  background-color: #D3D3D3;
-  border-color: #ffffff;
-  color: black;
   width: 100%;
   font-size: 14px;
   margin-top: 20px;
