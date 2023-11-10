@@ -203,7 +203,7 @@ app.post("/InventorytoPosting/:aid/:iid/:s_price", (req, res) => {
         return;
       }
       console.log(results[0])
-      const { iid, postingImage, qty, ExpiryDate } = results[0];
+      const {postingImage, qty, ExpiryDate } = results[0];
 
       connection.query(
         "INSERT INTO freshsavings.Posting (iid, expiring_in, selling_price, selling_quantity, said, posting_status, image, ExpiryDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",

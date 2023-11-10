@@ -2,7 +2,9 @@
 import { Icon } from "@iconify/vue";
 import { useAccountStorage } from '../main.js';
 import axios from 'axios';
-// import { useAccountStorage } from '../main.js';
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.css';
+
 const accountStorage = useAccountStorage();
 let successMessage = '';
 
@@ -119,7 +121,7 @@ let successMessage = '';
 		<div class="row justify-content-start container-fluid">
 
 			<!-- example inventory card -->
-			<div class="col-4" v-for="card in cards" :key="card" style="height: 360px; width: 360px;">
+			<div class="col-4" v-for="(card, idx) in cards" :key="card" style="height: 360px; width: 360px;">
 				<div :style="{ background: card.background }"
 					class="rounded-4 p-3 d-flex flex-column justify-content-between shadow h-100">
 					<div class="d-flex justify-content-between align-items-center">
@@ -179,7 +181,7 @@ let successMessage = '';
 												</div>
 											</div>
 											<div class="modal-footer">
-												<button type="button" class="btn btn-primary" @click="posted(item.iid)">Post</button>
+												<button type="button" class="btn btn-primary" >Post</button>
 											</div>
 										</div>
 									</div>
@@ -197,6 +199,7 @@ let successMessage = '';
 								<div class="card-title d-flex justify-content-between" :id="'card-title-' + idx">
 									<div class="emoji emoji-hover">
 										{{ item.emoji }}
+										
 									</div>
 									<div id="counter" style="display:inline-flex; ">
 										<button type="button" class="btn btn-outline-secondary" style="border: none" v-if="item.qty > 0"
@@ -229,7 +232,7 @@ let successMessage = '';
 									</div>
 									<div class="col-lg-6 col-md-6 col-sm-6">
 										<button type="button" class="btn btn-success" style="display:block; width:100%" @click="changeItemChosen(item.iid)" data-bs-toggle="modal"
-											data-bs-target="#openModal">
+										:data-bs-target="'#openModal' + idx">
 											Sell
 										</button>
 
@@ -237,7 +240,7 @@ let successMessage = '';
 								</div>
 
 								<!-- Modal Opened -->
-								<div class="modal fade" :id="openModal" tabindex="-1" aria-labelledby="openModalLabel"
+								<div class="modal fade" :id="'openModal' + idx" tabindex="-1" aria-labelledby="openModalLabel"
 									aria-hidden="true">
 									<div class="modal-dialog">
 										<div class="modal-content">
@@ -546,6 +549,7 @@ export default {
 		// TO DO: insert this card information to Table 'Posting'
 		posted(s_price) {
 			let iid = this.is_selected
+			
 			try {
 				axios.post(`http://localhost:3000/InventorytoPosting/${useAccountStorage().aid}/${iid}/${s_price}`, {
       
