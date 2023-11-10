@@ -176,8 +176,6 @@ app.get("/get_user_inventory_items/:userid", (req, res) => {
   connection.query(
     // TODO: make query more specific after finalising the data to fetch
     "SELECT a.aid, a.iid, i.iname, a.qty, a.expiring_in, i.icat, i.emoji FROM freshsavings.AccountInventory a JOIN freshsavings.Ingredient i ON a.iid = i.iid WHERE a.aid = ?;",
-    // TODO: make query more specific after finalising the data to fetch
-    "SELECT a.aid, a.iid, i.iname, a.qty, a.expiring_in, i.icat, i.emoji FROM freshsavings.AccountInventory a JOIN freshsavings.Ingredient i ON a.iid = i.iid WHERE a.aid = ?;",
     [userid],
     (err, results) => {
       if (err) {
