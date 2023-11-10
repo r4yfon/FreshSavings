@@ -159,7 +159,7 @@ app.get("/get_all_ingredients_categories", (req, res) => {
 app.get("/get_all_recipes", (req, res) => {
   // Query the database to retrieve ingredients
   connection.query(
-    "SELECT r.rid, ri.iid, rname, i.iname, r.rimg, ri.qty FROM freshsavings.RecipeIngredient ri, freshsavings.Recipe r, freshsavings.Ingredient i WHERE ri.rid = r.rid AND i.iid = ri.iid;",
+    "SELECT r.rid, ri.iid, rname, i.iname, r.rimg, ri.qty, r.url FROM freshsavings.RecipeIngredient ri, freshsavings.Recipe r, freshsavings.Ingredient i WHERE ri.rid = r.rid AND i.iid = ri.iid;",
     (err, results) => {
       if (err) {
         console.error("Error querying the database:", err);
@@ -177,7 +177,7 @@ app.get("/get_user_inventory_items/:userid", (req, res) => {
   // aid of currently logged-in user
   connection.query(
     // TODO: make query more specific after finalising the data to fetch 
-    "SELECT a.aid, a.iid, i.iname, a.qty, a.expiring_in, a.ExpiryDate, i.icat FROM freshsavings.AccountInventory a JOIN freshsavings.Ingredient i ON a.iid = i.iid WHERE a.aid = ?;",
+    "SELECT a.aid, a.iid, i.iname, a.qty, a.expiring_in, a.ExpiryDate, i.icat, i.emoji FROM freshsavings.AccountInventory a JOIN freshsavings.Ingredient i ON a.iid = i.iid WHERE a.aid = ?;",
     [userid],
     (err, results) => {
       if (err) {

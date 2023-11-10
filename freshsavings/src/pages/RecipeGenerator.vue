@@ -116,7 +116,7 @@ const accountStorage = useAccountStorage();
         <div class="row m-1 recipe-container row-cols-sm-2 row-cols-xxl-3">
           <div class="recipe p-1" v-for="recipe of suitableRecipes" :key="recipe">
             <a class="card text-decoration-none recipe-card px-0 h-100 justify-content-center" role="button"
-              href="https://www.thecookingfoodie.com/recipe/Salmon-with-Lemon-Butter-Sauce-Recipe" target="_blank">
+              :href="recipe.url" target="_blank">
               <div class="row g-0 align-items-center">
                 <div
                   class=" ps-1 col-md-4 text-center bg-white d-flex align-items-center justify-content-center recipe-img">
@@ -249,6 +249,7 @@ export default {
                 rname: item.rname,
                 rimg: item.rimg,
                 ingredients: {},
+                url : item.url, 
               };
             }
             this.compiledRecipeIngredients[item.rname].ingredients[item.iname] = {
@@ -279,6 +280,7 @@ export default {
             totalNumberOfIngredientsNeeded: 0,
             numberOfIngredientsOwned: 0,
             numberOfMissingIngredients: 0,
+            url: compiledRecipes[recipe].url,
           };
         };
 
