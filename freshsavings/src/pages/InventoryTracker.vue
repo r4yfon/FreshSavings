@@ -11,6 +11,7 @@ let successMessage = '';
 </script>
 
 <template>
+	<meta charset="utf-8">
 	<section class="container" style="padding-top: 20px">
 
 		<!-- Welcome Message -->
@@ -73,7 +74,7 @@ let successMessage = '';
 						<option>Fruits</option>
 						<option>Dairy</option>
 						<option>Fish</option>
-						<option>Meat</option>
+						<option>Meats</option>
 					</select>
 				</div>
 
@@ -121,7 +122,7 @@ let successMessage = '';
 		<div class="row justify-content-start container-fluid">
 
 			<!-- example inventory card -->
-			<div class="col-4" v-for="(card, idx) in cards" :key="card" style="height: 360px; width: 360px;">
+			<!-- <div class="col-4" v-for="(card, idx) in cards" :key="card" style="height: 360px; width: 360px;">
 				<div :style="{ background: card.background }"
 					class="rounded-4 p-3 d-flex flex-column justify-content-between shadow h-100">
 					<div class="d-flex justify-content-between align-items-center">
@@ -145,23 +146,23 @@ let successMessage = '';
 						<div class="text-start text-secondary-emphasis">
 							Fresh for {{ card.expiry }} more days
 						</div>
-						<div class="btn-group w-100 mt-2">
+						<div class="btn-group w-100 mt-2"> -->
 							<!-- <div class="col-lg-6 col-md-6 col-sm-6"> -->
-							<button type="button" class="btn btn-danger" style="display:block; width:100%" @click="removePost()">
+							<!-- <button type="button" class="btn btn-danger" style="display:block; width:100%" @click="removePost()">
 								Remove
-							</button>
+							</button> -->
 							<!-- </div> -->
 							<!-- <div class="col-lg-6 col-md-6 col-sm-6"> -->
-							<button type="button" class="btn btn-success" style="display:block; width:100%" data-bs-toggle="modal"
+							<!-- <button type="button" class="btn btn-success" style="display:block; width:100%" data-bs-toggle="modal"
 								data-bs-target="#openModal">
 								Sell
-							</button>
+							</button> -->
 
 							<!-- </div> -->
-						</div>
+						<!-- </div> -->
 
 						<!-- Modal Opened -->
-						<div class="modal fade" id="openModal" tabindex="-1" aria-labelledby="openModalLabel"
+						<!-- <div class="modal fade" id="openModal" tabindex="-1" aria-labelledby="openModalLabel"
 									aria-hidden="true">
 									<div class="modal-dialog">
 										<div class="modal-content">
@@ -188,7 +189,7 @@ let successMessage = '';
 								</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 
 
 			<div class="projects" name="projects">
@@ -226,7 +227,7 @@ let successMessage = '';
 								<!-- Button trigger modal -->
 								<div class="d-flex">
 									<div class="col-lg-6 col-md-6 col-sm-6">
-										<button type="button" class="btn btn-danger" style="display:block; width:100%" @click="removePost()">
+										<button type="button" class="btn btn-danger" style="display:block; width:100%" @click="removeItem()">
 											Remove
 										</button>
 									</div>
@@ -285,8 +286,6 @@ export default {
 		return {
 			isLoggedIn: true,
 			currentFilter: 'All',
-
-			// TO DO: Retrieve aid -> fname
 			user: '',
 
 			items: [],
@@ -298,7 +297,6 @@ export default {
 			is_selected: undefined,
 			ingredient_name: '',
 			ingredient_quantity: '',
-			ingredient_purchase_date: '',
 			ingredient_expiry_date: '',
 			posting_status: '',
 			selectedCategory: 'Fruits',
@@ -315,10 +313,10 @@ export default {
 				{ categoryName: "Meats", imgLink: "barbecue.png" },
 			],
 			emojis: [
-				{ dairy: ['🧀', '🧈', '🥛'] },
-				{ fish: ['🐟', '🐠', '🦀', '🦞', '🦐', '🦑'] },
-				{ fruit: ['🍇', '🍈', '🍉', '🍊', '🍋', '🍌', '🍍', '🍎', '🥭', '🍏', '🍐', '🍑', '🍒', '🍓', '🫐', '🥝', '🍅', '🫒', '🥥', '🥑', '🍆', '🥔', '🥕', '🌽', '🫑', '🥒', '🥬', '🥦',] },
-				{ meat: ['🍖', '🍗', '🥩', '🥓', '🐄', '🐖', '🐓', '🐏'] },
+				{ dairy: ['🧀', '🧈', '🥛','🍼'] },
+				{ fish: ['🐟','🦀', '🦞', '🦐'] },
+				{ fruit: ['🍇', '🍊', '🍌', '🍍', '🍎', '🍓', '🫐', '🥝',] },
+				{ meat: ['🥩', '🐄', '🐖', '🐓', '🐏','🦃','🦆'] },
 			],
 
 			// DO NOT DELETE THIS
@@ -378,10 +376,10 @@ export default {
 	},
 	methods: {
 		changeItemChosen(newiid){
-  this.is_selected = newiid;
-  console.log("new me")
-  console.log(this.is_selected)
-},
+			this.is_selected = newiid;
+			console.log("new me")
+			console.log(this.is_selected)
+		},
 		checkLoginStatus() {
 			const sessionData = JSON.parse(localStorage.getItem('session'));
 			if (sessionData && sessionData.user && sessionData.user.email) {
@@ -405,18 +403,19 @@ export default {
 				});
 		},
 		getIngredientIdByName(ingredientName) {
-    // Make a GET request to the server-side endpoint to retrieve all ingredients
-    axios.get("http://localhost:3000/get_all_ingredients")
-      .then(response => {
-        const ingredients = response.data;
-        const ingredient = ingredients.find(ingredient => ingredient.name === ingredientName);
-        return ingredient ? ingredient.iid : null;
-      })
-      .catch(error => {
-        console.error('Error fetching ingredients:', error);
-        return null;
-      });
-  },
+			// Make a GET request to the server-side endpoint to retrieve all ingredients
+			axios.get("http://localhost:3000/get_all_ingredients")
+			.then(response => {
+				const ingredients = response.data;
+				const ingredient = ingredients.find(ingredient => ingredient.name === ingredientName);
+				return ingredient ? ingredient.iid : null;
+				
+			})
+			.catch(error => {
+				console.error('Error fetching ingredients:', error);
+				return null;
+			});
+		},
 
   insertItem() {
   // Access the values from the input fields
@@ -425,6 +424,17 @@ export default {
   const selectedCategory = this.selectedCategory;
   const expiryDate = this.ingredient_expiry_date;
   const selectedEmoji = this.selectedEmoji;
+  this.formAction('close');
+
+  this.items.push({
+	"aid": useAccountStorage().aid,
+    "iid": 3,
+	"iname":itemName,
+    "qty": itemQuantity,
+	"expiring_in": this.calculateRemainingDays,
+    "ExpiryDate": expiryDate,
+	"icat": selectedCategory,
+	"emoji": selectedEmoji})
 
   // Get the ingredient id by name
   axios.get('http://localhost:3000/get_ingredient_id_by_name', {
@@ -450,7 +460,7 @@ export default {
 
         // Show success message and close the form
         this.successMessage = 'Item added successfully!';
-        this.formAction('close');
+        
         setTimeout(() => {
           this.successMessage = '';
         }, 2000); // Hides the success message after 2 seconds
@@ -479,8 +489,8 @@ export default {
 		computedItemStyle(obj) {
 			let style = {};
 
-			if ('🧀🧈🍋🍌🥔🌽'.includes(obj.emoji)) {
-				style.background = 'linear-gradient(to top left, #FBF8CC 70%, white)';
+			if (obj.emoji=='🧀') {
+				style.background = 'linear-gradient(135deg, rgb(255, 229, 131) 0%, rgb(255, 182, 68) 100%)';
 			} else if ('🐟🐠'.includes(obj.emoji)) {
 				style.background = 'linear-gradient(to top left, #8EECF5 70%, white)';
 			} else if ('🦑🍇🫐🍆'.includes(obj.emoji)) {
@@ -537,13 +547,13 @@ export default {
 				// check again
 			}
 			if (items[idx].qty == 0) {
-				this.removePost();
+				this.removeItem();
 			}
 
 		},
 
 		// TO DO: remove this card information from the Table 'AccountInventory' completely
-		removePost() {
+		removeItem() {
 			this.items.splice(idx, 1);
 			// check again
 		},
