@@ -146,12 +146,39 @@ const accountStorage = useAccountStorage();
 							<!-- </div> -->
 							<!-- <div class="col-lg-6 col-md-6 col-sm-6"> -->
 							<button type="button" class="btn btn-success" style="display:block; width:100%" data-bs-toggle="modal"
-								data-bs-target="#openModal-{{ idx }}">
+								data-bs-target="#openModal">
 								Sell
 							</button>
 
 							<!-- </div> -->
 						</div>
+
+						<!-- Modal Opened -->
+						<div class="modal fade" id="openModal" tabindex="-1" aria-labelledby="openModalLabel"
+									aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h1 class="modal-title fs-5" :id="'ModalLabel' + idx">Listing Details</h1>
+												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+											</div>
+											<div class="modal-body">
+												<label :for="'FormControlInput1' + idx" class="form-label">Selling Price</label>
+												<div class="input-group mb-3">
+													<span class="input-group-text" id="addon-wrappifng">$</span>
+													<input type="number" class="form-control" :id="'FormControlInput1' + idx" placeholder="3.00">
+												</div>
+												<div class="mb-3">
+													<label :for="'FormControlInput2' + idx" class="form-label">Upload photo of product</label>
+													<input type="file" class="form-control" :id="'FormControlInput2' + idx">
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-primary" @click="posted(item.iid)">Post</button>
+											</div>
+										</div>
+									</div>
+								</div>
 					</div>
 				</div>
 			</div>
@@ -197,7 +224,7 @@ const accountStorage = useAccountStorage();
 									</div>
 									<div class="col-lg-6 col-md-6 col-sm-6">
 										<button type="button" class="btn btn-success" style="display:block; width:100%" data-bs-toggle="modal"
-											data-bs-target="#openModal-{{ idx }}">
+											data-bs-target="#openModal">
 											Sell
 										</button>
 
@@ -205,7 +232,7 @@ const accountStorage = useAccountStorage();
 								</div>
 
 								<!-- Modal Opened -->
-								<div class="modal fade" :id="'#openModal-' + idx" tabindex="-1" aria-labelledby="openModalLabel"
+								<div class="modal fade" :id="openModal" tabindex="-1" aria-labelledby="openModalLabel"
 									aria-hidden="true">
 									<div class="modal-dialog">
 										<div class="modal-content">
@@ -470,17 +497,17 @@ export default {
 		// 		var timeDifference = futureDate.getTime() - currentDate.getTime();
 		// 		var daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 
-				newItems.push({
-					name: item.iname,
-					category: item.icat,
-					expiring_in: daysDifference,
-					quantity: item.qty,
-					emoji: item.emoji
-				})
-			};
-			this.newItems = items;
-		});
-		},
+		// 		newItems.push({
+		// 			name: item.iname,
+		// 			category: item.icat,
+		// 			expiring_in: daysDifference,
+		// 			quantity: item.qty,
+		// 			emoji: item.emoji
+		// 		})
+		// 	};
+		// 	this.newItems = items;
+		// });
+		// },
 
 		// Insert new item into databases - Ingredient and AccountInventory
 		// insertItem() {
@@ -552,7 +579,7 @@ export default {
 
 		// TO DO: remove this card information from the Table 'AccountInventory' completely
 		removePost() {
-			this.items.splice(idx, idx);
+			this.items.splice(idx, 1);
 			// check again
 		},
 		
