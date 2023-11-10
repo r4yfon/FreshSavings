@@ -321,7 +321,9 @@ import { Icon } from "@iconify/vue";
             <div
               class="rounded-4 glass-card h-100 px-4 py-5 text-light d-flex justify-content-center align-items-center flex-column">
               <h2 class="mb-4 pb-3">Have food that you don't think you can finish before it expires?</h2>
-              <h3>Sell it to others in our marketplace and ensure it does not go to waste.</h3>
+              <h3 class="fw-light fs-4">Sell it to others in our marketplace and ensure it does not go to
+                waste.
+              </h3>
               <hr class="w-100" />
               <h2>Similarly, buy from others and enjoy greater savings as well.</h2>
             </div>
