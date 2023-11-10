@@ -214,76 +214,76 @@ import { Icon } from "@iconify/vue";
           <div class="p-2">
             <div class="css-card col p-0 order-3 order-lg-1">
               <img :src="require('@/assets/img/banana.webp')" class="img-fluid object-fit-cover" />
-              <div class="card__content">
+              <!-- <div class="card__content">
                 <p class="card__title">Card Title</p>
                 <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                   tempor
                   incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.
                 </p>
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="p-2">
             <div class="css-card col p-0 order-3 order-lg-1">
               <img :src="require('@/assets/img/yoghurt.webp')" class="img-fluid object-fit-cover" />
-              <div class="card__content">
+              <!-- <div class="card__content">
                 <p class="card__title">Card Title</p>
                 <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                   tempor
                   incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.
                 </p>
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="p-2">
             <div class="css-card col p-0 order-3 order-lg-1">
               <img :src="require('@/assets/img/salmon.webp')" class="img-fluid object-fit-cover" />
-              <div class="card__content">
+              <!-- <div class="card__content">
                 <p class="card__title">Card Title</p>
                 <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                   tempor
                   incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.
                 </p>
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="p-2">
             <div class="css-card col p-0 order-3 order-lg-1">
               <img :src="require('@/assets/img/orange.avif')" class="img-fluid object-fit-cover" />
-              <div class="card__content">
+              <!-- <div class="card__content">
                 <p class="card__title">Card Title</p>
                 <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                   tempor
                   incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.
                 </p>
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="col p-0 order-3 order-lg-1">
             <div class="p-2 mb-2">
               <div class="css-card col">
                 <img :src="require('@/assets/img/shrimp.jpg')" class="img-fluid object-fit-cover" />
-                <div class="card__content">
+                <!-- <div class="card__content">
                   <p class="card__title">Card Title</p>
                   <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                     tempor
                     incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
                     ullamco.
                   </p>
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="p-2">
               <div class="css-card col">
                 <img :src="require('@/assets/img/kiw.jpeg')" class="img-fluid object-fit-cover" />
-                <div class="card__content">
+                <!-- <div class="card__content">
                   <p class="card__title">Card Title</p>
                   <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                     tempor
                     incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
                     ullamco.
                   </p>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -291,27 +291,27 @@ import { Icon } from "@iconify/vue";
             <div class="p-2 mb-2">
               <div class="css-card col">
                 <img :src="require('@/assets/img/cabbage.webp')" class="img-fluid object-fit-cover" />
-                <div class="card__content">
+                <!-- <div class="card__content">
                   <p class="card__title">Card Title</p>
                   <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                     tempor
                     incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
                     ullamco.
                   </p>
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="p-2">
               <div class="css-card col">
                 <img :src="require('@/assets/img/butter.avif')" class="img-fluid object-fit-cover" />
-                <div class="card__content">
+                <!-- <div class="card__content">
                   <p class="card__title">Card Title</p>
                   <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                     tempor
                     incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
                     ullamco.
                   </p>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
