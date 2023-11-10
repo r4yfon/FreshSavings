@@ -25,35 +25,33 @@ We aim to tackle the problem through a three-pronged approach:
 # Description
 
 ## Vue
+We used `VUE3 cli` for this project. This allowed us to customize configuration. [Configuration Reference](https://cli.vuejs.org/config/).
 
-We used `VUE3 cli` for this project. Most notable portions included the use of
-
+Most notable portions included the use of 
 - VUE Routers
 
 We created `components` that were reused in various places and imported them where needed to streamline the application. Such components include NavBar and Footer. 
 
 ## Bootstrap & CSS
-
 We made use of the `12-point grid system` to help make our application responsive. We utilised Bootstrap features like `modal`, `accordian panel` and we styled our webite using CSS and icons. We took ideas for our marketplace design from exisiting HTML templates such as [this](https://startbootstrap.com/template/shop-homepage).
+
+# API used
+We incoporated [GoogleMaps API](https://developers.google.com/maps) into the project.
 
 # Beyond the Lab
 
 ## Github
-
 We created a `repo` and used it for version control and collaboration. 
 
 ## Pinia and localStorage
-
 We used `VUE's` offical state management library `Pinia` for global state management across our application. We also incorporated browser's `localStorage` where appropriate.
 
 This allowed us to persist information when routing through different views and through refresh.
 
 ## AWS RDS and MySQL
-
 We used `Amazons RDS` as a managed relational database service for the `MySQL` server. It allowed us to operate and scale the database on cloud. 
 
 ## Animation Libraries
-
 We used `Lottiefiles` to incorporate lightweight SVG animation files.
 
 # Project setup
@@ -80,8 +78,73 @@ npm run build
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Log in with these credentials
+You may log into our pages using any of the following credentials.
+```sh
+credentials_list = [
+    "john@gmail.com,password1",
+    "jane@gmail.com,password2",
+    "michael@gmail.com,password3",
+    "emily@gmail.com,password4",
+    "will@gmail.com,password5",
+    "olivia@gmail.com,password6",
+    "james@gmail.com,password7",
+    "sophia@gmail.com,password8",
+    "liam@gmail.com,password9",
+    "ava@gmail.com,password10",
+    "ben@gmail.com,password11",
+    "mia@gmail.com,password12",
+    "ethan@gmail.com,password13",
+    "isabella@gmail.com,password14",
+    "daniel@gmail.com,password15",
+    "ava2@gmail.com,password16",
+    "alex@gmail.com,password17",
+    "olivia2@gmail.com,password18",
+    "sophia2@gmail.com,password19",
+    "gloria@gmail.com,password20",
+    "wdawdwd@gmail.com,oskfsokefefsf",
+    "asokfaskof@gmail.com,ffewfsefsef",
+    "poppy@gmail.com,password123"
+]
+```
 
-# Backend
-The main API we incoporated into the project was [GoogleMaps API](https://developers.google.com/maps).
+## Inventory Tracker
+To create a new item, you need to access the 'new item' button. 
+A modal pop ups and you can enter the name of any food items found in the list below. 
+
+```sh
+food_list = [
+    "Apple",
+    "Banana",
+    "Beef",
+    "Blueberries",
+    "Butter",
+    "Cheese",
+    "Chicken",
+    "Cod",
+    "Cottage Cheese",
+    "Crab",
+    "Cream",
+    "Duck",
+    "Eggs",
+    "Grapes",
+    "Kiwi",
+    "Lamb",
+    "Lobster",
+    "Milk",
+    "Mozzarella",
+    "Orange",
+    "Pineapple",
+    "Pork",
+    "Salmon",
+    "Sardines",
+    "Shrimp",
+    "Strawberries",
+    "Trout",
+    "Tuna",
+    "Turkey",
+    "Yogurt"
+]
+```
+
+
