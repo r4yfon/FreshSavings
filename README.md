@@ -34,7 +34,7 @@ We created `components` that were reused in various places and imported them whe
 
 ## Bootstrap & CSS
 
-We made use of the `12-point grid system` to help make our application responsive. We utilised Bootstrap features like `modal`, `accordian panel` and we styled our `cards` and `buttons` using CSS and icons. We took ideas for our marketplace design from exisiting HTML templates such as [this](https://startbootstrap.com/template/shop-homepage)
+We made use of the `12-point grid system` to help make our application responsive. We utilised Bootstrap features like `modal`, `accordian panel` and we styled our webite using CSS and icons. We took ideas for our marketplace design from exisiting HTML templates such as [this](https://startbootstrap.com/template/shop-homepage).
 
 # Beyond the Lab
 
@@ -54,14 +54,13 @@ We used `Amazons RDS` as a managed relational database service for the `MySQL` s
 
 ## Animation Libraries
 
-We used `Lottiefiles` and `Vueuse motion` to allow us to have scroll animations and incorporate lightweight SVG animation files. In addition, we created `skeleton loaders` for the pages that required an `asynchronous operation` with either our backend or database.
-
+We used `Lottiefiles` to incorporate lightweight SVG animation files.
 
 # Project setup
 ### Access project folder and and download dependencies
 
 ```sh
-cd Freshsavings
+cd freshsavings
 npm install
 ```
 
