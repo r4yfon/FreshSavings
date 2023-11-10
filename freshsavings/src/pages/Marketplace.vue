@@ -219,7 +219,8 @@ const accountStorage = useAccountStorage();
                       :src="imageUrl(product.image)"
                       height="120" />
 
-                    <div class="card__content">
+                    <div
+                      class="card__content d-flex justify-content-center align-items-center flex-column">
                       <h3 class="card__title">Product Details</h3>
                       <h6 class="card__description">
                         Address: {{ product.postalcode }}
@@ -680,7 +681,7 @@ span {
   height: 100%;
   padding: 20px;
   box-sizing: border-box;
-  background-color: #f2f2f2;
+  background-color: #f7f7f7;
   transform: translateY(350px);
   transform-origin: bottom;
   transition: all 0.2s cubic-bezier(0.175, 0.5, 0.32, 1);
