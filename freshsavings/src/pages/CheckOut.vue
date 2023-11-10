@@ -298,7 +298,7 @@
                   </div>
                   <div v-if="cardName != '' && cardName_errormsg.length != 0" class='m-0 p-0'>
                     <div>
-                      <p v-for="err of cardName_errormsg" class='text-danger mb-1' style="font-size: 13px;">{{ err }}</p>
+                      <p v-for="err of cardName_errormsg" :key="err" class='text-danger mb-1' style="font-size: 13px;">{{ err }}</p>
                       
                     </div>
                   </div>
@@ -308,7 +308,7 @@
                   </div>
                   <div v-if="cardNumber != '' && cardNumber_errormsg.length != 0" class='m-0 p-0'>
          
-                    <p v-for="err of cardNumber_errormsg" class='text-danger mb-1' style="font-size: 13px;">{{ err }}</p>
+                    <p v-for="err of cardNumber_errormsg" :key="err" class='text-danger mb-1' style="font-size: 13px;">{{ err }}</p>
                     
                     </div>
                   <div class="row">
@@ -318,7 +318,7 @@
                         <div v-if="cardDate != '' && cardDate_errormsg.length != 0" >
                     <div>
                       
-                      <p v-for="err of cardDate_errormsg" class='text-danger m-1 p-0' style="font-size: 10px;">{{ err }}</p>
+                      <p v-for="err of cardDate_errormsg" :key="err" class='text-danger m-1 p-0' style="font-size: 10px;">{{ err }}</p>
                     </div>
                     </div>
                     </div>
@@ -327,7 +327,7 @@
                         placeholder="342">
                         <div v-if="cardCVV != '' && cardCVV_errormsg.length != 0" >
                     <div>
-                      <p v-for="err of cardCVV_errormsg" class='text-danger m-1 p-0' style="font-size: 10px;">{{ err }}</p>
+                      <p v-for="err of cardCVV_errormsg" :key="err" class='text-danger m-1 p-0' style="font-size: 10px;">{{ err }}</p>
                     </div>
                     </div>
                     </div>
@@ -463,7 +463,7 @@ export default {
       this.cardNumber_errormsg = [];
       this.cardDate_errormsg = [];
       this.cardCVV_errormsg = [];
-      const alphabets= "abcdefghijklmnopqrstuvwuxyz"
+      const alphabets= "abcdefghijklmnopqrstuvwuxyzABCDEFGHIJKLMNOPQRSTUVWUXYZ"
       const specialCharacters = "!@#$%^&*()-_=+?|<>~";
       if(this.cardName == ""){
         this.cardName_errormsg.push("Empty Name");
