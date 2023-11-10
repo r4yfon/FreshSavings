@@ -507,8 +507,7 @@ app.post("/insertNewInventoryItem", (req, res) => {
   // Perform the SQL update operation
   const AccountInventoryQuery =
     "INSERT INTO freshsavings.AccountInventory(aid, iid, expiring_in, qty, emoji) VALUES (?, ?, ?, ?, ?);";
-  const IngredientQuery =
-    "INSERT INTO freshsavings.Ingredient(iname, icat) VALUES (?,?); ";
+  
 
   connection.beginTransaction((err) => {
     if (err) {
@@ -527,33 +526,6 @@ app.post("/insertNewInventoryItem", (req, res) => {
             res.status(500).send("Internal Server Error");
           });
         }
-
-        connection.query(
-          IngredientQuery,
-          [iname, icat],
-          (inventoryError) => {
-            if (inventoryError) {
-              return connection.rollback(() => {
-                console.error(
-                  "Error inserting data into inventory:",
-                  inventoryError
-                );
-                res.status(500).send("Internal Server Error");
-              });
-            }
-
-            connection.commit((commitError) => {
-              if (commitError) {
-                return connection.rollback(() => {
-                  console.error("Error committing transaction:", commitError);
-                  res.status(500).send("Internal Server Error");
-                });
-              }
-
-              res.status(200).send("Data inserted successfully");
-            });
-          }
-        );
       }
     );
   });
