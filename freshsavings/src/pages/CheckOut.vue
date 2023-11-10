@@ -1,8 +1,8 @@
 <script setup>
-import { ref } from 'vue';
-import axios from 'axios';
-import { useAccountStorage } from '../main.js';
-const accountStorage = useAccountStorage();
+  import { ref, toHandlers } from 'vue';
+  import axios from 'axios';
+  import { useAccountStorage } from '../main.js';
+  const accountStorage = useAccountStorage();
 </script>
 
 
@@ -53,50 +53,49 @@ const accountStorage = useAccountStorage();
                         </div>
                         <div v-else class="container">
                           <div class="header-container">
-                            <p class="mb-1 custom-text">Product</p>
-                            <p class="mb-1 custom-text">Quantity</p>
-                            <p class="mb-1 custom-text">Price</p>
-                          </div>
+                  <p class="mb-1 custom-text">Product</p>
+                  <p class="mb-1 custom-text">Quantity</p>
+                  <p class="mb-1 custom-text">Price</p>
+                </div>
 
-                          <div v-for="(product, idx) of productList" :key="idx">
+                <div v-for="(product, idx) of productList" :key="idx">
 
-                            <div class="card mb-3">
-                              <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                  <div class="d-flex flex-row align-items-center">
-                                    <div>
-                                      <img :src="imageUrl(product.Image)" class="img-fluid rounded-3" alt="Shopping item"
-                                        style="width: 65px;">
-                                    </div>
-                                    <div class="ms-3">
-                                      <b>
-                                        <h6>{{ product.Name }}</h6>
-                                      </b>
-                                      <p class="small mb-0">Address: {{ product.Address }}</p>
-                                    </div>
-                                  </div>
-                                  <div class="d-flex flex-row align-items-center">
-                                    <div style="width: 90px;">
-                                      <h6 class="fw-normal mb-0">{{ product.Quantity }}</h6>
-                                    </div>
-                                    <div style="width: 90px;">
-                                      <h6 class="mb-0">{{ CalculatePrice(product.Price, product.Quantity) }}</h6>
-                                    </div>
-                                    <div style="width: 50px;">
-                                      <svg @click="deleteCard(idx)" id="delete1" xmlns="http://www.w3.org/2000/svg"
-                                        width="16" height="16" fill="currentColor" class="bi bi-trash"
-                                        viewBox="0 0 16 16">
-                                        <path
-                                          d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
-                                        <path
-                                          d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
-                                      </svg>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                <div class="card mb-3">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                      <div class="d-flex flex-row align-items-center">
+                        <div>
+                          <img :src="imageUrl(product.Image)" class="img-fluid rounded-3" alt="Shopping item"
+                            style="width: 65px;">
+                        </div>
+                        <div class="ms-3">
+                          <b>
+                            <h6>{{ product.Name }}</h6>
+                          </b>
+                          <p class="small mb-0">Address: {{ product.Address }}</p>
+                        </div>
+                      </div>
+                      <div class="d-flex flex-row align-items-center">
+                        <div style="width: 90px;">
+                          <h6 class="fw-normal mb-0">{{ product.Quantity }}</h6>
+                        </div>
+                        <div style="width: 90px;">
+                          <h6 class="mb-0">{{CalculatePrice(product.Price, product.Quantity)}}</h6>
+                        </div>
+                        <div style="width: 50px;">
+                          <svg @click="deleteCard(idx)" id="delete1" xmlns="http://www.w3.org/2000/svg" width="16"
+                            height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                            <path
+                              d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                            <path
+                              d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
 
 
@@ -246,7 +245,7 @@ const accountStorage = useAccountStorage();
 
               </div>
               <div id="sticky" class="col-lg-5">
-                <div class="payment-info">
+                <div class="payment-info bg-success-subtle text-black">
                   <div class="d-flex justify-content-between align-items-center">
                     <span>Card details</span>
                   </div>
@@ -256,7 +255,7 @@ const accountStorage = useAccountStorage();
                     <span><img width="30" src="https://img.icons8.com/color/48/000000/mastercard.png" /></span>
                   </label>
 
-                  <label class="radio"> <input type="radio" name="card" value="payment"> <span><img width="30"
+                  <label class="radio" > <input type="radio" name="card" value="payment"> <span><img width="30"
                         src="https://img.icons8.com/officel/48/000000/visa.png" /></span> </label>
 
                   <label class="radio"> <input type="radio" name="card" value="payment"> <span><img width="30"
@@ -267,22 +266,46 @@ const accountStorage = useAccountStorage();
 
                   <div>
                     <label class="credit-card-label">Name on card</label><input type="text"
-                      class="form-control credit-inputs" placeholder="Name">
+                      class="form-control credit-inputs bg-white mb-1" v-model="cardName" placeholder="Name">
+                  </div>
+                  <div v-if="cardName != '' && cardName_errormsg.length != 0" class='m-0 p-0'>
+                    <div>
+                      <p v-for="err of cardName_errormsg" :key="err" class='text-danger mb-1' style="font-size: 13px;">{{ err }}</p>
+
+                    </div>
                   </div>
                   <div>
-                    <label class="credit-card-label">Card number</label><input type="text"
-                      class="form-control credit-inputs" placeholder="0000 0000 0000 0000">
+                    <label class="credit-card-label ">Card number</label><input type="text"
+                      class="form-control credit-inputs bg-white mb-1" v-model="cardNumber" placeholder="0000000000000000">
                   </div>
+                  <div v-if="cardNumber != '' && cardNumber_errormsg.length != 0" class='m-0 p-0'>
+
+                    <p v-for="err of cardNumber_errormsg" :key="err" class='text-danger mb-1' style="font-size: 13px;">{{ err }}</p>
+
+                    </div>
                   <div class="row">
                     <div class="col-md-6">
-                      <label class="credit-card-label">Date</label><input type="text" class="form-control credit-inputs"
+                      <label class="credit-card-label  mb-0">Date</label><input v-model="cardDate" type="text" class="form-control credit-inputs bg-white mb-1"
                         placeholder="12/24">
+                        <div v-if="cardDate != '' && cardDate_errormsg.length != 0" >
+                    <div>
+
+                      <p v-for="err of cardDate_errormsg" :key="err" class='text-danger m-1 p-0' style="font-size: 10px;">{{ err }}</p>
+                    </div>
+                    </div>
                     </div>
                     <div class="col-md-6">
-                      <label class="credit-card-label">CVV</label><input type="text" class="form-control credit-inputs"
+                      <label class="credit-card-label mb-0">CVV</label><input type="text" v-model="cardCVV" class="form-control credit-inputs bg-white mb-1"
                         placeholder="342">
+                        <div v-if="cardCVV != '' && cardCVV_errormsg.length != 0" >
+                    <div>
+                      <p v-for="err of cardCVV_errormsg" :key="err" class='text-danger m-1 p-0' style="font-size: 10px;">{{ err }}</p>
+                    </div>
+                    </div>
                     </div>
                   </div>
+
+
                   <hr class="line">
                   <div class="d-flex justify-content-between information">
                     <span>Subtotal</span><span>${{ parseFloat(calculateTotalPrice).toFixed(2) }}</span></div>
@@ -314,14 +337,14 @@ const accountStorage = useAccountStorage();
                     <span>Total(Incl. taxes)</span>
                     <span>${{ parseFloat(calculateTotalPrice).toFixed(2) }}</span>
                   </div>
-                  <a href="./confirmation-page" v-if='products.length >= 1'><button type="button"
-                      class="btn btn-block btn-lg btn-work" @click='afterCheckOut(accountStorage.aid, products)'>
-                      <div class="d-flex justify-content-between">
-                        <span id="checkout">Checkout</span>
-                      </div>
-                    </button>
-                  </a>
-                  <button v-else type="button" class="btn btn-block btn-lg btn-work disabled">
+                  <a href="./confirmation-page" v-if='products.length >= 1 && CheckCardDetails()'>
+                  <button  type="button" class="btn btn-block btn-lg btn-work btn-outline-success" @click='afterCheckOut(accountStorage.aid, products)'>
+                    <div class="d-flex justify-content-between">
+                      <span id="checkout">Checkout</span>
+                    </div>
+                  </button>
+                </a>
+                  <button v-else type="button" class="btn btn-block btn-lg btn-work btn-outline-success disabled">
                     <div class="d-flex justify-content-between">
                       <span id="checkout">Checkout</span>
                     </div>
@@ -330,6 +353,7 @@ const accountStorage = useAccountStorage();
                 </div>
               </div>
 
+
             </div>
           </div>
         </div>
@@ -337,7 +361,7 @@ const accountStorage = useAccountStorage();
           <div class="col-12">
             <template>
 
-            </template>
+</template>
           </div>
 
         </div>
@@ -363,8 +387,8 @@ export default {
   data: () => ({
     isLoggedIn: false,
     loading: false,
-    timing: "",
-    date: "",
+    timing:"",
+    date:"",
     products: useAccountStorage().cart,
     totalCost: [],
     productList: {},
@@ -372,7 +396,7 @@ export default {
     subtotalCost: 0,
     Unit: "",
 
-    center: { lat: useAccountStorage().lat, lng: useAccountStorage().lng },
+    center: {lat: useAccountStorage().lat, lng: useAccountStorage().lng},
     markers: {},
 
   }),
@@ -403,7 +427,7 @@ export default {
 
   methods: {
 
-    CalculatePrice(p, qty) {
+    CalculatePrice(p, qty){
 
       console.log("after..")
       return parseFloat(parseFloat(p).toFixed(2) * qty).toFixed(2)
@@ -595,9 +619,6 @@ input:focus::placeholder {
 }
 
 .btn {
-  background-color: #D3D3D3;
-  border-color: #ffffff;
-  color: black;
   width: 100%;
   font-size: 14px;
   margin-top: 20px;

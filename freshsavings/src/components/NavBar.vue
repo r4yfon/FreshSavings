@@ -48,12 +48,32 @@
                 </li>
                 <li class="nav-item" v-if="isLoggedIn">
                     <a class="nav-link" href="#">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="green" class="bi bi-person"
-                            viewBox="0 0 16 16">
-                            <path
-                                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z" />
-                        </svg>
-                    </a>
+                        <div class="profile" @click="popupFunction()">
+                            <div class="user">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="green" class="bi bi-person"
+                                    viewBox="0 0 16 16">
+                                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="menu">
+                            <ul>
+                                <li><a href="/404-page-not-found">
+                                    Edit Profile
+                                </a></li>
+                                <li><a href="/404-page-not-found">
+                                    Setting
+                                </a></li>
+                                <li><a href="/404-page-not-found">
+                                    Order History
+                                </a></li>
+                                <li @click="logout"><a href="#">
+                                    Log Out
+                                </a></li>
+
+                            </ul>
+                        </div>
+					</a>
                 </li>
             </ul>
 
@@ -83,14 +103,21 @@ export default {
             } else {
                 this.isLoggedIn = false;
             }
+        },
+        popupFunction(){
+            let profile = document.querySelector('.profile');
+            let menu = document.querySelector('.menu');
+            menu.classList.toggle('active')
+        },
+        logout() {
+            localStorage.clear();
+            this.isLoggedIn = false;
+            this.$router.push('/');
         }
     }
 };
 
-
-
 </script>
-
 
 
 <style scoped>
@@ -161,4 +188,113 @@ img {
         height: 100vh !important;
     }
 }
+
+/* profile menu */
+.profile {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    text-align: end;
+}
+
+.profile h3 {
+    text-align: end;
+    line-height: 1;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+.profile p {
+    line-height: 1;
+    font-size: 14px;
+    opacity: .6;
+}
+
+.profile .img-box {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.profile .img-box img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* menu (the right one) */
+
+.menu {
+    position: absolute;
+    top: calc(100% + 24px);
+    right: 16px;
+    width: 200px;
+    min-height: 100px;
+    background: #fff;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .2);
+    opacity: 0;
+    transform: translateY(-10px);
+    visibility: hidden;
+    transition: 300ms;
+}
+
+.menu::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    right: 0px;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    transform: rotate(45deg);
+    z-index: -1;
+}
+
+.menu.active {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+}
+
+/* menu links */
+
+.menu ul {
+    position: relative;
+    flex-direction: column;
+    z-index: 10;
+    background: #fff;
+    right:-5px; 
+    padding-left: 0px;
+}
+
+.menu ul li {
+    list-style: none;
+}
+
+.menu ul li:hover {
+    background: #eee;
+}
+
+.menu ul li a {
+    text-decoration: none;
+    color: #000;
+    display: flex;
+    text-align: center;
+    padding: 10px 10px;
+    gap: 6px;
+}
+
+.menu ul li a i {
+    font-size: 1.2em;
+}
+
+
 </style>
