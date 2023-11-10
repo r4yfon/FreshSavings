@@ -181,8 +181,9 @@ const accountStorage = useAccountStorage();
               <!-- Product actions -->
               <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                 <div class="text-center">
+                  
                   <button class="btn btn-outline-dark mt-auto" @click="Added(product.pid)">Add</button>
-
+                    
                 </div>
               </div>
             </div>
