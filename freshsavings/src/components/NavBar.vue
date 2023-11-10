@@ -64,7 +64,7 @@
           </a>
         </li>
 
-        <li class="login-item" v-if="!isLoggedIn">
+        <li class="login-item me-5" v-if="!isLoggedIn">
           <a
             href="login"
             class="btn btn-success"

@@ -3,7 +3,7 @@ import { Icon } from "@iconify/vue";
 // import 'bootstrap/dist/css/bootstrap.css';
 // import 'bootstrap';
 import axios from "axios";
-import { gsap } from "gsap";
+// import { gsap } from "gsap";
 // import firstImage from "@/assets/img/sale.png";
 // import secondImage from "@/assets/img/trusted.png";
 // import thirdImage from "@/assets/img/quality.png";
@@ -61,7 +61,7 @@ const accountStorage = useAccountStorage();
       <div class="row mt-4">
         <!-- sidebar -->
         <div
-          class="flex-row flex-lg-column col-12 col-lg-4 d-flex flex-wrap justify-content-start mb-4">
+          class="flex-row flex-lg-column col-12 col-lg-4 d-flex flex-wrap justify-content-start mb-4 sidebar p-4 bg-white">
           <!-- search bar -->
           <div class="w-100">
             <h5 class="text-start">Search by name</h5>
@@ -226,7 +226,7 @@ const accountStorage = useAccountStorage();
                         Address: {{ product.postalcode }}
                       </h6>
                       <h6 class="card__description">
-                        Expiring in: {{ GetExpiry(product.ExpiryDate) }} days
+                        Expiring in: {{ product.expiring_in }} days
                       </h6>
                     </div>
                   </div>
@@ -555,48 +555,48 @@ export default {
       }
     },
 
-    animated() {
-      this.$nextTick(() => {
-        const firstCard = this.$refs.firstcard;
-        const secondCard = this.$refs.secondcard;
-        const thirdCard = this.$refs.thirdcard;
-        const firstCardRect = firstCard.getBoundingClientRect();
-        const secondCardRect = secondCard.getBoundingClientRect();
+    // animated() {
+    //   this.$nextTick(() => {
+    //     const firstCard = this.$refs.firstcard;
+    //     const secondCard = this.$refs.secondcard;
+    //     const thirdCard = this.$refs.thirdcard;
+    //     const firstCardRect = firstCard.getBoundingClientRect();
+    //     const secondCardRect = secondCard.getBoundingClientRect();
 
-        // Animate the third card from first card's position to second card's position
-        gsap.from(secondCard, {
-          duration: 2,
-          x: firstCardRect.left - secondCard.getBoundingClientRect().left,
-        });
-        gsap.fromTo(
-          thirdCard,
-          {
-            x: firstCardRect.left - thirdCard.getBoundingClientRect().left,
-          },
-          {
-            duration: 2,
-            x: secondCardRect.left - thirdCard.getBoundingClientRect().left,
-            onComplete: () => {
-              // Animation from first to second card is complete
-              // Now, animate the third card from second card's position to its final position
-              gsap.fromTo(
-                thirdCard,
-                {
-                  x:
-                    firstCardRect.left - thirdCard.getBoundingClientRect().left,
-                },
-                {
-                  duration: 2,
-                  x:
-                    secondCardRect.left -
-                    thirdCard.getBoundingClientRect().left,
-                }
-              );
-            },
-          }
-        );
-      });
-    },
+    //     // Animate the third card from first card's position to second card's position
+    //     gsap.from(secondCard, {
+    //       duration: 2,
+    //       x: firstCardRect.left - secondCard.getBoundingClientRect().left,
+    //     });
+    //     gsap.fromTo(
+    //       thirdCard,
+    //       {
+    //         x: firstCardRect.left - thirdCard.getBoundingClientRect().left,
+    //       },
+    //       {
+    //         duration: 2,
+    //         x: secondCardRect.left - thirdCard.getBoundingClientRect().left,
+    //         onComplete: () => {
+    //           // Animation from first to second card is complete
+    //           // Now, animate the third card from second card's position to its final position
+    //           gsap.fromTo(
+    //             thirdCard,
+    //             {
+    //               x:
+    //                 firstCardRect.left - thirdCard.getBoundingClientRect().left,
+    //             },
+    //             {
+    //               duration: 2,
+    //               x:
+    //                 secondCardRect.left -
+    //                 thirdCard.getBoundingClientRect().left,
+    //             }
+    //           );
+    //         },
+    //       }
+    //     );
+    //   });
+    // },
 
     changeDistance(Newdistance) {
       this.distanceAway = Newdistance;
@@ -609,26 +609,14 @@ export default {
 input {
   margin-bottom: 0;
 }
+.sidebar {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  height: fit-content;
 
-/* h1,
-h2,
-h3,
-h4,
-h5 {
-  color: #508e46;
-} */
-
-/* h5 {
-  color: #83468f;
-} */
-
-/* .card {
-  background-color: #d5ffcf;
-} */
-
-/* .carted {
-  background-color: #ffcfd3;
-} */
+  @media (min-width: 992px) {
+    border-radius: 0 12px 12px 0;
+  }
+}
 
 span {
   color: #83468f;
@@ -641,16 +629,8 @@ span {
   z-index: 9999;
 }
 
-/* #sticky {
-  position: sticky;
-  top: 54px;
-  z-index: 5; */
-/* } */
-
 .css-card {
   position: relative;
-  /* width: 300px; */
-  /* height: 200px; */
   background-color: #f2f2f2;
   border-radius: 6px 6px 0 0;
   display: flex;
@@ -658,12 +638,10 @@ span {
   justify-content: center;
   overflow: hidden;
   perspective: 1000px;
-  /* box-shadow: 0 0 0 5px #ffffff80; */
   transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .css-card svg {
-  /* width: 48px; */
   fill: #333;
   transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }

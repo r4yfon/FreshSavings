@@ -564,9 +564,7 @@ export default {
         
       }
     },
-    CheckDeliveryDetails(){
-      
-    },
+    
     CheckCardDetails(){
       
       this.cardName_errormsg = [];

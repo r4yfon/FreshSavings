@@ -3,19 +3,32 @@ import { Icon } from "@iconify/vue";
 </script>
 
 <template>
-  <section class="container-fluid position-relative overflow-hidden px-0 section-vh">
-    <video autoplay muted loop :poster="require('@/assets/img/food_packing.webp')" class="object-fit-cover h-100 w-100">
-      <source :src="require('@/assets/img/food_packing.webm')" type="video/webm" />
+  <section
+    class="container-fluid position-relative overflow-hidden px-0 section-vh">
+    <video
+      autoplay
+      muted
+      loop
+      :poster="require('@/assets/img/food_packing.webp')"
+      class="object-fit-cover h-100 w-100">
+      <source
+        :src="require('@/assets/img/food_packing.webm')"
+        type="video/webm" />
     </video>
 
-    <div class="position-absolute top-50 glass-container col-12 col-md-7 col-xl-5">
-      <div class="px-3 py-4 d-flex flex-column justify-content-center align-items-center glass-effect">
+    <div
+      class="position-absolute top-50 glass-container col-12 col-md-7 col-xl-5">
+      <div
+        class="px-3 py-4 d-flex flex-column justify-content-center align-items-center glass-effect">
         <h1 class="mb-4">Save food, save money, save the planet.</h1>
         <p class="w-75 mb-4" style="text-wrap: balance">
           Food waste poses a dire threat to our environment and global
           resources. Join us to take an active stance against food waste today.
         </p>
-        <a href="/signup" role="button" class="btn btn-outline-light align-self-center">
+        <a
+          href="/signup"
+          role="button"
+          class="btn btn-outline-light align-self-center">
           <span class="pe-2">Kickstart your journey now</span>
           <Icon icon="solar:cup-star-outline" height="24" width="24" />
           <!--<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -42,18 +55,27 @@ import { Icon } from "@iconify/vue";
     <div class="container row py-5 mx-auto">
       <h1 class="mb-3">The ideal assistant in your kitchen</h1>
       <div class="row row-cols-1 row-cols-md-3 g-2">
-        <div class="col mb-4" v-for="feature in featuresAndDescriptions" :key="feature">
-          <div class="p-3 h-100 d-flex justify-content-between align-items-start   flex-column">
+        <div
+          class="col mb-4"
+          v-for="feature in featuresAndDescriptions"
+          :key="feature">
+          <div
+            class="p-3 h-100 d-flex justify-content-between align-items-start flex-column">
             <div class="d-flex justify-content-start flex-column">
-
-              <img :src="require(`@/assets/img/${feature.imageUrl}`)" class="object-fit-contain icon-glass-bg p-2 mb-3"
-                height="80" width="80" />
+              <img
+                :src="require(`@/assets/img/${feature.imageUrl}`)"
+                class="object-fit-contain icon-glass-bg p-2 mb-3"
+                height="80"
+                width="80" />
               <h5 class="text-start fw-semibold">{{ feature.feature }}</h5>
               <p class="text-start w-md-75" style="text-wrap: balance">
                 {{ feature.description }}
               </p>
             </div>
-            <a :href="'#anchor-' + feature.redirect" class="btn btn-success" role="button">
+            <a
+              :href="'#anchor-' + feature.redirect"
+              class="btn btn-success"
+              role="button">
               Learn more
             </a>
           </div>
@@ -71,15 +93,21 @@ import { Icon } from "@iconify/vue";
         <div class="row my-3 row-cols-1 py-3">
           <div class="col">
             <div class="row row-cols-2 row-cols-lg-4 flex-wrap g-3">
-              <div class="col order-lg-1" :class="[{ 'order-2': i <= 2 }, { 'order-5': i > 2 }]" v-for="i in 6"
-                :key="cards[i]" style="aspect-ratio: 1/1">
-                <div :style="{ background: cards[i].background }"
+              <div
+                class="col order-lg-1"
+                :class="[{ 'order-2': i <= 2 }, { 'order-5': i > 2 }]"
+                v-for="i in 6"
+                :key="cards[i]"
+                style="aspect-ratio: 1/1">
+                <div
+                  style="background: white"
                   class="rounded-4 p-3 d-flex flex-column justify-content-between shadow h-100">
-                  <div class="d-flex justify-content-between align-items-center">
+                  <div
+                    class="d-flex justify-content-between align-items-center">
                     <div class="fs-1">{{ cards[i].icon }}</div>
                     <div
                       class="p-2 rounded-circle lh-1 fs-5 fw-bold d-flex justify-content-center align-items-center inventory-qty"
-                      :style="{ color: cards[i].qty_color }">
+                      style="color: black">
                       x{{ cards[i].qty }}
                     </div>
                   </div>
@@ -109,25 +137,29 @@ import { Icon } from "@iconify/vue";
               </div>
 
               <div class="col order-5" style="aspect-ratio: 1/1">
-                <div class="rounded-4 p-3 shadow h-100 d-flex justify-content-center align-items-center" style="
-                    background: linear-gradient(
-                      135deg,
-                      rgb(99, 99, 104) 0%,
-                      rgb(36, 36, 36) 100%
-                    );
-                  ">
-                  <img :src="require('@/assets/img/notification.gif')" class="img-fluid" />
+                <div
+                  class="rounded-4 p-3 shadow h-100 d-flex justify-content-center align-items-center"
+                  style="background: white">
+                  <img
+                    :src="require('@/assets/img/notification.gif')"
+                    class="img-fluid" />
                 </div>
               </div>
 
-              <div class="col order-5" v-for="i in 5" :key="cards[i + 6]" style="aspect-ratio: 1/1">
-                <div :style="{ background: cards[i + 6].background }"
+              <div
+                class="col order-5"
+                v-for="i in 5"
+                :key="cards[i + 6]"
+                style="aspect-ratio: 1/1">
+                <div
+                  style="background: white"
                   class="rounded-4 p-3 d-flex flex-column justify-content-between shadow h-100">
-                  <div class="d-flex justify-content-between align-items-center">
+                  <div
+                    class="d-flex justify-content-between align-items-center">
                     <div class="fs-1">{{ cards[i + 6].icon }}</div>
                     <div
                       class="p-2 rounded-circle lh-1 fs-5 fw-bold d-flex justify-content-center align-items-center inventory-qty"
-                      :style="{ color: cards[i + 6].qty_color }">
+                      style="color: black">
                       x{{ cards[i + 6].qty }}
                     </div>
                   </div>
@@ -150,42 +182,66 @@ import { Icon } from "@iconify/vue";
 
     <!-- recipe-generator -->
     <span class="anchor" id="anchor-recipe-generator"></span>
-    <div class="parallax vh-100" id="parallax-recipe-generator">
+    <div class="parallax pb-5" id="parallax-recipe-generator">
       <div class="container">
         <h1 class="fw-bold text-start text-light pt-5 pb-4">
           Recipe Generator
         </h1>
         <div class="d-flex justify-content-end mb-4">
           <div class="icon-glass-bg speech top p-4">
-            <h2 class="m-0">Never worry about what you can cook with our Recipe Generator</h2>
+            <h2 class="m-0">
+              Never worry about what you can cook with our Recipe Generator
+            </h2>
           </div>
         </div>
         <div class="accordion col-12 col-md-9 col-lg-7 col-xl-6">
           <div class="accordion-item">
             <div class="accordion-header">
-              <button type="button" class="accordion-button fs-3 fw-semibold" data-bs-toggle="collapse"
-                data-bs-target="#collapse" aria-expanded="true" aria-control="collapse">
+              <button
+                type="button"
+                class="accordion-button fs-3 fw-semibold"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapse"
+                aria-expanded="true"
+                aria-control="collapse">
                 It is as easy as selecting
               </button>
               <div id="collapse" class="accordion-collapse collapse show">
                 <div class="accordion-body p-3">
-                  <button type="button" class="btn text-light bg-success m-1 p-2 fs-5">
+                  <button
+                    type="button"
+                    class="btn text-light bg-success m-1 p-2 fs-5">
                     the
                     <span class="badge rounded-pill text-bg-warning">3</span>
                   </button>
-                  <button type="button" class="btn btn-outline-success m-1 p-2 active fs-5" data-bs-toggle="button">
+                  <button
+                    type="button"
+                    class="btn btn-outline-success m-1 p-2 active fs-5"
+                    data-bs-toggle="button">
                     ingredients
                   </button>
-                  <button type="button" class="btn btn-outline-success m-1 p-2 active fs-5" data-bs-toggle="button">
+                  <button
+                    type="button"
+                    class="btn btn-outline-success m-1 p-2 active fs-5"
+                    data-bs-toggle="button">
                     you
                   </button>
-                  <button type="button" class="btn btn-outline-success m-1 p-2 fs-5" data-bs-toggle="button">
+                  <button
+                    type="button"
+                    class="btn btn-outline-success m-1 p-2 fs-5"
+                    data-bs-toggle="button">
                     want
                   </button>
-                  <button type="button" class="btn btn-outline-success m-1 p-2 fs-5" data-bs-toggle="button">
+                  <button
+                    type="button"
+                    class="btn btn-outline-success m-1 p-2 fs-5"
+                    data-bs-toggle="button">
                     to
                   </button>
-                  <button type="button" class="btn btn-outline-success m-1 p-2 fs-5" data-bs-toggle="button">
+                  <button
+                    type="button"
+                    class="btn btn-outline-success m-1 p-2 fs-5"
+                    data-bs-toggle="button">
                     use
                   </button>
                 </div>
@@ -210,10 +266,11 @@ import { Icon } from "@iconify/vue";
       <div class="container-fluid">
         <h1 class="fw-bold text-middle text-light pt-5 pb-4">Marketplace</h1>
         <div class="row row-cols-2 row-cols-lg-4">
-
           <div class="p-2">
             <div class="css-card col p-0 order-3 order-lg-1">
-              <img :src="require('@/assets/img/banana.webp')" class="img-fluid object-fit-cover" />
+              <img
+                :src="require('@/assets/img/banana.webp')"
+                class="img-fluid object-fit-cover" />
               <!-- <div class="card__content">
                 <p class="card__title">Card Title</p>
                 <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -225,7 +282,9 @@ import { Icon } from "@iconify/vue";
           </div>
           <div class="p-2">
             <div class="css-card col p-0 order-3 order-lg-1">
-              <img :src="require('@/assets/img/yoghurt.webp')" class="img-fluid object-fit-cover" />
+              <img
+                :src="require('@/assets/img/yoghurt.webp')"
+                class="img-fluid object-fit-cover" />
               <!-- <div class="card__content">
                 <p class="card__title">Card Title</p>
                 <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -237,7 +296,9 @@ import { Icon } from "@iconify/vue";
           </div>
           <div class="p-2">
             <div class="css-card col p-0 order-3 order-lg-1">
-              <img :src="require('@/assets/img/salmon.webp')" class="img-fluid object-fit-cover" />
+              <img
+                :src="require('@/assets/img/salmon.webp')"
+                class="img-fluid object-fit-cover" />
               <!-- <div class="card__content">
                 <p class="card__title">Card Title</p>
                 <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -249,7 +310,9 @@ import { Icon } from "@iconify/vue";
           </div>
           <div class="p-2">
             <div class="css-card col p-0 order-3 order-lg-1">
-              <img :src="require('@/assets/img/orange.avif')" class="img-fluid object-fit-cover" />
+              <img
+                :src="require('@/assets/img/orange.avif')"
+                class="img-fluid object-fit-cover" />
               <!-- <div class="card__content">
                 <p class="card__title">Card Title</p>
                 <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -262,7 +325,9 @@ import { Icon } from "@iconify/vue";
           <div class="col p-0 order-3 order-lg-1">
             <div class="p-2 mb-2">
               <div class="css-card col">
-                <img :src="require('@/assets/img/shrimp.jpg')" class="img-fluid object-fit-cover" />
+                <img
+                  :src="require('@/assets/img/shrimp.jpg')"
+                  class="img-fluid object-fit-cover" />
                 <!-- <div class="card__content">
                   <p class="card__title">Card Title</p>
                   <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -275,7 +340,9 @@ import { Icon } from "@iconify/vue";
             </div>
             <div class="p-2">
               <div class="css-card col">
-                <img :src="require('@/assets/img/kiw.jpeg')" class="img-fluid object-fit-cover" />
+                <img
+                  :src="require('@/assets/img/kiw.jpeg')"
+                  class="img-fluid object-fit-cover" />
                 <!-- <div class="card__content">
                   <p class="card__title">Card Title</p>
                   <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -290,7 +357,9 @@ import { Icon } from "@iconify/vue";
           <div class="col p-0 order-3 order-lg-1">
             <div class="p-2 mb-2">
               <div class="css-card col">
-                <img :src="require('@/assets/img/cabbage.webp')" class="img-fluid object-fit-cover" />
+                <img
+                  :src="require('@/assets/img/cabbage.webp')"
+                  class="img-fluid object-fit-cover" />
                 <!-- <div class="card__content">
                   <p class="card__title">Card Title</p>
                   <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -303,7 +372,9 @@ import { Icon } from "@iconify/vue";
             </div>
             <div class="p-2">
               <div class="css-card col">
-                <img :src="require('@/assets/img/butter.avif')" class="img-fluid object-fit-cover" />
+                <img
+                  :src="require('@/assets/img/butter.avif')"
+                  class="img-fluid object-fit-cover" />
                 <!-- <div class="card__content">
                   <p class="card__title">Card Title</p>
                   <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -320,12 +391,17 @@ import { Icon } from "@iconify/vue";
           <div class="px-2 my-2 w-50 order-2" id="marketplace-card">
             <div
               class="rounded-4 glass-card h-100 px-4 py-5 text-light d-flex justify-content-center align-items-center flex-column">
-              <h2 class="mb-4 pb-3">Have food that you don't think you can finish before it expires?</h2>
-              <h3 class="fw-light fs-4">Sell it to others in our marketplace and ensure it does not go to
-                waste.
+              <h2 class="mb-4 pb-3">
+                Have food that you don't think you can finish before it expires?
+              </h2>
+              <h3 class="fw-light fs-4">
+                Sell it to others in our marketplace and ensure it does not go
+                to waste.
               </h3>
               <hr class="w-100" />
-              <h2>Similarly, buy from others and enjoy greater savings as well.</h2>
+              <h2>
+                Similarly, buy from others and enjoy greater savings as well.
+              </h2>
             </div>
           </div>
           <!-- </div> -->
@@ -568,11 +644,11 @@ export default {
       ],
       marketplaceCards: [
         {
-          imgSrc: '1',
-          itemTitle: '2',
-          itemQty: '3',
+          imgSrc: "1",
+          itemTitle: "2",
+          itemQty: "3",
         },
-      ]
+      ],
     };
   },
 };
@@ -621,7 +697,7 @@ a {
   -webkit-backdrop-filter: blur(7.2px);
   border: 1px solid rgba(80, 142, 70, 0.32);
 
-  &> :not(a) {
+  & > :not(a) {
     color: white;
   }
 
@@ -657,19 +733,21 @@ a {
 }
 
 .bg-custom {
-  background-image: linear-gradient(to right top,
-      #ffffe9,
-      #fbffe4,
-      #f5ffdf,
-      #eeffdb,
-      #e6ffd8,
-      #daffde,
-      #cfffe4,
-      #c5feec,
-      #c1fbf9,
-      #c5f6ff,
-      #d0f0ff,
-      #dceaff);
+  background-image: linear-gradient(
+    to right top,
+    #ffffe9,
+    #fbffe4,
+    #f5ffdf,
+    #eeffdb,
+    #e6ffd8,
+    #daffde,
+    #cfffe4,
+    #c5feec,
+    #c1fbf9,
+    #c5f6ff,
+    #d0f0ff,
+    #dceaff
+  );
 }
 
 .custom-viewheight {
@@ -712,7 +790,7 @@ a {
   width: 100%;
   max-width: 800px;
   /* min-width: 400px; */
-  height: 480px;
+  height: 280px;
   /* margin: 0 auto; */
   background: #fafafa;
   border-radius: 10px;
