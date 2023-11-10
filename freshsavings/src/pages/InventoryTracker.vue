@@ -4,6 +4,7 @@ import { useAccountStorage } from '../main.js';
 import axios from 'axios';
 // import { useAccountStorage } from '../main.js';
 const accountStorage = useAccountStorage();
+let successMessage = '';
 
 </script>
 
@@ -44,7 +45,7 @@ const accountStorage = useAccountStorage();
 		</div>
 
 		<!-- Add-items Form -->
-		<div class="form-popup" id="myForm">
+		<div class="form-popup" id="myForm" v-if="!successMessage">
 			<form class="form-container">
 
 				<h3 class="fw-bold" style="text-align: center">
@@ -70,7 +71,7 @@ const accountStorage = useAccountStorage();
 						<option>Fruits</option>
 						<option>Dairy</option>
 						<option>Fish</option>
-						<option>Meats</option>
+						<option>Meat</option>
 					</select>
 				</div>
 
@@ -100,6 +101,10 @@ const accountStorage = useAccountStorage();
 				</div>
 
 			</form>
+		</div>
+
+		<div v-if="successMessage" class="success-message">
+			{{ successMessage }}
 		</div>
 
 		<!-- If there are no items -->
@@ -281,6 +286,7 @@ export default {
 
 			items: [],
 			// inventoryItems: [],
+			successMessage: '',
 
 			// Form inputs
 			ingredient_name: '',
@@ -412,26 +418,32 @@ export default {
       name: itemName
     }
   })
-  .then(response => {
+  .then(async response => {
     const ingredientId = response.data.iid;
     if (ingredientId) {
       // Now you can use these variables to perform any necessary logic or actions
       // For example, you can use them in your axios POST request
 
-      axios.post('http://localhost:3000/add_inventory_item', {
-        aid: useAccountStorage().aid,
-        iid: ingredientId,
-        qty: itemQuantity,
-		expiring_in: this.calculateRemainingDays,
-        ExpiryDate: expiryDate,
-        // other data properties as needed
-      })
-      .then(response => {
-        // Handle the response if needed
-      })
-      .catch(error => {
+      try {
+        const postResponse = await axios.post('http://localhost:3000/add_inventory_item', {
+          aid: useAccountStorage().aid,
+          iid: ingredientId,
+          qty: itemQuantity,
+          expiring_in: this.calculateRemainingDays,
+          ExpiryDate: expiryDate,
+          // other data properties as needed
+        });
+
+        // Show success message and close the form
+        this.successMessage = 'Item added successfully!';
+        this.formAction('close');
+        setTimeout(() => {
+          this.successMessage = '';
+        }, 2000); // Hides the success message after 2 seconds
+      } catch (error) {
         // Handle errors
-      });
+        console.error('Error occurred while adding inventory item:', error);
+      }
     } else {
       console.error('Ingredient ID not found for the provided name:', itemName);
     }
@@ -484,67 +496,6 @@ export default {
 			}
 			return style;
 		},
-
-		// ALL SQL STATEMENTS
-		// Retrieves record of all Inventory Items in an Array
-		// getInventoryItems() {
-		// 	axios
-		// 	.axios.get("http://localhost:3000/get_user_inventory_items/" + useAccountStorage().aid).then((response) =>
-		// 	let newItems = [];
-		// 	for (let item of response.data) {
-		// 		const currentDate = new Date();
-		// 		var futureDate = new Date(item.ExpiryDate);
-		// 		var timeDifference = futureDate.getTime() - currentDate.getTime();
-		// 		var daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-
-		// 		newItems.push({
-		// 			name: item.iname,
-		// 			category: item.icat,
-		// 			expiring_in: daysDifference,
-		// 			quantity: item.qty,
-		// 			emoji: item.emoji
-		// 		})
-		// 	};
-		// 	this.newItems = items;
-		// });
-		// },
-
-		// Insert new item into databases - Ingredient and AccountInventory
-		// insertItem() {
-		// 	if (
-		// 		this.ingredient_name == "" ||
-		// 		this.ingredient_quantity == "" ||
-		// 		this.category == ""
-		// 	) {
-		// 		alert("Please fill out all fields");
-		// 		return;
-		// 	};
-
-		// 	const expiring_in = this.calculateRemainingDays;
-		// 	this.formAction('clear');
-		// 	this.formAction('close');
-
-		// 	// Your logic to update the SQL table
-		// 	const updatedData = {
-		// 		iname: this.ingredient_name,
-		// 		icat: this.selectedCategory,
-		// 		expiring_in: expiring_in,
-		// 		qty: this.ingredient_quantity,
-		// 		emoji: this.selectedEmoji,// havent include yet
-		// 	};
-
-		// 	// Make an HTTP PUT request to the server-side endpoint
-		// 	axios.put('/insertNewInventoryItem', updatedData)
-		// 		.then(response => {
-		// 		// Handle the response if needed
-		// 		console.log('Table updated successfully', response.data);
-		// 		})
-		// 		.catch(error => {
-		// 		// Handle errors
-		// 		console.error('Error updating table', error);
-		// 		});
-		// 	}
-		// },
 
 		formAction(action) {
 			if (action == 'open') {
