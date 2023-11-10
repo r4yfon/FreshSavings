@@ -159,49 +159,51 @@ let successMessage = "";
 
     <!-- Product card  -->
 
-    <div class="row justify-content-start container-fluid">
-      <!-- example inventory card -->
-      <!-- <div class="col-4" v-for="(card, idx) in cards" :key="card" style="height: 360px; width: 360px;">
-				<div :style="{ background: card.background }"
+		<div class="row justify-content-start container-fluid">
+
+			<!-- example inventory card -->
+			<div class="col-4" v-for="(item, idx) in sortedArray" :key="item.iname" style="height: 360px; width: 360px;">
+				<div :style="{ background: computedItemStyle(item) }"
 					class="rounded-4 p-3 d-flex flex-column justify-content-between shadow h-100">
 					<div class="d-flex justify-content-between align-items-center">
-						<div class="fs-1">{{ card.icon }}</div>
+						<div class="fs-1">{{ item.emoji }}</div>
 						<div class="d-flex gap-2 align-items-center">
 							<button type="button" class="btn btn-outline-light rounded-circle d-flex align-items-center"
-								style="height: 32px; width: 32px;">-</button>
+								style="height: 32px; width: 32px;" @click="modifyItemQty(item, 'minus')">-</button>
 							<div
 								class="p-2 rounded-circle lh-1 fs-4 fw-bold d-flex justify-content-center align-items-center inventory-qty"
-								:style="{ color: card.qty_color }">
-								x{{ card.qty }}
+								>
+								<!-- :style="{ color: card.qty_color }" -->
+								x{{ item.qty }}
 							</div>
 							<button type="button" class="btn btn-outline-light rounded-circle d-flex align-items-center"
-								style="height: 32px; width: 32px;">+</button>
+								style="height: 32px; width: 32px;" @click="modifyItemQty(item, 'add')">+</button>
 						</div>
 					</div>
 					<div>
 						<div class="text-start fs-4 fw-semibold">
-							{{ card.item }}
+							{{ item.iname }}
 						</div>
 						<div class="text-start text-secondary-emphasis">
-							Fresh for {{ card.expiry }} more days
+							Fresh for {{ item.expiring_in }} more days
 						</div>
-						<div class="btn-group w-100 mt-2"> -->
-      <!-- <div class="col-lg-6 col-md-6 col-sm-6"> -->
-      <!-- <button type="button" class="btn btn-danger" style="display:block; width:100%" @click="removePost()">
+						<div class="btn-group w-100 mt-2">
+							<div class="col-lg-6 col-md-6 col-sm-6">
+							<button type="button" class="btn btn-danger" style="display:block; width:100%" @click="removePost()">
 								Remove
-							</button> -->
-      <!-- </div> -->
-      <!-- <div class="col-lg-6 col-md-6 col-sm-6"> -->
-      <!-- <button type="button" class="btn btn-success" style="display:block; width:100%" data-bs-toggle="modal"
+							</button>
+							</div>
+							<div class="col-lg-6 col-md-6 col-sm-6">
+							<button type="button" class="btn btn-success" style="display:block; width:100%" data-bs-toggle="modal"
 								data-bs-target="#openModal">
 								Sell
-							</button> -->
+							</button>
 
-      <!-- </div> -->
-      <!-- </div> -->
+							</div>
+						</div>
 
-      <!-- Modal Opened -->
-      <!-- <div class="modal fade" id="openModal" tabindex="-1" aria-labelledby="openModalLabel"
+						<!-- Modal Opened -->
+						<div class="modal fade" id="openModal" tabindex="-1" aria-labelledby="openModalLabel"
 									aria-hidden="true">
 									<div class="modal-dialog">
 										<div class="modal-content">
@@ -228,156 +230,93 @@ let successMessage = "";
 								</div>
 					</div>
 				</div>
+			</div>
+
+
+			<div class="projects" name="projects">
+				<template v-for="(item, idx) in sortedArray" :key="item.iname">
+					<TransitionGroup class="project" v-if="currentFilter === item.icat || currentFilter === 'All'">
+						<div class="col-lg-4 col-md-6 col-sm-12" style="padding-bottom: 10px;">
+							<div class="card" :style="computedItemStyle(item)">
+								<div class="card-title d-flex justify-content-between" :id="'card-title-' + idx">
+									<div class="emoji emoji-hover">
+										{{ item.emoji }}
+
+									</div>
+									<div id="counter" style="display:inline-flex; ">
+										<button type="button" class="btn btn-outline-secondary" style="border: none" v-if="item.qty > 0"
+											@click="modifyItemQty(idx, 'minus')">-</button>
+										<button type="button" class="btn btn-outline-secondary" style="border: none" v-else>-</button>
+										<span class="circle">
+											x {{ item.qty }}
+										</span>
+										<button type="button" class="btn btn-outline-secondary" style="border: none"
+											@click="modifyItemQty(idx, 'add')">+</button>
+
+									</div>
+								</div>
+
+								<div class="card-body">
+									<p>
+										<span class="fw-bold" style="font-size:large">{{ item.iname }}</span>
+										<br />
+										Expiring in <span class="fw-bold" style="font-size: large;">{{ item.expiring_in }}</span> days
+									</p>
+								</div> -->
+
+								<!-- Modal  -->
+								<!-- Button trigger modal -->
+								<!-- <div class="d-flex">
+									<div class="col-lg-6 col-md-6 col-sm-6">
+										<button type="button" class="btn btn-danger" style="display:block; width:100%" @click="removeItem()">
+											Remove
+										</button>
+									</div>
+									<div class="col-lg-6 col-md-6 col-sm-6">
+										<button type="button" class="btn btn-success" style="display:block; width:100%" @click="changeItemChosen(item.iid)" data-bs-toggle="modal"
+										:data-bs-target="'#openModal' + idx">
+											Sell
+										</button>
+
+									</div>
+								</div> -->
+
+								<!-- Modal Opened -->
+								<!-- <div class="modal fade" :id="'openModal' + idx" tabindex="-1" aria-labelledby="openModalLabel"
+									aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h1 class="modal-title fs-5" :id="'ModalLabel' + idx">Listing Details</h1>
+												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+											</div>
+											<div class="modal-body">
+												<label :for="'FormControlInput1' + idx" class="form-label">Selling Price</label>
+												<div class="input-group mb-3">
+													<span class="input-group-text" id="addon-wrappifng">$</span>
+													<input type="number" class="form-control" :id="'FormControlInput1' + idx" v-model="price">
+												</div>
+												<div class="mb-3">
+													<label :for="'FormControlInput2' + idx" class="form-label">Upload photo of product</label>
+													<input type="file" class="form-control" :id="'FormControlInput2' + idx">
+												</div>
+											</div>
+											<div class="modal-footer">
+												<a href="./inventory-tracker">
+												<button type="button" class="btn btn-primary" @click="posted(price)">Post</button>
+											</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</TransitionGroup>
+				</template>
 			</div> -->
+		</div>
 
-      <div class="projects" name="projects">
-        <template v-for="(item, idx) in sortedArray" :key="item.iname">
-          <TransitionGroup
-            class="project"
-            v-if="currentFilter === item.icat || currentFilter === 'All'">
-            <div
-              class="col-lg-4 col-md-6 col-sm-12"
-              style="padding-bottom: 10px">
-              <div class="card" :style="computedItemStyle(item)">
-                <div
-                  class="card-title d-flex justify-content-between"
-                  :id="'card-title-' + idx">
-                  <div class="emoji emoji-hover">
-                    {{ item.emoji }}
-                  </div>
-                  <div id="counter" style="display: inline-flex">
-                    <button
-                      type="button"
-                      class="btn btn-outline-secondary"
-                      style="border: none"
-                      v-if="item.qty > 0"
-                      @click="modifyItemQty(idx, 'minus')">
-                      -
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-outline-secondary"
-                      style="border: none"
-                      v-else>
-                      -
-                    </button>
-                    <span class="circle"> x {{ item.qty }} </span>
-                    <button
-                      type="button"
-                      class="btn btn-outline-secondary"
-                      style="border: none"
-                      @click="modifyItemQty(idx, 'add')">
-                      +
-                    </button>
-                  </div>
-                </div>
-
-                <div class="card-body">
-                  <p>
-                    <span class="fw-bold" style="font-size: large">{{
-                      item.iname
-                    }}</span>
-                    <br />
-                    Expiring in
-                    <span class="fw-bold" style="font-size: large">{{
-                      item.expiring_in
-                    }}</span>
-                    days
-                  </p>
-                </div>
-
-                <!-- Modal  -->
-                <!-- Button trigger modal -->
-                <div class="d-flex">
-                  <div class="col-lg-6 col-md-6 col-sm-6">
-                    <button
-                      type="button"
-                      class="btn btn-danger"
-                      style="display: block; width: 100%"
-                      @click="removeItem()">
-                      Remove
-                    </button>
-                  </div>
-                  <div class="col-lg-6 col-md-6 col-sm-6">
-                    <button
-                      type="button"
-                      class="btn btn-success"
-                      style="display: block; width: 100%"
-                      @click="changeItemChosen(item.iid)"
-                      data-bs-toggle="modal"
-                      :data-bs-target="'#openModal' + idx">
-                      Sell
-                    </button>
-                  </div>
-                </div>
-
-                <!-- Modal Opened -->
-                <div
-                  class="modal fade"
-                  :id="'openModal' + idx"
-                  tabindex="-1"
-                  aria-labelledby="openModalLabel"
-                  aria-hidden="true">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h1 class="modal-title fs-5" :id="'ModalLabel' + idx">
-                          Listing Details
-                        </h1>
-                        <button
-                          type="button"
-                          class="btn-close"
-                          data-bs-dismiss="modal"
-                          aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">
-                        <label
-                          :for="'FormControlInput1' + idx"
-                          class="form-label"
-                          >Selling Price</label
-                        >
-                        <div class="input-group mb-3">
-                          <span class="input-group-text" id="addon-wrappifng"
-                            >$</span
-                          >
-                          <input
-                            type="number"
-                            class="form-control"
-                            :id="'FormControlInput1' + idx"
-                            v-model="price" />
-                        </div>
-                        <div class="mb-3">
-                          <label
-                            :for="'FormControlInput2' + idx"
-                            class="form-label"
-                            >Upload photo of product</label
-                          >
-                          <input
-                            type="file"
-                            class="form-control"
-                            :id="'FormControlInput2' + idx" />
-                        </div>
-                      </div>
-                      <div class="modal-footer">
-                        <a href="./inventory-tracker">
-                          <button
-                            type="button"
-                            class="btn btn-primary"
-                            @click="posted(price)">
-                            Post
-                          </button>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </TransitionGroup>
-        </template>
-      </div>
-    </div>
-  </section>
+	</section>
 </template>
 
 <script>
@@ -403,22 +342,22 @@ export default {
       selectedCategory: "Fruits",
       selectedEmoji: "",
 
-      // Hard-Coded
-      categories: [
-        { categoryName: "All", imgLink: "kitchen.png" },
-        // { categoryName: "Due Soon", imgLink: "duesoon.png" },
-        // { categoryName: "Past Due", imgLink: "pastdue.png" },
-        { categoryName: "Dairy", imgLink: "milk.png" },
-        { categoryName: "Fish", imgLink: "fish.png" },
-        { categoryName: "Fruits", imgLink: "fruits.png" },
-        { categoryName: "Meats", imgLink: "barbecue.png" },
-      ],
-      emojis: [
-        { dairy: ["🧀", "🧈", "🥛", "🍼"] },
-        { fish: ["🐟", "🦀", "🦞", "🦐"] },
-        { fruit: ["🍇", "🍊", "🍌", "🍍", "🍎", "🍓", "🫐", "🥝"] },
-        { meat: ["🥩", "🐄", "🐖", "🐓", "🐏", "🦃", "🦆"] },
-      ],
+			// Hard-Coded
+			categories: [
+				{ categoryName: "All", imgLink: "kitchen.png" },
+				// { categoryName: "Due Soon", imgLink: "duesoon.png" },
+				// { categoryName: "Past Due", imgLink: "pastdue.png" },
+				{ categoryName: "Dairy", imgLink: "milk.png" },
+				{ categoryName: "Fish", imgLink: "fish.png" },
+				{ categoryName: "Fruits", imgLink: "fruits.png" },
+				{ categoryName: "Meats", imgLink: "barbecue.png" },
+			],
+			emojis: [
+				{ dairy: ['🧀', '🧈', '🥛','🍼'] },
+				{ fish: ['🐟','🐠'] },
+				{ fruit: ['🍇', '🍊', '🍌', '🍍', '🍎', '🍓', '🫐', '🥝',] },
+				{ meat: ['🥩', '🐄', '🐖', '🐓', '🐏','🦃','🦆','🐔','🦀', '🦞', '🦐'] },
+			],
 
       // DO NOT DELETE THIS
       // cards: [
@@ -599,39 +538,70 @@ export default {
       this.currentFilter = filter;
     },
 
-    computedItemStyle(obj) {
-      let style = {};
+		computedItemStyle(obj) {
+			if ('🍌🧀🧈'.includes(obj.emoji)) {
+				return "linear-gradient(135deg, rgb(255, 239, 184) 0%, rgb(251, 220, 113) 100%)";
+			}else if('🍼🥛'.includes(obj.emoji)){
+				return 'linear-gradient(135deg, rgb(255, 241, 228) 0%, rgb(255, 220, 185) 100%)';
+			}else if (obj.emoji == '🍌'){
+				return 'linear-gradient(135deg, rgb(255, 255, 102) 0%, rgb(255, 215, 0) 100%)';
+			}
+			// else if(obj.emoji=='🥛'){
+			// 	return 'linear-gradient(135deg, rgb(255, 255, 255) 0%, rgb(245, 245, 245) 100%)';
+			// }
+			else if (obj.emoji == '🐟') {
+				return 'linear-gradient(135deg, rgb(100, 160, 200) 0%, rgb(50, 120, 150) 100%)';
+			} else if (obj.emoji == '🦀') {
+				return 'linear-gradient(135deg, rgb(255, 165, 0) 0%, rgb(139, 69, 19) 100%)';
+			} else if (obj.emoji == '🦞') {
+				return 'linear-gradient(135deg, rgb(255, 0, 0) 0%, rgb(255, 69, 0) 100%)';
+			} else if (obj.emoji == '🦐') {
+				return 'linear-gradient(135deg, rgb(255, 182, 193) 0%, rgb(255, 69, 0) 100%)';
+			} else if (obj.emoji == '🍇') {
+				return 'linear-gradient(135deg, rgb(153, 50, 204) 0%, rgb(0, 128, 0) 100%)';
+			} else if (obj.emoji == '🍊') {
+				return 'linear-gradient(135deg, rgb(255, 165, 0) 0%, rgb(255, 69, 0) 100%)';
+			} else if (obj.emoji == '🍍') {
+				return 'linear-gradient(135deg, rgb(255, 255, 102) 0%, rgb(255, 165, 0) 100%)';
+			} else if (obj.emoji == '🍎') {
+				return "linear-gradient(135deg, rgb(255, 200, 143) 0%, rgb(255, 143, 143) 100%)";
+			} else if (obj.emoji == '🍓') {
+				return 'linear-gradient(135deg, rgb(255, 0, 0) 0%, rgb(255, 20, 147) 100%)';
+			} else if (obj.emoji == '🫐') {
+				return 'linear-gradient(135deg, rgb(0, 0, 139) 0%, rgb(0, 191, 255) 100%)';
+			} else if (obj.emoji == '🥝') {
+				return 'linear-gradient(135deg, rgb(144, 238, 144) 0%, rgb(30, 130, 76) 100%)';
+			} else if (obj.emoji == '🥩') {
+				return 'linear-gradient(135deg, rgb(160, 82, 45) 0%, rgb(139, 69, 19) 100%)';
+			} else if (obj.emoji == '🐄') {
+				return 'linear-gradient(135deg, rgb(139, 69, 19) 0%, rgb(255, 228, 196) 100%)';
+			} else if (obj.emoji == '🐖') {
+				return 'linear-gradient(135deg, rgb(255, 182, 193) 0%, rgb(255, 69, 0) 100%)';
+			}else if (obj.emoji == '🐓') {
+				return 'linear-gradient(135deg, rgb(255, 69, 0) 0%, rgb(218, 165, 32) 100%)';
+			} else if (obj.emoji == '🐏') {
+				return 'linear-gradient(135deg, rgb(255, 248, 220) 0%, rgb(139, 69, 19) 100%)';
+			} else if (obj.emoji == '🦃') {
+				return 'linear-gradient(135deg, rgb(205, 133, 63) 0%, rgb(139, 69, 19) 100%)';
+			} else if (obj.emoji == '🦆') {
+				return 'linear-gradient(135deg, rgb(0, 128, 128) 0%, rgb(0, 206, 209) 100%)';
+			} else if (obj.emoji == '🐔') {
+				return 'linear-gradient(135deg, rgb(255, 69, 0) 0%, rgb(218, 165, 32) 100%)';
+			}
 
-      if (obj.emoji == "🧀") {
-        style.background =
-          "linear-gradient(135deg, rgb(255, 229, 131) 0%, rgb(255, 182, 68) 100%)";
-      } else if ("🐟🐠".includes(obj.emoji)) {
-        style.background = "linear-gradient(to top left, #8EECF5 70%, white)";
-      } else if ("🦑🍇🫐🍆".includes(obj.emoji)) {
-        style.background = "linear-gradient(to top left, #CFBAF0 70%, white)";
-      } else if ("🍈🍏🍐🥝🫒🥑🫑🥒🥬🥦".includes(obj.emoji)) {
-        style.background = "linear-gradient(to top left, #b9fbc0 70%, white)";
-      } else if ("🦀🦞🦐🍉🍎🍒🍓🍅".includes(obj.emoji)) {
-        style.background = "linear-gradient(to top left, #ffb5a7 , 70%, white)";
-      } else if ("🍍🍗🍑🥕".includes(obj.emoji)) {
-        style.background = "linear-gradient(to top left, #fec89a, 70%, white)";
-      } else if ("🥥🍖🥓🐓".includes(obj.emoji)) {
-        style.background = "linear-gradient(to top left, #e2cfc4, 70%, white)";
-      } else if ("🐖".includes(obj.emoji)) {
-        style.background = "linear-gradient(to top left, #ffacc5, 70%, white)";
-      } else {
-        style.background = "linear-gradient(to top left, #F8F6F4, 70%, white)";
-      }
+			// If none of the conditions match, return a default value or handle accordingly
+			return 'default-gradient-value';
 
-      if (obj.expiring_in <= 2 && obj.expiring_in >= 0) {
-        style.border = "solid 5px orange";
-        style.borderRadius = "1rem";
-      } else if (obj.expiring_in < 0) {
-        style.border = "solid 5px orange";
-        style.borderRadius = "1rem";
-      }
-      return style;
-    },
+			// if (obj.expiring_in <= 2 && obj.expiring_in >= 0) {
+			// 	style.border = 'solid 5px orange';
+			// 	style.borderRadius = '1rem';
+			// }
+			// else if (obj.expiring_in < 0) {
+			// 	style.border = 'solid 5px orange';
+			// 	style.borderRadius = '1rem';
+			// }
+
+		},
 
     formAction(action) {
       if (action == "open") {
@@ -647,19 +617,19 @@ export default {
       }
     },
 
-    // TO DO: update table of new data
-    modifyItemQty(idx, operator) {
-      if (operator == "add") {
-        this.items[idx].qty += number;
-        // check again
-      } else if (operator == "minus" && this.items[idx].qty > 0) {
-        this.items[idx].qty -= number;
-        // check again
-      }
-      if (items[idx].qty == 0) {
-        this.removeItem();
-      }
-    },
+		modifyItemQty(item, operator) {
+			if (operator == 'add') {
+				item.qty += number;
+				// check again
+			} else if (operator == 'minus' && item.qty > 0) {
+				item.qty -= number;
+				// check again
+			}
+			if (item.qty == 0) {
+				this.removeItem();
+			}
+
+		},
 
     // TO DO: remove this card information from the Table 'AccountInventory' completely
     removeItem() {
