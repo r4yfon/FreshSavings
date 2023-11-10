@@ -500,14 +500,16 @@ export default {
     },
     async afterCheckOut(aid, arrPid) {
       try {
+        useAccountStorage().cart = [];
         const response = await axios.post(`http://localhost:3000/afterCheckOut/${aid}/${arrPid.join(',')}`, {
           arrPid,
         });
+        
 
       } catch (error) {
         console.error('Error:', error);
       }
-          useAccountStorage().cart = [];
+          
     },
   },
 }

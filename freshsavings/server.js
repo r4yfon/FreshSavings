@@ -248,8 +248,9 @@ app.post("/afterCheckOut/:aid/:arrPid", (req, res) => {
           res.status(500).json({ error: "Internal Server Error" });
           return;
         }
-        console.log(results[0])
-        const { iid, selling_quantity, ExpiryDate, emoji } = results[0];
+        console.log(results)
+        console.log("This is aftercheckout")
+        const {iid, selling_quantity, ExpiryDate, emoji } = results[0];
 
         connection.query(
           "INSERT INTO freshsavings.AccountInventory (aid, iid, expiring_in, qty, ExpiryDate) VALUES (?, ?, ?, ?, ?)",

@@ -260,7 +260,9 @@ let successMessage = '';
 												</div>
 											</div>
 											<div class="modal-footer">
+												<a href="./inventory-tracker">
 												<button type="button" class="btn btn-primary" @click="posted(price)">Post</button>
+											</a>
 											</div>
 										</div>
 									</div>
