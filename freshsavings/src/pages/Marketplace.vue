@@ -80,7 +80,7 @@ const accountStorage = useAccountStorage();
 
           <div class="small-half flex-grow-0">
             <div
-              class="d-flex justify-content-between mb-2 flex-column align-items-start flex-lg-row">
+              class="d-flex justify-content-between mb-2 flex-column align-items-start flex-md-row">
               <h5 class="text-start">Filter by category</h5>
               <button
                 type="button"
