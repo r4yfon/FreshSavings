@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios';
-import GSignInButton from 'vue-google-signin-button'
-import getGoogleUrl from '../auth/getGoogleUrl.js';
+// import GSignInButton from 'vue-google-signin-button'
+// import getGoogleUrl from '../auth/getGoogleUrl.js';
 import { ref, onMounted } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import router from '../router/index.js';
@@ -75,7 +75,7 @@ onMounted(() => {
 	const userSelection = 'example'; // Assume this value comes from some user action
 	from.value = userSelection;
 	const script = document.createElement('script');
-	script.src = 'https://apis.google.com/js/api:client.js';
+	// script.src = 'https://apis.google.com/js/api:client.js';
 	document.head.appendChild(script);
 });
 </script>
@@ -129,11 +129,7 @@ onMounted(() => {
 					<div class="social-container">
 						<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
 						<!-- <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a> -->
-						<a :href="getGoogleUrl(from)" class="social" :params="googleSignInParams" @success="onSignInSuccess"
-							@error="onSignInError">
-							<!-- Sign in with Google -->
-
-							<i class="fab fa-google-plus-g"></i></a>
+						<a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
 
 
 						<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
@@ -157,27 +153,27 @@ onMounted(() => {
 export default {
 	name: 'LogIn',
 	components: {
-		GSignInButton,
+		// GSignInButton,
 	},
 	setup() {
-		const googleSignInParams = {
-			clientId: process.env.VITE_GOOGLE_OAUTH_CLIENT_ID,
-		};
+		// const googleSignInParams = {
+		// 	clientId: process.env.VITE_GOOGLE_OAUTH_CLIENT_ID,
+		// };
 
-		const onSignInSuccess = (googleUser) => {
-			const profile = googleUser.getBasicProfile(); // etc etc
-		};
+		// const onSignInSuccess = (googleUser) => {
+		// 	const profile = googleUser.getBasicProfile(); // etc etc
+		// };
 
-		const onSignInError = (error) => {
-			console.log('OH NOES', error);
-		};
+		// const onSignInError = (error) => {
+		// 	console.log('OH NOES', error);
+		// };
 
 		return {
-			googleSignInParams,
-			onSignInSuccess,
-			onSignInError,
+			// googleSignInParams,
+			// onSignInSuccess,
+			// onSignInError,
 			from,
-			getGoogleUrl,
+			// getGoogleUrl,
 			handleLogin
 		};
 	},
@@ -196,15 +192,15 @@ export default {
 	/* Adjust the font size as needed */
 }
 
-.g-signin-button {
-	/* This is where you control how the button looks. Be creative! */
-	display: inline-block;
-	padding: 4px 8px;
-	border-radius: 3px;
-	background-color: #3c82f7;
-	color: #fff;
-	box-shadow: 0 3px 0 #0f69ff;
-}
+// .g-signin-button {
+// 	/* This is where you control how the button looks. Be creative! */
+// 	display: inline-block;
+// 	padding: 4px 8px;
+// 	border-radius: 3px;
+// 	background-color: #3c82f7;
+// 	color: #fff;
+// 	box-shadow: 0 3px 0 #0f69ff;
+// }
 
 * {
 	padding: 0;
@@ -308,7 +304,7 @@ a:hover {
 
 
 .login-content {
-	display: flex;
+	// display: flex;
 	justify-content: center;
 	/* Change to center to horizontally center the content */
 	align-items: center;

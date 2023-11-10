@@ -226,7 +226,7 @@ const accountStorage = useAccountStorage();
                         Address: {{ product.postalcode }}
                       </h6>
                       <h6 class="card__description">
-                        Expiring in: {{ GetExpiry(product.ExpiryDate) }} days
+                        Expiring in: {{ product.expiring_in }} days
                       </h6>
                     </div>
                   </div>
