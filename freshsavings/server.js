@@ -189,6 +189,7 @@ app.get("/get_user_inventory_items/:userid", (req, res) => {
   );
 });
 app.post("/InventorytoPosting/:aid/:iid/:s_price", (req, res) => {
+  
   const aid = parseInt(req.params.aid);
   const iid = parseInt(req.params.iid);
   const s_price = parseFloat(req.params.s_price)
@@ -203,8 +204,9 @@ app.post("/InventorytoPosting/:aid/:iid/:s_price", (req, res) => {
       }
       console.log(results[0])
       const { iid, postingImage, qty, ExpiryDate } = results[0];
-      Connection.query(
-        "INSERT INTO freshsavings.Posting (iid, expiring_in, selling_price, selling_quantity, said, posting_status, image, ExpiryDate VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+
+      connection.query(
+        "INSERT INTO freshsavings.Posting (iid, expiring_in, selling_price, selling_quantity, said, posting_status, image, ExpiryDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
         [iid, 1, s_price, qty, aid, 'Active', postingImage, ExpiryDate],
         
         (err, results) => {
@@ -213,7 +215,7 @@ app.post("/InventorytoPosting/:aid/:iid/:s_price", (req, res) => {
             res.status(500).json({ error: "Internal Server Error" });
             return;
           }
-          Connection.query(
+          connection.query(
             "DELETE FROM freshsavings.AccountInventory where aid = ? and iid = ?",
             [aid, iid],
             

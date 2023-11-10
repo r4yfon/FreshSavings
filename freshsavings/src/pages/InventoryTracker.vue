@@ -228,7 +228,7 @@ let successMessage = '';
 										</button>
 									</div>
 									<div class="col-lg-6 col-md-6 col-sm-6">
-										<button type="button" class="btn btn-success" style="display:block; width:100%" data-bs-toggle="modal"
+										<button type="button" class="btn btn-success" style="display:block; width:100%" @click="changeItemChosen(item.iid)" data-bs-toggle="modal"
 											data-bs-target="#openModal">
 											Sell
 										</button>
@@ -249,7 +249,7 @@ let successMessage = '';
 												<label :for="'FormControlInput1' + idx" class="form-label">Selling Price</label>
 												<div class="input-group mb-3">
 													<span class="input-group-text" id="addon-wrappifng">$</span>
-													<input type="number" class="form-control" :id="'FormControlInput1' + idx" placeholder="3.00">
+													<input type="number" class="form-control" :id="'FormControlInput1' + idx" v-model="price">
 												</div>
 												<div class="mb-3">
 													<label :for="'FormControlInput2' + idx" class="form-label">Upload photo of product</label>
@@ -257,7 +257,7 @@ let successMessage = '';
 												</div>
 											</div>
 											<div class="modal-footer">
-												<button type="button" class="btn btn-primary" @click="posted(item.iid)">Post</button>
+												<button type="button" class="btn btn-primary" @click="posted(price)">Post</button>
 											</div>
 										</div>
 									</div>
@@ -289,6 +289,8 @@ export default {
 			successMessage: '',
 
 			// Form inputs
+			price: 3,
+			is_selected: undefined,
 			ingredient_name: '',
 			ingredient_quantity: '',
 			ingredient_purchase_date: '',
@@ -370,6 +372,11 @@ export default {
 
 	},
 	methods: {
+		changeItemChosen(newiid){
+  this.is_selected = newiid;
+  console.log("new me")
+  console.log(this.is_selected)
+},
 		checkLoginStatus() {
 			const sessionData = JSON.parse(localStorage.getItem('session'));
 			if (sessionData && sessionData.user && sessionData.user.email) {
@@ -537,12 +544,12 @@ export default {
 		},
 		
 		// TO DO: insert this card information to Table 'Posting'
-		async posted(iid) {
-			this.posting_status = 'Active';
+		posted(s_price) {
+			let iid = this.is_selected
 			try {
-        const response = await axios.post(`http://localhost:3000/InventorytoPosting/${useAccountStorage().aid}/${iid}`, {
-          
-        });
+				axios.post(`http://localhost:3000/InventorytoPosting/${useAccountStorage().aid}/${iid}/${s_price}`, {
+      
+    });
 
       } catch (error) {
         console.error('Error:', error);
