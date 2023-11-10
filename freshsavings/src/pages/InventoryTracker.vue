@@ -36,7 +36,7 @@ let successMessage = '';
 		<div id="category">
 			<div class="container-fluid justify-content-center d-flex">
 				<div v-for="category in categories" :key="category.categoryName"
-					class="border rounded d-flex flex-column justify-content-between align-items-center">
+					class="border rounded d-flex flex-column justify-content-between align-items-center mx-1">
 					<div class="filter" :class="{ active: currentFilter === category.categoryName }"
 						@click="setFilter(category.categoryName)">
 						<img :src=imageUrl(category.imgLink) style="width:30px" /> &nbsp;
@@ -121,162 +121,66 @@ let successMessage = '';
 
 		<!-- Product card  -->
 
-		<div class="row justify-content-start container-fluid">
-
-			<!-- example inventory card -->
-			<div class="col-4" v-for="(item, idx) in sortedArray" :key="item.iname" style="height: 360px; width: 360px;">
-				<div :style="{ background: computedItemStyle(item) }"
-					class="rounded-4 p-3 d-flex flex-column justify-content-between shadow h-100">
-					<div class="d-flex justify-content-between align-items-center">
-						<div class="fs-1">{{ item.emoji }}</div>
-						<div class="d-flex gap-2 align-items-center">
-							<button type="button" class="btn btn-outline-light rounded-circle d-flex align-items-center"
-								style="height: 32px; width: 32px;" @click="modifyItemQty(item, 'minus')">-</button>
-							<div
-								class="p-2 rounded-circle lh-1 fs-4 fw-bold d-flex justify-content-center align-items-center inventory-qty"
-								>
-								<!-- :style="{ color: card.qty_color }" -->
-								x{{ item.qty }}
-							</div>
-							<button type="button" class="btn btn-outline-light rounded-circle d-flex align-items-center"
-								style="height: 32px; width: 32px;" @click="modifyItemQty(item, 'add')">+</button>
-						</div>
-					</div>
-					<div>
-						<div class="text-start fs-4 fw-semibold">
-							{{ item.iname }}
-						</div>
-						<div class="text-start text-secondary-emphasis">
-							Fresh for {{ item.expiring_in }} more days
-						</div>
-						<div class="btn-group w-100 mt-2">
-							<div class="col-lg-6 col-md-6 col-sm-6">
-							<button type="button" class="btn btn-danger" style="display:block; width:100%" @click="removePost()">
-								Remove
-							</button>
-							</div>
-							<div class="col-lg-6 col-md-6 col-sm-6">
-							<button type="button" class="btn btn-success" style="display:block; width:100%" data-bs-toggle="modal"
-								data-bs-target="#openModal">
-								Sell
-							</button>
-
-							</div>
-						</div>
-
-						<!-- Modal Opened -->
-						<div class="modal fade" id="openModal" tabindex="-1" aria-labelledby="openModalLabel"
-									aria-hidden="true">
-									<div class="modal-dialog">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h1 class="modal-title fs-5" :id="'ModalLabel' + idx">Listing Details</h1>
-												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-											</div>
-											<div class="modal-body">
-												<label :for="'FormControlInput1' + idx" class="form-label">Selling Price</label>
-												<div class="input-group mb-3">
-													<span class="input-group-text" id="addon-wrappifng">$</span>
-													<input type="number" class="form-control" :id="'FormControlInput1' + idx" placeholder="3.00">
-												</div>
-												<div class="mb-3">
-													<label :for="'FormControlInput2' + idx" class="form-label">Upload photo of product</label>
-													<input type="file" class="form-control" :id="'FormControlInput2' + idx">
-												</div>
-											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-primary" >Post</button>
-											</div>
-										</div>
-									</div>
-								</div>
-					</div>
+<!-- Product card  -->
+<div class="row justify-content-start container-fluid">
+  <div class="projects" name="projects">
+    <template v-for="(item, idx) in sortedArray" :key="item.iid">
+      <TransitionGroup class="project" v-if="currentFilter === item.icat || currentFilter === 'All'">
+        <div class="col-3 mx-3 my-3" style="height: 300px; width: 300px;">
+          <div :style="computedItemStyle(item)"
+               class="rounded-4 p-3 d-flex flex-column justify-content-between shadow h-100">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="fs-1">{{ item.emoji }}</div>
+              <div class="d-flex gap-2 align-items-center">
+                <button type="button" class="btn btn-outline-light rounded-circle d-flex align-items-center"
+                        style="height: 32px; width: 32px;">-</button>
+                <div class="p-2 rounded-circle lh-1 fs-4 fw-bold d-flex justify-content-center align-items-center inventory-qty"
+                     :style="{ color: item.qty_color }">
+                  x{{ item.qty }}
+                </div>
+                <button type="button" class="btn btn-outline-light rounded-circle d-flex align-items-center"
+                        style="height: 32px; width: 32px;">+</button>
+              </div>
+            </div>
+            <div>
+              <div class="text-start fs-4 fw-semibold">
+                {{ item.iname }}
+              </div>
+              <div :class="{ 'text-danger': item.expiring_in <= 2 }">
+					Fresh for {{ item.expiring_in }} more days
 				</div>
-			</div>
+              <div class="btn-group w-100 mt-2">
+                <button type="button" class="btn btn-success bg-success-subtle" style="display:block; width:100%" @click="removePost(idx)">
+					Remove
+				</button>
+                <button type="button" class="btn btn-success btn-subtle" style="display:block; width:100%" data-bs-toggle="modal"
+						:data-bs-target="'#openModal' + idx" @click="changeItemChosen(item.iid)">
+				Sell
+				</button>
+              </div>
+              <!-- Modal Opened -->
+              <div class="modal fade" :id="'openModal' + idx" tabindex="-1" aria-labelledby="openModalLabel" aria-hidden="true">                                    <div class="modal-dialog">
+                    <div class="modal-content">                                            
+						<div class="modal-header">
+                            <h1 class="modal-title fs-5" :id="'ModalLabel' + idx">Listing Details</h1>                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>                                            <div class="modal-body">
+                                                <label :for="'FormControlInput1' + idx" class="form-label">Selling Price</label>                                                <div class="input-group mb-3">
+                                                    <span class="input-group-text" id="addon-wrappifng">$</span>                                                    <input type="number" class="form-control" :id="'FormControlInput1' + idx" v-model="price">
+                                                </div>                                                <div class="mb-3">
+                                                    <label :for="'FormControlInput2' + idx" class="form-label">Upload photo of product</label>                                                    <input type="file" class="form-control" :id="'FormControlInput2' + idx">
+                                                </div>                                            </div>
+                                            <div class="modal-footer">                                                <a href="./inventory-tracker">
+                                                <button type="button" class="btn btn-primary" @click="posted(price)">Post</button>                                            </a>
+                                            </div>                                        </div>
+                                    </div>                                </div>
+            </div>
+          </div>
+        </div>
+      </TransitionGroup>
+    </template>
+  </div>
+</div>
 
-
-			<!-- <div class="projects" name="projects">
-				<template v-for="(item, idx) in sortedArray" :key="item.iname">
-					<TransitionGroup class="project" v-if="currentFilter === item.icat || currentFilter === 'All'">
-						<div class="col-lg-4 col-md-6 col-sm-12" style="padding-bottom: 10px;">
-							<div class="card" :style="computedItemStyle(item)">
-								<div class="card-title d-flex justify-content-between" :id="'card-title-' + idx">
-									<div class="emoji emoji-hover">
-										{{ item.emoji }}
-										
-									</div>
-									<div id="counter" style="display:inline-flex; ">
-										<button type="button" class="btn btn-outline-secondary" style="border: none" v-if="item.qty > 0"
-											@click="modifyItemQty(idx, 'minus')">-</button>
-										<button type="button" class="btn btn-outline-secondary" style="border: none" v-else>-</button>
-										<span class="circle">
-											x {{ item.qty }}
-										</span>
-										<button type="button" class="btn btn-outline-secondary" style="border: none"
-											@click="modifyItemQty(idx, 'add')">+</button>
-
-									</div>
-								</div>
-
-								<div class="card-body">
-									<p>
-										<span class="fw-bold" style="font-size:large">{{ item.iname }}</span>
-										<br />
-										Expiring in <span class="fw-bold" style="font-size: large;">{{ item.expiring_in }}</span> days
-									</p>
-								</div> -->
-
-								<!-- Modal  -->
-								<!-- Button trigger modal -->
-								<!-- <div class="d-flex">
-									<div class="col-lg-6 col-md-6 col-sm-6">
-										<button type="button" class="btn btn-danger" style="display:block; width:100%" @click="removeItem()">
-											Remove
-										</button>
-									</div>
-									<div class="col-lg-6 col-md-6 col-sm-6">
-										<button type="button" class="btn btn-success" style="display:block; width:100%" @click="changeItemChosen(item.iid)" data-bs-toggle="modal"
-										:data-bs-target="'#openModal' + idx">
-											Sell
-										</button>
-
-									</div>
-								</div> -->
-
-								<!-- Modal Opened -->
-								<!-- <div class="modal fade" :id="'openModal' + idx" tabindex="-1" aria-labelledby="openModalLabel"
-									aria-hidden="true">
-									<div class="modal-dialog">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h1 class="modal-title fs-5" :id="'ModalLabel' + idx">Listing Details</h1>
-												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-											</div>
-											<div class="modal-body">
-												<label :for="'FormControlInput1' + idx" class="form-label">Selling Price</label>
-												<div class="input-group mb-3">
-													<span class="input-group-text" id="addon-wrappifng">$</span>
-													<input type="number" class="form-control" :id="'FormControlInput1' + idx" v-model="price">
-												</div>
-												<div class="mb-3">
-													<label :for="'FormControlInput2' + idx" class="form-label">Upload photo of product</label>
-													<input type="file" class="form-control" :id="'FormControlInput2' + idx">
-												</div>
-											</div>
-											<div class="modal-footer">
-												<a href="./inventory-tracker">
-												<button type="button" class="btn btn-primary" @click="posted(price)">Post</button>
-											</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</TransitionGroup>
-				</template>
-			</div> -->
-		</div> 
 
 	</section>
 </template>
@@ -323,17 +227,17 @@ export default {
 			],
 
 			// DO NOT DELETE THIS
-			// cards: [
-			// 	{
-			// 		icon: "🥬",
-			// 		qty: 4,
-			// 		item: "Lettuce",
-			// 		expiry: 3,
-			// 		background:
-			// 			"linear-gradient(135deg, rgb(202, 236, 172) 0%, rgb(131, 208, 197) 100%)",
-			// 		qty_color: "rgb(160, 220, 187)",
-			// 	},
-			// ]
+			cards: [
+				{
+					icon: "🥬",
+					qty: 4,
+					item: "Lettuce",
+					expiry: 3,
+					background:
+						"linear-gradient(135deg, rgb(202, 236, 172) 0%, rgb(131, 208, 197) 100%)",
+					qty_color: "rgb(160, 220, 187)",
+				},
+			]
 
 		}
 	},
@@ -427,17 +331,22 @@ export default {
   const selectedCategory = this.selectedCategory;
   const expiryDate = this.ingredient_expiry_date;
   const selectedEmoji = this.selectedEmoji;
+  // Calculate the remaining days
+  const currentDate = new Date();
+  const futureDate = new Date(expiryDate);
+  const timeDifference = futureDate.getTime() - currentDate.getTime();
+  const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
   this.formAction('close');
 
-  this.items.push({
-	"aid": useAccountStorage().aid,
-    "iid": 3,
-	"iname":itemName,
-    "qty": itemQuantity,
-	"expiring_in": this.calculateRemainingDays,
-    "ExpiryDate": expiryDate,
-	"icat": selectedCategory,
-	"emoji": selectedEmoji})
+this.items.push({
+  "aid": useAccountStorage().aid,
+  "iid": 3,
+  "iname":itemName,
+  "qty": itemQuantity,
+  "expiring_in": this.calculateRemainingDays,
+  "ExpiryDate": expiryDate,
+  "icat": selectedCategory,
+  "emoji": selectedEmoji})
 
   // Get the ingredient id by name
   axios.get('http://localhost:3000/get_ingredient_id_by_name', {
@@ -456,7 +365,7 @@ export default {
           aid: useAccountStorage().aid,
           iid: ingredientId,
           qty: itemQuantity,
-          expiring_in: this.calculateRemainingDays,
+          expiring_in: daysDifference, // Store the calculated difference in days
           ExpiryDate: expiryDate,
           // other data properties as needed
         });
@@ -482,6 +391,7 @@ export default {
 },
 
 
+
 		imageUrl(img) {
 			return require(`@/assets/img/${img}`);
 		},
@@ -490,58 +400,28 @@ export default {
 		},
 
 		computedItemStyle(obj) {
-			if ('🍌🧀🧈'.includes(obj.emoji)) {
-				return "linear-gradient(135deg, rgb(255, 239, 184) 0%, rgb(251, 220, 113) 100%)";
-			}else if('🍼🥛'.includes(obj.emoji)){
-				return 'linear-gradient(135deg, rgb(255, 241, 228) 0%, rgb(255, 220, 185) 100%)';
-			}else if (obj.emoji == '🍌'){
-				return 'linear-gradient(135deg, rgb(255, 255, 102) 0%, rgb(255, 215, 0) 100%)';
-			}
-			// else if(obj.emoji=='🥛'){
-			// 	return 'linear-gradient(135deg, rgb(255, 255, 255) 0%, rgb(245, 245, 245) 100%)';
-			// }
-			else if (obj.emoji == '🐟') {
-				return 'linear-gradient(135deg, rgb(100, 160, 200) 0%, rgb(50, 120, 150) 100%)';
-			} else if (obj.emoji == '🦀') {
-				return 'linear-gradient(135deg, rgb(255, 165, 0) 0%, rgb(139, 69, 19) 100%)';
-			} else if (obj.emoji == '🦞') {
-				return 'linear-gradient(135deg, rgb(255, 0, 0) 0%, rgb(255, 69, 0) 100%)';
-			} else if (obj.emoji == '🦐') {
-				return 'linear-gradient(135deg, rgb(255, 182, 193) 0%, rgb(255, 69, 0) 100%)';
-			} else if (obj.emoji == '🍇') {
-				return 'linear-gradient(135deg, rgb(153, 50, 204) 0%, rgb(0, 128, 0) 100%)';
-			} else if (obj.emoji == '🍊') {
-				return 'linear-gradient(135deg, rgb(255, 165, 0) 0%, rgb(255, 69, 0) 100%)';
-			} else if (obj.emoji == '🍍') {
-				return 'linear-gradient(135deg, rgb(255, 255, 102) 0%, rgb(255, 165, 0) 100%)';
-			} else if (obj.emoji == '🍎') {
-				return "linear-gradient(135deg, rgb(255, 200, 143) 0%, rgb(255, 143, 143) 100%)";
-			} else if (obj.emoji == '🍓') {
-				return 'linear-gradient(135deg, rgb(255, 0, 0) 0%, rgb(255, 20, 147) 100%)';
-			} else if (obj.emoji == '🫐') {
-				return 'linear-gradient(135deg, rgb(0, 0, 139) 0%, rgb(0, 191, 255) 100%)';
-			} else if (obj.emoji == '🥝') {
-				return 'linear-gradient(135deg, rgb(144, 238, 144) 0%, rgb(30, 130, 76) 100%)';
-			} else if (obj.emoji == '🥩') {
-				return 'linear-gradient(135deg, rgb(160, 82, 45) 0%, rgb(139, 69, 19) 100%)';
-			} else if (obj.emoji == '🐄') {
-				return 'linear-gradient(135deg, rgb(139, 69, 19) 0%, rgb(255, 228, 196) 100%)';
-			} else if (obj.emoji == '🐖') {
-				return 'linear-gradient(135deg, rgb(255, 182, 193) 0%, rgb(255, 69, 0) 100%)';
-			}else if (obj.emoji == '🐓') {
-				return 'linear-gradient(135deg, rgb(255, 69, 0) 0%, rgb(218, 165, 32) 100%)';
-			} else if (obj.emoji == '🐏') {
-				return 'linear-gradient(135deg, rgb(255, 248, 220) 0%, rgb(139, 69, 19) 100%)';
-			} else if (obj.emoji == '🦃') {
-				return 'linear-gradient(135deg, rgb(205, 133, 63) 0%, rgb(139, 69, 19) 100%)';
-			} else if (obj.emoji == '🦆') {
-				return 'linear-gradient(135deg, rgb(0, 128, 128) 0%, rgb(0, 206, 209) 100%)';
-			} else if (obj.emoji == '🐔') {
-				return 'linear-gradient(135deg, rgb(255, 69, 0) 0%, rgb(218, 165, 32) 100%)';
-			}
+			let style = {};
 
-			// If none of the conditions match, return a default value or handle accordingly
-			return 'default-gradient-value';
+			if ('🧀🧈🍋🍌🥔🌽'.includes(obj.emoji)) {
+				style.background = 'linear-gradient(to top left, #FBF8CC 70%, white)';
+			} else if ('🐟🐠'.includes(obj.emoji)) {
+				style.background = 'linear-gradient(to top left, #8EECF5 70%, white)';
+			} else if ('🦑🍇🫐🍆'.includes(obj.emoji)) {
+				style.background = 'linear-gradient(to top left, #CFBAF0 70%, white)';
+			} else if ('🍈🍏🍐🥝🫒🥑🫑🥒🥬🥦'.includes(obj.emoji)) {
+				style.background = 'linear-gradient(to top left, #b9fbc0 70%, white)';
+			} else if ('🦀🦞🦐🍉🍎🍒🍓🍅'.includes(obj.emoji)) {
+				style.background = 'linear-gradient(to top left, #ffb5a7 , 70%, white)';
+			} else if ('🍍🍗🍑🥕'.includes(obj.emoji)) {
+				style.background = 'linear-gradient(to top left, #fec89a, 70%, white)';
+			} else if ('🥥🍖🥓🐓'.includes(obj.emoji)) {
+				style.background = 'linear-gradient(to top left, #e2cfc4, 70%, white)';
+			} else if ('🐖'.includes(obj.emoji)) {
+				style.background = 'linear-gradient(to top left, #ffacc5, 70%, white)';
+			}
+			else {
+				style.background = 'linear-gradient(to top left, #F8F6F4, 70%, white)';
+			}
 
 			// if (obj.expiring_in <= 2 && obj.expiring_in >= 0) {
 			// 	style.border = 'solid 5px orange';
@@ -551,7 +431,7 @@ export default {
 			// 	style.border = 'solid 5px orange';
 			// 	style.borderRadius = '1rem';
 			// }
-			
+			return style;
 		},
 
 		formAction(action) {
@@ -621,7 +501,10 @@ export default {
 	justify-content: space-between;
 	align-items: center;
 }
-
+.btn {
+	color: black;
+	border: none;
+}
 .filter {
 	padding: 6px 6px;
 	font-size: 20px;
@@ -645,7 +528,10 @@ export default {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
+	
 }
+
+
 
 .projects-enter {
 	transform: scale(0.5) translatey(-80px);
@@ -656,6 +542,7 @@ export default {
 	transform: translatey(30px);
 	opacity: 0;
 }
+
 
 .projects-leave-active {
 	position: absolute;
@@ -710,6 +597,23 @@ export default {
 .project body {
 	z-index: 3;
 }
+
+.btn-subtle {
+    border: none;
+    transition: background-color 0.3s;
+  }
+
+  .btn-subtle:hover {
+    cursor: pointer;
+  }
+
+  .btn-danger-subtle:hover {
+    background-color: #dc3545; /* Change to your desired hover color for Remove */
+  }
+
+  .btn-success-subtle:hover {
+    background-color: #28a745; /* Change to your desired hover color for Sell */
+  }
 
 .project {
 	transition: all .35s ease-in-out;
