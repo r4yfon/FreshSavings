@@ -138,57 +138,82 @@ const accountStorage = useAccountStorage();
               </button>
             </div>
           </div>
+        </div>
+      </div>
 
+      <div class="container px-4 px-lg-5 mt-5">
+        <div
+          class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-start">
+          <template v-for="product of groceryItems" :key="product.iname">
+            <div
+              v-if="
+                product.posting_status == 'Active' &&
+                cart.indexOf(product.pid) == -1 &&
+                searched(product.iname) &&
+                distancetrack(product.pid) &&
+                this.chooseCategories.includes(product.icat)
+              "
+              class="col mb-5">
+              <!--<div v-if="product.posting_status == 'Active' && cart.indexOf(product.pid) == -1 && searched(product.iname) && checkDistance(product.a_lat, product.a_long)" class="col mb-5">-->
 
-    <div class="container px-4 px-lg-5 mt-5">
-      <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-start">
-        <template v-for="product of groceryItems" :key="product.iname">
+              <div class="card h-100">
+                <!-- Product image -->
+                <div class="css-card h-100">
+                  <img
+                    class="card-img-top h-100"
+                    :src="imageUrl(product.image)" />
 
-          <div v-if="product.posting_status == 'Active' && cart.indexOf(product.pid) == -1 && searched(product.iname) && distancetrack(product.pid) && this.chooseCategories.includes(product.icat)"
-            class="col mb-5">
-            <!--<div v-if="product.posting_status == 'Active' && cart.indexOf(product.pid) == -1 && searched(product.iname) && checkDistance(product.a_lat, product.a_long)" class="col mb-5">-->
+                  <div class="card__content">
+                    <h3 class="card__title">Product Details</h3>
+                    <h6 class="card__description">
+                      Address: {{ product.postalcode }}
+                    </h6>
+                    <h6 class="card__description">
+                      Expiring in: {{ GetExpiry(product.ExpiryDate) }} days
+                    </h6>
+                  </div>
+                </div>
 
-            <div class="card h-100">
-              <!-- Product image -->
-              <div class="css-card h-100">
-              <img class="card-img-top h-100" :src="imageUrl(product.image)">
+                <!-- Product details -->
 
-              <div class="card__content">
-                <h3 class="card__title">Product Details</h3>
-                <h6 class="card__description">
-                Address: {{ product.postalcode }}
-
-                </h6>
-                <h6 class="card__description">
-                Expiring in: {{ GetExpiry(product.ExpiryDate) }} days
-
-                </h6>
-              </div>
-            </div>
-
-              <!-- Product details -->
-
-
-
-              <div class="card-body p-4">
-                <div class="text-center">
-                  <!-- Product name -->
-                  <h5 class="fw-bolder text-center">{{ product.iname }} x{{ product.selling_quantity }}</h5>
-                  <!-- Product price -->
-                  <span class="fw-bold" style="font-size:18px"> ${{ totalCost(product.selling_price,
-                    product.selling_quantity) }}</span> <span class="text-muted" style="text-decoration: line-through">
-                    ${{ totalCost(product.price, product.selling_quantity) }}</span>
+                <div class="card-body p-4">
+                  <div class="text-center">
+                    <!-- Product name -->
+                    <h5 class="fw-bolder text-center">
+                      {{ product.iname }} x{{ product.selling_quantity }}
+                    </h5>
+                    <!-- Product price -->
+                    <span class="fw-bold" style="font-size: 18px">
+                      ${{
+                        totalCost(
+                          product.selling_price,
+                          product.selling_quantity
+                        )
+                      }}</span
+                    >
+                    <span
+                      class="text-muted"
+                      style="text-decoration: line-through">
+                      ${{
+                        totalCost(product.price, product.selling_quantity)
+                      }}</span
+                    >
+                  </div>
+                </div>
+                <!-- Product actions -->
+                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                  <div class="text-center">
+                    <button
+                      class="btn btn-outline-dark mt-auto"
+                      @click="Added(product.pid)">
+                      Add
+                    </button>
+                  </div>
                 </div>
               </div>
-              <!-- Product actions -->
-              <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                <div class="text-center">
-                  <button class="btn btn-outline-dark mt-auto" @click="Added(product.pid)">Add</button>
-
-                </div>
-              </div>
             </div>
-          </div>
+          </template>
+        </div>
 
         <!-- right panel -->
         <div class="col-12 col-lg-8">
