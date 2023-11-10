@@ -72,7 +72,7 @@
                           <b>
                             <h6>{{ product.Name }}</h6>
                           </b>
-                          <p class="small mb-0">Address: {{ product.Address }}</p>
+                          <p class="small mb-0 text-center">Address: {{ product.Address }}</p>
                         </div>
                       </div>
                       <div class="d-flex flex-row align-items-center">
