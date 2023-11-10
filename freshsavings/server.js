@@ -97,7 +97,7 @@ app.get("/get_all_ingredients", (req, res) => {
 app.get("/get_all_products", (req, res) => {
   // Query the database to retrieve ingredients
   connection.query(
-    "select pid, Ingredient.iid, Ingredient.iname, selling_price, selling_quantity, fname, lname, said, Account.postalcode, Account.a_lat, Account.a_long, posting_status, icat, Ingredient.price, image from freshsavings.Posting, freshsavings.Account, freshsavings.Ingredient where Posting.said = Account.aid and Posting.iid = Ingredient.iid",
+    "select ExpiryDate, pid, Ingredient.iid, Ingredient.iname, selling_price, selling_quantity, fname, lname, said, Account.postalcode, Account.a_lat, Account.a_long, posting_status, icat, Ingredient.price, image from freshsavings.Posting, freshsavings.Account, freshsavings.Ingredient where Posting.said = Account.aid and Posting.iid = Ingredient.iid",
     (err, results) => {
       if (err) {
         console.error("Error querying the database:", err);
@@ -113,7 +113,7 @@ app.get("/get_product_description/:pid", (req, res) => {
   // Query the database to retrieve ingredients
   const pid = parseInt(req.params.pid);
   connection.query(
-    "select pid, Ingredient.iid, Ingredient.iname, selling_price, selling_quantity, fname, lname, said, Account.postalcode, Account.a_lat, Account.a_long, posting_status, icat, Ingredient.price, image from freshsavings.Posting, freshsavings.Account, freshsavings.Ingredient where Posting.said = Account.aid and Posting.iid = Ingredient.iid and Posting.pid = ?",
+    "select ExpiryDate, pid, Ingredient.iid, Ingredient.iname, selling_price, selling_quantity, fname, lname, said, Account.postalcode, Account.a_lat, Account.a_long, posting_status, icat, Ingredient.price, image from freshsavings.Posting, freshsavings.Account, freshsavings.Ingredient where Posting.said = Account.aid and Posting.iid = Ingredient.iid and Posting.pid = ?",
     [pid],
     (err, results) => {
       if (err) {
@@ -191,10 +191,10 @@ app.get("/get_user_inventory_items/:userid", (req, res) => {
 app.post("/afterCheckOut/:aid/:arrPid", (req, res) => {
   const aid = parseInt(req.params.aid);
   const arrPid = req.body.arrPid.map(pid => parseInt(pid));
-  for(const pid of arrPid){
-    const pid = parseInt(pid);
+
+  for (const pid of arrPid) {
     connection.query(
-      "select Ingredient.iid, selling_quantity, ExpiryDate, emoji from freshsavings.Posting and freshsavings.Ingredients where Posting.iid = Ingredients.iid Posting.pid = ?",
+      "SELECT Ingredient.iid, selling_quantity, ExpiryDate, emoji FROM freshsavings.Posting, freshsavings.Ingredients WHERE Posting.iid = Ingredients.iid AND Posting.pid = ?",
       [pid],
       (err, results) => {
         if (err) {
@@ -202,7 +202,9 @@ app.post("/afterCheckOut/:aid/:arrPid", (req, res) => {
           res.status(500).json({ error: "Internal Server Error" });
           return;
         }
+
         const { iid, selling_quantity, ExpiryDate, emoji } = results[0];
+
         connection.query(
           "INSERT INTO freshsavings.AccountInventory (aid, iid, expiring_in, qty, ExpiryDate, emoji) VALUES (?, ?, ?, ?, ?, ?)",
           [aid, iid, 1, selling_quantity, ExpiryDate, emoji],
@@ -212,25 +214,12 @@ app.post("/afterCheckOut/:aid/:arrPid", (req, res) => {
               res.status(500).json({ error: "Internal Server Error" });
               return;
             }
-            
-        }
-      );
-      connection.query(
-        "DELETE FROM freshsavings.Posting WHERE pid = ?",
-        [pid],
-        (err, results) => {
-          if (err) {
-            console.error("Error querying the database:", err);
-            res.status(500).json({ error: "Internal Server Error" });
-            return;
           }
+        );
       }
     );
-    }
-  );
   }
-
-})
+});
 
 app.all("/login", (req, res) => {
   if (req.method === "GET") {

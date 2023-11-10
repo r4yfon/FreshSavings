@@ -16,7 +16,7 @@ const accountStorage = useAccountStorage();
 
 <template>
 
-  <div class="d-flex justify-content-center" v-if="!loaded">
+  <div class="d-flex justify-content-center mt-5" v-if="!loaded">
         <div class="spinner-grow text-success mt-4" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
@@ -148,8 +148,26 @@ const accountStorage = useAccountStorage();
 
             <div class="card h-100">
               <!-- Product image -->
-              <img class="card-img-top h-100" :src="imageUrl(product.image)" alt="..." />
+              <div class="css-card h-100">
+              <img class="card-img-top h-100" :src="imageUrl(product.image)">
+              
+              <div class="card__content">
+                <h3 class="card__title">Product Details</h3>
+                <h6 class="card__description">
+                Address: {{ product.postalcode }}
+                
+                </h6>
+                <h6 class="card__description">
+                Expiring in: {{ GetExpiry(product.ExpiryDate) }} days
+                
+                </h6>
+              </div>
+            </div> 
+               
               <!-- Product details -->
+
+
+
               <div class="card-body p-4">
                 <div class="text-center">
                   <!-- Product name -->
@@ -163,7 +181,7 @@ const accountStorage = useAccountStorage();
               <!-- Product actions -->
               <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                 <div class="text-center">
-                  <button class="btn btn-outline-dark mt-auto" @click="Added(product.pid)">Add to cart</button>
+                  <button class="btn btn-outline-dark mt-auto" @click="Added(product.pid)">Add</button>
 
                 </div>
               </div>
@@ -175,31 +193,47 @@ const accountStorage = useAccountStorage();
             class="col mb-5">
             <div class="card h-100 carted">
               <!-- Product image -->
-              <img class="card-img-top h-100" :src="imageUrl(product.image)" alt="..." />
+              <div class="css-card h-100">
+              <img class="card-img-top h-100" :src="imageUrl(product.image)">
+              
+              <div class="card__content">
+                <h3 class="card__title">Product Details</h3>
+                <h6 class="card__description">
+                Address: {{ product.postalcode }}
+                
+                </h6>
+                <h6 class="card__description">
+                Expiring in: {{ GetExpiry(product.ExpiryDate) }} days
+                
+                </h6>
+              </div>
+            </div> 
+               
               <!-- Product details -->
-              <div class="card-body p-4">
 
+
+
+              <div class="card-body p-4">
                 <div class="text-center">
                   <!-- Product name -->
                   <h5 class="fw-bolder text-center">{{ product.iname }} x{{ product.selling_quantity }}</h5>
                   <!-- Product price -->
-                  <span class="fw-bold " style="font-size:18px"> ${{ totalCost(product.selling_price,
-                    product.selling_quantity) }} </span> <span class="text-muted"
-                    style="text-decoration: line-through">${{ totalCost(product.price, product.selling_quantity) }}</span>
+                  <span class="fw-bold" style="font-size:18px"> ${{ totalCost(product.selling_price,
+                    product.selling_quantity) }}</span> <span class="text-muted" style="text-decoration: line-through">
+                    ${{ totalCost(product.price, product.selling_quantity) }}</span>
                 </div>
               </div>
               <!-- Product actions -->
               <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                 <div class="text-center">
-                  <button class="btn btn-outline-dark mt-auto" @click="Remove(product.pid) && distancetrack(product.pid)">Remove from cart</button>
+                  <button class="btn btn-outline-dark mt-auto" @click="Remove(product.pid) && distancetrack(product.pid)">Remove</button>
 
                 </div>
               </div>
-
-
-
             </div>
           </div>
+            
+          
         </template>
       </div>
     </div>
@@ -299,6 +333,18 @@ export default {
     
   },
   methods: {
+    GetExpiry(string){
+      let dat = string.split("T")
+      let dateyouneed = dat[0]
+      return this.calculateRemainingDays(dateyouneed)
+    },
+    calculateRemainingDays(data) {
+			const currentDate = new Date();
+			var futureDate = new Date(data);
+			var timeDifference = futureDate.getTime() - currentDate.getTime();
+			var daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+			return daysDifference;
+		},
     addToCategoriesChosen(cat){
       this.chooseCategories.push(cat)
     },
@@ -321,7 +367,7 @@ export default {
     await this.GetAllPostings();
     await this.AddinDistance();
     this.loaded = true;
-    this.animated()
+    
   } catch (error) {
     console.error('Error loading data:', error);
   }
@@ -333,7 +379,7 @@ async GetDistanceAPI(Lat, Lng) {
   const destLat = Lat; // Replace with your destination's latitude
   const destLng = Lng; // Replace with your destination's longitude
   const units = 'metric'; // Units of measurement
-  const apiKey = process.env.GOOGLEMAPS_API_KEY; // Your API key
+  const apiKey = 'AIzaSyBaK6fapQE5NMhxj0ZZdKcQsn9o1xhZf3M' // Your API key
 
   const url = `http://localhost:3000/get-distance?originLat=${originLat}&originLng=${originLng}&destLat=${destLat}&destLng=${destLng}&units=${units}&apiKey=${apiKey}`;
 
@@ -552,4 +598,65 @@ span {
   top: 54px;
   z-index: 5;
 }
+.css-card {
+  position: relative;
+  /* width: 300px; */
+  /* height: 200px; */
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  perspective: 1000px;
+  /* box-shadow: 0 0 0 5px #ffffff80; */
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.css-card svg {
+  /* width: 48px; */
+  fill: #333;
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.css-card:hover {
+  /* transform: scale(); */
+  box-shadow: 0 8px 16px rgba(255, 255, 255, 0.2);
+}
+.card__content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #f2f2f2;
+  transform: translateY(350px);
+  transform-origin: bottom;
+  transition: all 0.2s cubic-bezier(0.175, 0.5, 0.32, 1);
+}
+
+.css-card:hover .card__content {
+  transform: rotateX(0deg);
+}
+
+.card__title {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+  font-weight: 700;
+}
+
+.css-card:hover svg {
+  scale: 0;
+}
+
+.card__description {
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: #777;
+  line-height: 1.4;
+}
+
 </style>
