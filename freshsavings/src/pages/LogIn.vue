@@ -308,7 +308,7 @@ a:hover {
 
 
 .login-content {
-	display: flex;
+	// display: flex;
 	justify-content: center;
 	/* Change to center to horizontally center the content */
 	align-items: center;
