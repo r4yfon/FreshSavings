@@ -67,8 +67,8 @@
                                 <li><a href="/404-page-not-found">
                                     Order History
                                 </a></li>
-                                <li><a href="#">
-                                    Sign Out
+                                <li @click="logout"><a href="#">
+                                    Log Out
                                 </a></li>
 
                             </ul>
@@ -108,6 +108,11 @@ export default {
             let profile = document.querySelector('.profile');
             let menu = document.querySelector('.menu');
             menu.classList.toggle('active')
+        },
+        logout() {
+            localStorage.clear();
+            this.isLoggedIn = false;
+            this.$router.push('/');
         }
     }
 };
