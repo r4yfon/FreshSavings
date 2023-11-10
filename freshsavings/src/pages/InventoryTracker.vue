@@ -233,7 +233,7 @@ let successMessage = "";
 			</div>
 
 
-			<div class="projects" name="projects">
+			<!-- <div class="projects" name="projects">
 				<template v-for="(item, idx) in sortedArray" :key="item.iname">
 					<TransitionGroup class="project" v-if="currentFilter === item.icat || currentFilter === 'All'">
 						<div class="col-lg-4 col-md-6 col-sm-12" style="padding-bottom: 10px;">
@@ -359,34 +359,36 @@ export default {
 				{ meat: ['🥩', '🐄', '🐖', '🐓', '🐏','🦃','🦆','🐔','🦀', '🦞', '🦐'] },
 			],
 
-      // DO NOT DELETE THIS
-      // cards: [
-      // 	{
-      // 		icon: "🥬",
-      // 		qty: 4,
-      // 		item: "Lettuce",
-      // 		expiry: 3,
-      // 		background:
-      // 			"linear-gradient(135deg, rgb(202, 236, 172) 0%, rgb(131, 208, 197) 100%)",
-      // 		qty_color: "rgb(160, 220, 187)",
-      // 	},
-      // ]
-    };
-  },
-  created() {
-    this.checkLoginStatus();
-    this.fetchItems();
-  },
-  computed: {
-    sortedArray() {
-      let sortedItems = this.items.filter((item) => {
-        return item.icat === this.currentFilter || this.currentFilter === "All";
-      });
-      sortedItems = sortedItems.sort((a, b) => {
-        return a.expiring_in - b.expiring_in;
-      });
-      return sortedItems;
-    },
+			// DO NOT DELETE THIS
+			cards: [
+				{
+					icon: "🥬",
+					qty: 4,
+					item: "Lettuce",
+					expiry: 3,
+					background:
+						"linear-gradient(135deg, rgb(202, 236, 172) 0%, rgb(131, 208, 197) 100%)",
+					qty_color: "rgb(160, 220, 187)",
+				},
+			]
+
+		}
+	},
+	created() {
+		this.checkLoginStatus();
+		this.fetchItems();
+	},
+	computed: {
+		sortedArray() {
+			let sortedItems = this.items.filter(item => {
+				return item.icat === this.currentFilter || this.currentFilter === 'All';
+			});
+			sortedItems = sortedItems.sort((a, b) => {
+				return a.expiring_in - b.expiring_in;
+			});
+			return sortedItems;
+		},
+
 
     getEmojis() {
       switch (this.selectedCategory) {
@@ -492,44 +494,36 @@ export default {
             // Now you can use these variables to perform any necessary logic or actions
             // For example, you can use them in your axios POST request
 
-            try {
-              const postResponse = await axios.post(
-                "http://localhost:3000/add_inventory_item",
-                {
-                  aid: useAccountStorage().aid,
-                  iid: ingredientId,
-                  qty: itemQuantity,
-                  expiring_in: this.calculateRemainingDays,
-                  ExpiryDate: expiryDate,
-                  // other data properties as needed
-                }
-              );
-
-              // Show success message and close the form
-              this.successMessage = "Item added successfully!";
-
-              setTimeout(() => {
-                this.successMessage = "";
-              }, 2000); // Hides the success message after 2 seconds
-            } catch (error) {
-              // Handle errors
-              console.error(
-                "Error occurred while adding inventory item:",
-                error
-              );
-            }
-          } else {
-            console.error(
-              "Ingredient ID not found for the provided name:",
-              itemName
-            );
-          }
-        })
-        .catch((error) => {
-          // Handle errors
-          console.error("Error retrieving ingredient ID:", error);
+      try {
+        const postResponse = await axios.post('http://localhost:3000/add_inventory_item', {
+          aid: useAccountStorage().aid,
+          iid: ingredientId,
+          qty: itemQuantity,
+          expiring_in: daysDifference, // Store the calculated difference in days
+          ExpiryDate: expiryDate,
+          // other data properties as needed
         });
-    },
+
+        // Show success message and close the form
+        this.successMessage = 'Item added successfully!';
+
+        setTimeout(() => {
+          this.successMessage = '';
+        }, 2000); // Hides the success message after 2 seconds
+      } catch (error) {
+        // Handle errors
+        console.error('Error occurred while adding inventory item:', error);
+      }
+    } else {
+      console.error('Ingredient ID not found for the provided name:', itemName);
+    }
+  })
+  .catch(error => {
+    // Handle errors
+    console.error('Error retrieving ingredient ID:', error);
+  });
+},
+
 
     imageUrl(img) {
       return require(`@/assets/img/${img}`);
@@ -539,58 +533,28 @@ export default {
     },
 
 		computedItemStyle(obj) {
-			if ('🍌🧀🧈'.includes(obj.emoji)) {
-				return "linear-gradient(135deg, rgb(255, 239, 184) 0%, rgb(251, 220, 113) 100%)";
-			}else if('🍼🥛'.includes(obj.emoji)){
-				return 'linear-gradient(135deg, rgb(255, 241, 228) 0%, rgb(255, 220, 185) 100%)';
-			}else if (obj.emoji == '🍌'){
-				return 'linear-gradient(135deg, rgb(255, 255, 102) 0%, rgb(255, 215, 0) 100%)';
-			}
-			// else if(obj.emoji=='🥛'){
-			// 	return 'linear-gradient(135deg, rgb(255, 255, 255) 0%, rgb(245, 245, 245) 100%)';
-			// }
-			else if (obj.emoji == '🐟') {
-				return 'linear-gradient(135deg, rgb(100, 160, 200) 0%, rgb(50, 120, 150) 100%)';
-			} else if (obj.emoji == '🦀') {
-				return 'linear-gradient(135deg, rgb(255, 165, 0) 0%, rgb(139, 69, 19) 100%)';
-			} else if (obj.emoji == '🦞') {
-				return 'linear-gradient(135deg, rgb(255, 0, 0) 0%, rgb(255, 69, 0) 100%)';
-			} else if (obj.emoji == '🦐') {
-				return 'linear-gradient(135deg, rgb(255, 182, 193) 0%, rgb(255, 69, 0) 100%)';
-			} else if (obj.emoji == '🍇') {
-				return 'linear-gradient(135deg, rgb(153, 50, 204) 0%, rgb(0, 128, 0) 100%)';
-			} else if (obj.emoji == '🍊') {
-				return 'linear-gradient(135deg, rgb(255, 165, 0) 0%, rgb(255, 69, 0) 100%)';
-			} else if (obj.emoji == '🍍') {
-				return 'linear-gradient(135deg, rgb(255, 255, 102) 0%, rgb(255, 165, 0) 100%)';
-			} else if (obj.emoji == '🍎') {
-				return "linear-gradient(135deg, rgb(255, 200, 143) 0%, rgb(255, 143, 143) 100%)";
-			} else if (obj.emoji == '🍓') {
-				return 'linear-gradient(135deg, rgb(255, 0, 0) 0%, rgb(255, 20, 147) 100%)';
-			} else if (obj.emoji == '🫐') {
-				return 'linear-gradient(135deg, rgb(0, 0, 139) 0%, rgb(0, 191, 255) 100%)';
-			} else if (obj.emoji == '🥝') {
-				return 'linear-gradient(135deg, rgb(144, 238, 144) 0%, rgb(30, 130, 76) 100%)';
-			} else if (obj.emoji == '🥩') {
-				return 'linear-gradient(135deg, rgb(160, 82, 45) 0%, rgb(139, 69, 19) 100%)';
-			} else if (obj.emoji == '🐄') {
-				return 'linear-gradient(135deg, rgb(139, 69, 19) 0%, rgb(255, 228, 196) 100%)';
-			} else if (obj.emoji == '🐖') {
-				return 'linear-gradient(135deg, rgb(255, 182, 193) 0%, rgb(255, 69, 0) 100%)';
-			}else if (obj.emoji == '🐓') {
-				return 'linear-gradient(135deg, rgb(255, 69, 0) 0%, rgb(218, 165, 32) 100%)';
-			} else if (obj.emoji == '🐏') {
-				return 'linear-gradient(135deg, rgb(255, 248, 220) 0%, rgb(139, 69, 19) 100%)';
-			} else if (obj.emoji == '🦃') {
-				return 'linear-gradient(135deg, rgb(205, 133, 63) 0%, rgb(139, 69, 19) 100%)';
-			} else if (obj.emoji == '🦆') {
-				return 'linear-gradient(135deg, rgb(0, 128, 128) 0%, rgb(0, 206, 209) 100%)';
-			} else if (obj.emoji == '🐔') {
-				return 'linear-gradient(135deg, rgb(255, 69, 0) 0%, rgb(218, 165, 32) 100%)';
-			}
+			let style = {};
 
-			// If none of the conditions match, return a default value or handle accordingly
-			return 'default-gradient-value';
+			if ('🧀🧈🍋🍌🥔🌽'.includes(obj.emoji)) {
+				style.background = 'linear-gradient(to top left, #FBF8CC 70%, white)';
+			} else if ('🐟🐠'.includes(obj.emoji)) {
+				style.background = 'linear-gradient(to top left, #8EECF5 70%, white)';
+			} else if ('🦑🍇🫐🍆'.includes(obj.emoji)) {
+				style.background = 'linear-gradient(to top left, #CFBAF0 70%, white)';
+			} else if ('🍈🍏🍐🥝🫒🥑🫑🥒🥬🥦'.includes(obj.emoji)) {
+				style.background = 'linear-gradient(to top left, #b9fbc0 70%, white)';
+			} else if ('🦀🦞🦐🍉🍎🍒🍓🍅'.includes(obj.emoji)) {
+				style.background = 'linear-gradient(to top left, #ffb5a7 , 70%, white)';
+			} else if ('🍍🍗🍑🥕'.includes(obj.emoji)) {
+				style.background = 'linear-gradient(to top left, #fec89a, 70%, white)';
+			} else if ('🥥🍖🥓🐓'.includes(obj.emoji)) {
+				style.background = 'linear-gradient(to top left, #e2cfc4, 70%, white)';
+			} else if ('🐖'.includes(obj.emoji)) {
+				style.background = 'linear-gradient(to top left, #ffacc5, 70%, white)';
+			}
+			else {
+				style.background = 'linear-gradient(to top left, #F8F6F4, 70%, white)';
+			}
 
 			// if (obj.expiring_in <= 2 && obj.expiring_in >= 0) {
 			// 	style.border = 'solid 5px orange';
@@ -668,7 +632,10 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
-
+.btn {
+	color: black;
+	border: none;
+}
 .filter {
   padding: 6px 6px;
   font-size: 20px;
@@ -694,6 +661,8 @@ export default {
   justify-content: center;
 }
 
+
+
 .projects-enter {
   transform: scale(0.5) translatey(-80px);
   opacity: 0;
@@ -703,6 +672,7 @@ export default {
   transform: translatey(30px);
   opacity: 0;
 }
+
 
 .projects-leave-active {
   position: absolute;
@@ -753,8 +723,25 @@ export default {
 }
 
 .project body {
-  z-index: 3;
+	z-index: 3;
 }
+
+.btn-subtle {
+    border: none;
+    transition: background-color 0.3s;
+  }
+
+  .btn-subtle:hover {
+    cursor: pointer;
+  }
+
+  .btn-danger-subtle:hover {
+    background-color: #dc3545; /* Change to your desired hover color for Remove */
+  }
+
+  .btn-success-subtle:hover {
+    background-color: #28a745; /* Change to your desired hover color for Sell */
+  }
 
 .project {
   transition: all 0.35s ease-in-out;
