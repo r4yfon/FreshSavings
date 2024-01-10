@@ -1,5 +1,5 @@
 <script setup>
-import { Icon } from "@iconify/vue";
+  import { Icon } from "@iconify/vue";
 </script>
 
 <template>
@@ -31,20 +31,6 @@ import { Icon } from "@iconify/vue";
           class="btn btn-outline-light align-self-center">
           <span class="pe-2">Kickstart your journey now</span>
           <Icon icon="solar:cup-star-outline" height="24" width="24" />
-          <!--<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-            <g transform="rotate(-90 12 12)">
-              <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                <path stroke-dasharray="14" stroke-dashoffset="14" d="M19 12H5.5">
-                  <animate fill="freeze" repeatCount="indefinite" attributeName="stroke-dashoffset" dur="1s"
-                    values="14;0" />
-                </path>
-                <path stroke-dasharray="8" stroke-dashoffset="8" d="M5 12L10 17M5 12L10 7">
-                  <animate fill="freeze" repeatCount="indefinite" attributeName="stroke-dashoffset" begin="1s" dur="1s"
-                    values="8;0" />
-                </path>
-              </g>
-            </g>
-          </svg>-->
         </a>
       </div>
       <div class="col col-md-6 px-0"></div>
@@ -100,7 +86,7 @@ import { Icon } from "@iconify/vue";
                 :key="cards[i]"
                 style="aspect-ratio: 1/1">
                 <div
-                  style="background: white"
+                  :style="{ background: cards[i].background }"
                   class="rounded-4 p-3 d-flex flex-column justify-content-between shadow h-100">
                   <div
                     class="d-flex justify-content-between align-items-center">
@@ -152,7 +138,7 @@ import { Icon } from "@iconify/vue";
                 :key="cards[i + 6]"
                 style="aspect-ratio: 1/1">
                 <div
-                  style="background: white"
+                  :style="{ background: cards[i].background }"
                   class="rounded-4 p-3 d-flex flex-column justify-content-between shadow h-100">
                   <div
                     class="d-flex justify-content-between align-items-center">
@@ -177,7 +163,6 @@ import { Icon } from "@iconify/vue";
           </div>
         </div>
       </div>
-      <!--<img :src=" require('@/assets/img/notification.gif')" class="img-thumbnail" />-->
     </div>
 
     <!-- recipe-generator -->
@@ -271,13 +256,6 @@ import { Icon } from "@iconify/vue";
               <img
                 :src="require('@/assets/img/banana.webp')"
                 class="img-fluid object-fit-cover" />
-              <!-- <div class="card__content">
-                <p class="card__title">Card Title</p>
-                <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                  tempor
-                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.
-                </p>
-              </div> -->
             </div>
           </div>
           <div class="p-2">
@@ -285,13 +263,6 @@ import { Icon } from "@iconify/vue";
               <img
                 :src="require('@/assets/img/yoghurt.webp')"
                 class="img-fluid object-fit-cover" />
-              <!-- <div class="card__content">
-                <p class="card__title">Card Title</p>
-                <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                  tempor
-                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.
-                </p>
-              </div> -->
             </div>
           </div>
           <div class="p-2">
@@ -299,13 +270,6 @@ import { Icon } from "@iconify/vue";
               <img
                 :src="require('@/assets/img/salmon.webp')"
                 class="img-fluid object-fit-cover" />
-              <!-- <div class="card__content">
-                <p class="card__title">Card Title</p>
-                <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                  tempor
-                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.
-                </p>
-              </div> -->
             </div>
           </div>
           <div class="p-2">
@@ -313,29 +277,14 @@ import { Icon } from "@iconify/vue";
               <img
                 :src="require('@/assets/img/orange.avif')"
                 class="img-fluid object-fit-cover" />
-              <!-- <div class="card__content">
-                <p class="card__title">Card Title</p>
-                <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                  tempor
-                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.
-                </p>
-              </div> -->
             </div>
           </div>
           <div class="col p-0 order-3 order-lg-1">
-            <div class="p-2 mb-2">
+            <div class="p-2">
               <div class="css-card col">
                 <img
                   :src="require('@/assets/img/shrimp.jpg')"
                   class="img-fluid object-fit-cover" />
-                <!-- <div class="card__content">
-                  <p class="card__title">Card Title</p>
-                  <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                    tempor
-                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco.
-                  </p>
-                </div> -->
               </div>
             </div>
             <div class="p-2">
@@ -343,31 +292,15 @@ import { Icon } from "@iconify/vue";
                 <img
                   :src="require('@/assets/img/kiw.jpeg')"
                   class="img-fluid object-fit-cover" />
-                <!-- <div class="card__content">
-                  <p class="card__title">Card Title</p>
-                  <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                    tempor
-                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco.
-                  </p>
-                </div> -->
               </div>
             </div>
           </div>
           <div class="col p-0 order-3 order-lg-1">
-            <div class="p-2 mb-2">
+            <div class="p-2">
               <div class="css-card col">
                 <img
                   :src="require('@/assets/img/cabbage.webp')"
                   class="img-fluid object-fit-cover" />
-                <!-- <div class="card__content">
-                  <p class="card__title">Card Title</p>
-                  <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                    tempor
-                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco.
-                  </p>
-                </div> -->
               </div>
             </div>
             <div class="p-2">
@@ -375,19 +308,10 @@ import { Icon } from "@iconify/vue";
                 <img
                   :src="require('@/assets/img/butter.avif')"
                   class="img-fluid object-fit-cover" />
-                <!-- <div class="card__content">
-                  <p class="card__title">Card Title</p>
-                  <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                    tempor
-                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco.
-                  </p>
-                </div> -->
               </div>
             </div>
           </div>
 
-          <!-- <div class="col mt-3 mb-2" id="marketplace-card"> -->
           <div class="px-2 my-2 w-50 order-2" id="marketplace-card">
             <div
               class="rounded-4 glass-card h-100 px-4 py-5 text-light d-flex justify-content-center align-items-center flex-column">
@@ -404,36 +328,6 @@ import { Icon } from "@iconify/vue";
               </h2>
             </div>
           </div>
-          <!-- </div> -->
-
-          <!-- <div class="col p-0 order-3 order-lg-1">
-            <div class="p-2 mb-2">
-              <div class="css-card col p-0 order-3 order-lg-1">
-                <img :src="require('@/assets/img/banana.webp')" class="img-fluid object-fit-cover" />
-                <div class="card__content">
-                  <p class="card__title">Card Title</p>
-                  <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                    tempor
-                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="p-2">
-              <div class="css-card col p-0 order-3 order-lg-1">
-                <img :src="require('@/assets/img/banana.webp')" class="img-fluid object-fit-cover" />
-                <div class="card__content">
-                  <p class="card__title">Card Title</p>
-                  <p class="card__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                    tempor
-                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div> -->
         </div>
       </div>
     </div>
@@ -441,497 +335,497 @@ import { Icon } from "@iconify/vue";
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      featuresAndDescriptions: [
-        {
-          feature: "Inventory Tracker",
-          description:
-            "Keeping track of your groceries with our Inventory Tracker means that you never have to discard expired food items anymore.",
-          imageUrl: "shelf.webp",
-          redirect: "inventory-tracker",
-        },
-        {
-          feature: "Recipe Generator",
-          description:
-            "Need inspiration on what to cook? Simply select the ingredients you have and our Recipe Generator will do the rest for you.",
-          imageUrl: "recipe_book.webp",
-          redirect: "recipe-generator",
-        },
-        {
-          feature: "Marketplace",
-          description:
-            "Gone are the days of discarding expired food items. Be notified when items are expiring, and let us help you sell them should you want to.",
-          imageUrl: "trade.webp",
-          redirect: "marketplace",
-        },
-      ],
-      cards: [
-        {
-          icon: "🥬",
-          qty: 4,
-          item: "Lettuce",
-          expiry: 3,
-          background:
-            "linear-gradient(135deg, rgb(202, 236, 172) 0%, rgb(131, 208, 197) 100%)",
-          qty_color: "rgb(160, 220, 187)",
-        },
-        {
-          icon: "🍍",
-          qty: 2,
-          item: "Pineapples",
-          expiry: 3,
-          background:
-            "linear-gradient(135deg, rgb(255, 239, 184) 0%, rgb(251, 220, 113) 100%)",
-          qty_color: "rgb(252, 224, 130)",
-        },
-        {
-          icon: "🍅",
-          qty: 2,
-          item: "Tomatoes",
-          expiry: 8,
-          background:
-            "linear-gradient(135deg, rgb(255, 200, 143) 0%, rgb(255, 143, 143) 100%)",
-          qty_color: "rgb(255, 166, 143)",
-        },
-        {
-          icon: "🥕",
-          qty: 6,
-          item: "Carrots",
-          expiry: 14,
-          background:
-            "linear-gradient(135deg, rgb(255, 232, 188) 0%, rgb(255, 156, 84) 100%)",
-          qty_color: "rgb(255, 187, 129)",
-        },
-        {
-          icon: "🍇",
-          qty: 3,
-          item: "Grapes",
-          expiry: 5,
-          background:
-            "linear-gradient(135deg, rgb(234, 216, 253) 0%, rgb(178, 143, 255) 100%)",
-          qty_color: "rgb(192, 160, 255)",
-        },
-        {
-          icon: "🍋",
-          qty: 5,
-          item: "Lemons",
-          expiry: 7,
-          background:
-            "linear-gradient(135deg, rgb(255, 255, 178) 0%, rgb(213, 213, 73) 100%)",
-          qty_color: "rgb(221, 221, 45)",
-        },
-        {
-          icon: "🥑",
-          qty: 2,
-          item: "Avocadoes",
-          expiry: 4,
-          background:
-            "linear-gradient(135deg, rgb(202, 255, 178) 0%, rgb(131, 255, 143) 100%)",
-          qty_color: "rgb(166, 255, 160)",
-        },
+  export default {
+    data() {
+      return {
+        featuresAndDescriptions: [
+          {
+            feature: "Inventory Tracker",
+            description:
+              "Keeping track of your groceries with our Inventory Tracker means that you never have to discard expired food items anymore.",
+            imageUrl: "shelf.webp",
+            redirect: "inventory-tracker",
+          },
+          {
+            feature: "Recipe Generator",
+            description:
+              "Need inspiration on what to cook? Simply select the ingredients you have and our Recipe Generator will do the rest for you.",
+            imageUrl: "recipe_book.webp",
+            redirect: "recipe-generator",
+          },
+          {
+            feature: "Marketplace",
+            description:
+              "Gone are the days of discarding expired food items. Be notified when items are expiring, and let us help you sell them should you want to.",
+            imageUrl: "trade.webp",
+            redirect: "marketplace",
+          },
+        ],
+        cards: [
+          {
+            icon: "🥬",
+            qty: 4,
+            item: "Lettuce",
+            expiry: 3,
+            background:
+              "linear-gradient(135deg, rgb(202, 236, 172) 0%, rgb(131, 208, 197) 100%)",
+            qty_color: "rgb(160, 220, 187)",
+          },
+          {
+            icon: "🍍",
+            qty: 2,
+            item: "Pineapples",
+            expiry: 3,
+            background:
+              "linear-gradient(135deg, rgb(255, 239, 184) 0%, rgb(251, 220, 113) 100%)",
+            qty_color: "rgb(252, 224, 130)",
+          },
+          {
+            icon: "🍅",
+            qty: 2,
+            item: "Tomatoes",
+            expiry: 8,
+            background:
+              "linear-gradient(135deg, rgb(255, 200, 143) 0%, rgb(255, 143, 143) 100%)",
+            qty_color: "rgb(255, 166, 143)",
+          },
+          {
+            icon: "🥕",
+            qty: 6,
+            item: "Carrots",
+            expiry: 14,
+            background:
+              "linear-gradient(135deg, rgb(255, 232, 188) 0%, rgb(255, 156, 84) 100%)",
+            qty_color: "rgb(255, 187, 129)",
+          },
+          {
+            icon: "🍇",
+            qty: 3,
+            item: "Grapes",
+            expiry: 5,
+            background:
+              "linear-gradient(135deg, rgb(234, 216, 253) 0%, rgb(178, 143, 255) 100%)",
+            qty_color: "rgb(192, 160, 255)",
+          },
+          {
+            icon: "🍋",
+            qty: 5,
+            item: "Lemons",
+            expiry: 7,
+            background:
+              "linear-gradient(135deg, rgb(255, 255, 178) 0%, rgb(213, 213, 73) 100%)",
+            qty_color: "rgb(221, 221, 45)",
+          },
+          {
+            icon: "🥑",
+            qty: 2,
+            item: "Avocadoes",
+            expiry: 4,
+            background:
+              "linear-gradient(135deg, rgb(202, 255, 178) 0%, rgb(131, 255, 143) 100%)",
+            qty_color: "rgb(166, 255, 160)",
+          },
 
-        {
-          icon: "🍓",
-          qty: 4,
-          item: "Strawberries",
-          expiry: 3,
-          background:
-            "linear-gradient(135deg, rgb(255, 178, 178) 0%, rgb(255, 102, 102) 100%)",
-          qty_color: "rgb(255, 140, 140)",
-        },
-        {
-          icon: "🍌",
-          qty: 6,
-          item: "Bananas",
-          expiry: 4,
-          background:
-            "linear-gradient(135deg, rgb(255, 255, 202) 0%, rgb(221, 221, 77) 100%)",
-          qty_color: "rgb(217, 217, 133)",
-        },
-        {
-          icon: "🍎",
-          qty: 3,
-          item: "Apples",
-          expiry: 7,
-          background:
-            "linear-gradient(135deg, rgb(255, 202, 202) 0%, rgb(255, 131, 131) 100%)",
-          qty_color: "rgb(255, 166, 166)",
-        },
-        {
-          icon: "🍊",
-          qty: 5,
-          item: "Oranges",
-          expiry: 6,
-          background:
-            "linear-gradient(135deg, rgb(255, 232, 188) 0%, rgb(255, 178, 84) 100%)",
-          qty_color: "rgb(255, 205, 136)",
-        },
-        {
-          icon: "🍐",
-          qty: 2,
-          item: "Pears",
-          expiry: 5,
-          background:
-            "linear-gradient(135deg, rgb(232, 255, 188) 0%, rgb(134, 217, 33) 100%)",
-          qty_color: "rgb(162, 227, 72)",
-        },
-        {
-          icon: "🍉",
-          qty: 1,
-          item: "Watermelon",
-          expiry: 3,
-          background:
-            "linear-gradient(135deg, rgb(255, 189, 189) 0%, rgb(255, 75, 75) 100%)",
-          qty_color: "rgb(255, 140, 140)",
-        },
-        {
-          icon: "🍑",
-          qty: 4,
-          item: "Peaches",
-          expiry: 4,
-          background:
-            "linear-gradient(135deg, rgb(255, 202, 143) 0%, rgb(255, 143, 84) 100%)",
-          qty_color: "rgb(255, 172, 113)",
-        },
-        {
-          icon: "🍒",
-          qty: 3,
-          item: "Cherries",
-          expiry: 6,
-          background:
-            "linear-gradient(135deg, rgb(255, 143, 202) 0%, rgb(255, 84, 178) 100%)",
-          qty_color: "rgb(255, 113, 190)",
-        },
+          {
+            icon: "🍓",
+            qty: 4,
+            item: "Strawberries",
+            expiry: 3,
+            background:
+              "linear-gradient(135deg, rgb(255, 178, 178) 0%, rgb(255, 102, 102) 100%)",
+            qty_color: "rgb(255, 140, 140)",
+          },
+          {
+            icon: "🍌",
+            qty: 6,
+            item: "Bananas",
+            expiry: 4,
+            background:
+              "linear-gradient(135deg, rgb(255, 255, 202) 0%, rgb(221, 221, 77) 100%)",
+            qty_color: "rgb(217, 217, 133)",
+          },
+          {
+            icon: "🍎",
+            qty: 3,
+            item: "Apples",
+            expiry: 7,
+            background:
+              "linear-gradient(135deg, rgb(255, 202, 202) 0%, rgb(255, 131, 131) 100%)",
+            qty_color: "rgb(255, 166, 166)",
+          },
+          {
+            icon: "🍊",
+            qty: 5,
+            item: "Oranges",
+            expiry: 6,
+            background:
+              "linear-gradient(135deg, rgb(255, 232, 188) 0%, rgb(255, 178, 84) 100%)",
+            qty_color: "rgb(255, 205, 136)",
+          },
+          {
+            icon: "🍐",
+            qty: 2,
+            item: "Pears",
+            expiry: 5,
+            background:
+              "linear-gradient(135deg, rgb(232, 255, 188) 0%, rgb(134, 217, 33) 100%)",
+            qty_color: "rgb(162, 227, 72)",
+          },
+          {
+            icon: "🍉",
+            qty: 1,
+            item: "Watermelon",
+            expiry: 3,
+            background:
+              "linear-gradient(135deg, rgb(255, 189, 189) 0%, rgb(255, 75, 75) 100%)",
+            qty_color: "rgb(255, 140, 140)",
+          },
+          {
+            icon: "🍑",
+            qty: 4,
+            item: "Peaches",
+            expiry: 4,
+            background:
+              "linear-gradient(135deg, rgb(255, 202, 143) 0%, rgb(255, 143, 84) 100%)",
+            qty_color: "rgb(255, 172, 113)",
+          },
+          {
+            icon: "🍒",
+            qty: 3,
+            item: "Cherries",
+            expiry: 6,
+            background:
+              "linear-gradient(135deg, rgb(255, 143, 202) 0%, rgb(255, 84, 178) 100%)",
+            qty_color: "rgb(255, 113, 190)",
+          },
 
-        {
-          icon: "🍈",
-          qty: 2,
-          item: "Melons",
-          expiry: 4,
-          background:
-            "linear-gradient(135deg, rgb(232, 255, 202) 0%, rgb(118, 198, 40) 100%)",
-          qty_color: "rgb(156, 217, 92)",
-        },
-        {
-          icon: "🍠",
-          qty: 5,
-          item: "Sweet Potatoes",
-          expiry: 7,
-          background:
-            "linear-gradient(135deg, rgb(255, 216, 188) 0%, rgb(255, 140, 84) 100%)",
-          qty_color: "rgb(255, 178, 136)",
-        },
-        {
-          icon: "🥒",
-          qty: 3,
-          item: "Cucumbers",
-          expiry: 5,
-          background:
-            "linear-gradient(135deg, rgb(202, 255, 202) 0%, rgb(131, 255, 131) 100%)",
-          qty_color: "rgb(166, 255, 166)",
-        },
-        {
-          icon: "🍆",
-          qty: 4,
-          item: "Eggplants",
-          expiry: 6,
-          background:
-            "linear-gradient(135deg, rgb(202, 178, 255) 0%, rgb(131, 102, 255) 100%)",
-          qty_color: "rgb(166, 140, 255)",
-        },
-      ],
-      marketplaceCards: [
-        {
-          imgSrc: "1",
-          itemTitle: "2",
-          itemQty: "3",
-        },
-      ],
-    };
-  },
-};
+          {
+            icon: "🍈",
+            qty: 2,
+            item: "Melons",
+            expiry: 4,
+            background:
+              "linear-gradient(135deg, rgb(232, 255, 202) 0%, rgb(118, 198, 40) 100%)",
+            qty_color: "rgb(156, 217, 92)",
+          },
+          {
+            icon: "🍠",
+            qty: 5,
+            item: "Sweet Potatoes",
+            expiry: 7,
+            background:
+              "linear-gradient(135deg, rgb(255, 216, 188) 0%, rgb(255, 140, 84) 100%)",
+            qty_color: "rgb(255, 178, 136)",
+          },
+          {
+            icon: "🥒",
+            qty: 3,
+            item: "Cucumbers",
+            expiry: 5,
+            background:
+              "linear-gradient(135deg, rgb(202, 255, 202) 0%, rgb(131, 255, 131) 100%)",
+            qty_color: "rgb(166, 255, 166)",
+          },
+          {
+            icon: "🍆",
+            qty: 4,
+            item: "Eggplants",
+            expiry: 6,
+            background:
+              "linear-gradient(135deg, rgb(202, 178, 255) 0%, rgb(131, 102, 255) 100%)",
+            qty_color: "rgb(166, 140, 255)",
+          },
+        ],
+        marketplaceCards: [
+          {
+            imgSrc: "1",
+            itemTitle: "2",
+            itemQty: "3",
+          },
+        ],
+      };
+    },
+  };
 </script>
 
 <!--Save food, save money, save the planet.-->
 
 <style scoped>
-a {
-  width: fit-content;
-}
-
-.anchor {
-  scroll-margin-top: 58px;
-}
-
-.section-vh {
-  height: calc(100vh - 74px) !important;
-}
-
-.card-shadow {
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-}
-
-.glass-container {
-  left: 0;
-  height: 50%;
-  /* bottom: 0; */
-
-  @media (min-width: 768px) {
-    left: 100px;
-    /* top: 50%; */
-    height: auto;
-    transform: translateY(-50%);
-  }
-}
-
-.glass-effect {
-  height: 100%;
-  border-radius: 16px 16px 0 0;
-
-  /* From https://css.glass */
-  background: rgba(80, 142, 70, 0.4);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(7.2px);
-  -webkit-backdrop-filter: blur(7.2px);
-  border: 1px solid rgba(80, 142, 70, 0.32);
-
-  & > :not(a) {
-    color: white;
+  a {
+    width: fit-content;
   }
 
-  @media (min-width: 768px) {
-    border-radius: 16px;
-  }
-}
-
-.glass-card {
-  /* From https://css.glass */
-  background: rgba(76, 76, 76, 0.4);
-  border-radius: 12px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(6.1px);
-  -webkit-backdrop-filter: blur(6.1px);
-  border: 1px solid rgba(255, 255, 255, 0.23);
-}
-
-.icon-glass-bg {
-  background: rgba(255, 255, 255, 0.18);
-  border-radius: 12px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(6.1px);
-  -webkit-backdrop-filter: blur(6.1px);
-  border: 1px solid rgba(255, 255, 255, 0.23);
-}
-
-.inventory-qty {
-  height: 52px;
-  /* width: 60px; */
-  aspect-ratio: 1/1;
-  background-color: rgba(255, 255, 255, 0.7);
-}
-
-.bg-custom {
-  background-image: linear-gradient(
-    to right top,
-    #ffffe9,
-    #fbffe4,
-    #f5ffdf,
-    #eeffdb,
-    #e6ffd8,
-    #daffde,
-    #cfffe4,
-    #c5feec,
-    #c1fbf9,
-    #c5f6ff,
-    #d0f0ff,
-    #dceaff
-  );
-}
-
-.custom-viewheight {
-  height: 300vh;
-}
-
-.parallax {
-  /* The image used */
-  background-image: url("../assets/img/food_on_table.webp");
-
-  /* Set a specific height */
-  min-height: 100%;
-
-  /* Create the parallax scrolling effect */
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-
-  /* Turn off parallax scrolling for all tablets and phones. Increase/decrease the pixels if needed */
-  @media only screen and (max-device-width: 991px) {
-    background-attachment: scroll;
+  .anchor {
+    scroll-margin-top: 58px;
   }
 
-  &#parallax-recipe-generator {
-    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-      url("../assets/img/cooking.webp") no-repeat fixed center;
+  .section-vh {
+    height: calc(100vh - 74px) !important;
+  }
+
+  .card-shadow {
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  }
+
+  .glass-container {
+    left: 0;
+    height: 50%;
+    /* bottom: 0; */
+
+    @media (min-width: 768px) {
+      left: 100px;
+      /* top: 50%; */
+      height: auto;
+      transform: translateY(-50%);
+    }
+  }
+
+  .glass-effect {
+    height: 100%;
+    border-radius: 16px 16px 0 0;
+
+    /* From https://css.glass */
+    background: rgba(80, 142, 70, 0.4);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(7.2px);
+    -webkit-backdrop-filter: blur(7.2px);
+    border: 1px solid rgba(80, 142, 70, 0.32);
+
+    & > :not(a) {
+      color: white;
+    }
+
+    @media (min-width: 768px) {
+      border-radius: 16px;
+    }
+  }
+
+  .glass-card {
+    /* From https://css.glass */
+    background: rgba(76, 76, 76, 0.4);
+    border-radius: 12px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(6.1px);
+    -webkit-backdrop-filter: blur(6.1px);
+    border: 1px solid rgba(255, 255, 255, 0.23);
+  }
+
+  .icon-glass-bg {
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 12px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(6.1px);
+    -webkit-backdrop-filter: blur(6.1px);
+    border: 1px solid rgba(255, 255, 255, 0.23);
+  }
+
+  .inventory-qty {
+    height: 52px;
+    /* width: 60px; */
+    aspect-ratio: 1/1;
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+
+  .bg-custom {
+    background-image: linear-gradient(
+      to right top,
+      #ffffe9,
+      #fbffe4,
+      #f5ffdf,
+      #eeffdb,
+      #e6ffd8,
+      #daffde,
+      #cfffe4,
+      #c5feec,
+      #c1fbf9,
+      #c5f6ff,
+      #d0f0ff,
+      #dceaff
+    );
+  }
+
+  .custom-viewheight {
+    height: 300vh;
+  }
+
+  .parallax {
+    /* The image used */
+    background-image: url("../assets/img/food_on_table.webp");
+
+    /* Set a specific height */
+    min-height: 100%;
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
     background-size: cover;
+
+    /* Turn off parallax scrolling for all tablets and phones. Increase/decrease the pixels if needed */
+    @media only screen and (max-device-width: 991px) {
+      background-attachment: scroll;
+    }
+
+    &#parallax-recipe-generator {
+      background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+        url("../assets/img/cooking.webp") no-repeat fixed center;
+      background-size: cover;
+    }
+
+    &#parallax-marketplace {
+      background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+        url("../assets/img/grocery_store_aisle.webp") no-repeat fixed center;
+      background-size: cover;
+    }
   }
 
-  &#parallax-marketplace {
-    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-      url("../assets/img/grocery_store_aisle.webp") no-repeat fixed center;
-    background-size: cover;
+  .paper {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    /* min-width: 400px; */
+    height: 280px;
+    /* margin: 0 auto; */
+    background: #fafafa;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+
+    @media (min-width: 767px) {
+      width: 80%;
+    }
   }
-}
 
-.paper {
-  position: relative;
-  width: 100%;
-  max-width: 800px;
-  /* min-width: 400px; */
-  height: 280px;
-  /* margin: 0 auto; */
-  background: #fafafa;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  overflow: hidden;
-
-  @media (min-width: 767px) {
-    width: 80%;
+  .paper:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    background: radial-gradient(#575450 6px, transparent 7px) repeat-y;
+    background-size: 30px 30px;
+    border-right: 3px solid #d44147;
+    box-sizing: border-box;
   }
-}
 
-.paper:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 40px;
-  background: radial-gradient(#575450 6px, transparent 7px) repeat-y;
-  background-size: 30px 30px;
-  border-right: 3px solid #d44147;
-  box-sizing: border-box;
-}
-
-.paper-content {
-  position: absolute;
-  top: 30px;
-  right: 0;
-  bottom: 30px;
-  left: 40px;
-  background: linear-gradient(transparent, transparent 36px, #91d1d3 36px);
-  background-size: 38px 38px;
-}
-
-/* (A) SPEECH BOX */
-.speech {
-  /* (A1) FONT */
-  /* (A2) COLORS */
-  color: #fff;
-  /* background-color: #a53d38; */
-
-  /* (A3) DIMENSIONS + POSITION */
-  position: relative;
-  padding: 20px;
-  border-radius: 10px;
-  /* margin: 50px auto; */
-  /* max-width: 320px; */
-}
-
-/* (B) ADD SPEECH "CALLOUT TAIL" */
-/* (B1) USE ::AFTER TO CREATE THE "TAIL" */
-.speech::after {
-  /* (B1-1) ATTACH TRANSPARENT BORDERS */
-  content: "";
-  border: 20px solid transparent;
-
-  /* (B1-2) NECESSARY TO POSITION THE "TAIL" */
-  position: absolute;
-}
-
-/* (C) DIFFERENT TAIL POSITIONS */
-/* (C1) TOP */
-.top.speech::after {
-  /* (C1-1) UP TRIANGLE */
-  border-bottom-color: rgba(255, 255, 255, 0.18);
-  border-top: 0;
-
-  /* (C1-2) POSITION AT TOP */
-  top: -21px;
-  right: 8%;
-  /* margin-left: -20px; */
-}
-
-.css-card {
-  position: relative;
-  /* width: 300px; */
-  height: 300px;
-  background-color: #fff;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  perspective: 1000px;
-  /* box-shadow: 0 0 0 5px #ffffff80; */
-  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.css-card svg {
-  /* width: 48px; */
-  fill: #333;
-  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.css-card:hover {
-  /* transform: scale(); */
-  box-shadow: 0 8px 16px rgba(255, 255, 255, 0.2);
-}
-
-.card__content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  padding: 20px;
-  box-sizing: border-box;
-  background-color: #f2f2f2;
-  transform: translateY(350px);
-  transform-origin: bottom;
-  transition: all 0.2s cubic-bezier(0.175, 0.5, 0.32, 1);
-}
-
-.css-card:hover .card__content {
-  transform: rotateX(0deg);
-}
-
-.card__title {
-  margin: 0;
-  font-size: 24px;
-  color: #333;
-  font-weight: 700;
-}
-
-.css-card:hover svg {
-  scale: 0;
-}
-
-.card__description {
-  margin: 10px 0 0;
-  font-size: 14px;
-  color: #777;
-  line-height: 1.4;
-}
-
-#marketplace-card {
-  /* border-radius: 18px; */
-  width: 100% !important;
-
-  @media (min-width: 992px) {
-    width: 50% !important;
+  .paper-content {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    bottom: 30px;
+    left: 40px;
+    background: linear-gradient(transparent, transparent 36px, #91d1d3 36px);
+    background-size: 38px 38px;
   }
-}
+
+  /* (A) SPEECH BOX */
+  .speech {
+    /* (A1) FONT */
+    /* (A2) COLORS */
+    color: #fff;
+    /* background-color: #a53d38; */
+
+    /* (A3) DIMENSIONS + POSITION */
+    position: relative;
+    padding: 20px;
+    border-radius: 10px;
+    /* margin: 50px auto; */
+    /* max-width: 320px; */
+  }
+
+  /* (B) ADD SPEECH "CALLOUT TAIL" */
+  /* (B1) USE ::AFTER TO CREATE THE "TAIL" */
+  .speech::after {
+    /* (B1-1) ATTACH TRANSPARENT BORDERS */
+    content: "";
+    border: 20px solid transparent;
+
+    /* (B1-2) NECESSARY TO POSITION THE "TAIL" */
+    position: absolute;
+  }
+
+  /* (C) DIFFERENT TAIL POSITIONS */
+  /* (C1) TOP */
+  .top.speech::after {
+    /* (C1-1) UP TRIANGLE */
+    border-bottom-color: rgba(255, 255, 255, 0.18);
+    border-top: 0;
+
+    /* (C1-2) POSITION AT TOP */
+    top: -21px;
+    right: 8%;
+    /* margin-left: -20px; */
+  }
+
+  .css-card {
+    position: relative;
+    /* width: 300px; */
+    height: 300px;
+    background-color: #fff;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    perspective: 1000px;
+    /* box-shadow: 0 0 0 5px #ffffff80; */
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .css-card svg {
+    /* width: 48px; */
+    fill: #333;
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .css-card:hover {
+    /* transform: scale(); */
+    box-shadow: 0 8px 16px rgba(255, 255, 255, 0.2);
+  }
+
+  .card__content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #f2f2f2;
+    transform: translateY(350px);
+    transform-origin: bottom;
+    transition: all 0.2s cubic-bezier(0.175, 0.5, 0.32, 1);
+  }
+
+  .css-card:hover .card__content {
+    transform: rotateX(0deg);
+  }
+
+  .card__title {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+    font-weight: 700;
+  }
+
+  .css-card:hover svg {
+    scale: 0;
+  }
+
+  .card__description {
+    margin: 10px 0 0;
+    font-size: 14px;
+    color: #777;
+    line-height: 1.4;
+  }
+
+  #marketplace-card {
+    /* border-radius: 18px; */
+    width: 100% !important;
+
+    @media (min-width: 992px) {
+      width: 50% !important;
+    }
+  }
 </style>
