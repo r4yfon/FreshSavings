@@ -9,6 +9,7 @@
         height="45"
         class="d-inline-block align-text-top" />
     </a>
+    <span></span>
     <button
       class="navbar-toggler"
       type="button"
@@ -105,212 +106,212 @@
 </template>
 
 <script>
-export default {
-  name: "NavBar",
-  data() {
-    return {
-      isLoggedIn: false,
-    };
-  },
+  export default {
+    name: "NavBar",
+    data() {
+      return {
+        isLoggedIn: false,
+      };
+    },
 
-  created() {
-    this.checkLoginStatus();
-  },
-  methods: {
-    checkLoginStatus() {
-      const sessionData = JSON.parse(localStorage.getItem("session"));
-      if (sessionData && sessionData.user && sessionData.user.email) {
-        // Assuming that the presence of the user's email indicates a valid login session
-        this.isLoggedIn = true;
-      } else {
+    created() {
+      this.checkLoginStatus();
+    },
+    methods: {
+      checkLoginStatus() {
+        const sessionData = JSON.parse(localStorage.getItem("session"));
+        if (sessionData && sessionData.user && sessionData.user.email) {
+          // Assuming that the presence of the user's email indicates a valid login session
+          this.isLoggedIn = true;
+        } else {
+          this.isLoggedIn = false;
+        }
+      },
+      popupFunction() {
+        let profile = document.querySelector(".profile");
+        let menu = document.querySelector(".menu");
+        menu.classList.toggle("active");
+      },
+      logout() {
+        localStorage.clear();
         this.isLoggedIn = false;
-      }
+        this.$router.push("/");
+      },
     },
-    popupFunction() {
-      let profile = document.querySelector(".profile");
-      let menu = document.querySelector(".menu");
-      menu.classList.toggle("active");
-    },
-    logout() {
-      localStorage.clear();
-      this.isLoggedIn = false;
-      this.$router.push("/");
-    },
-  },
-};
+  };
 </script>
 
 <style scoped>
-img {
-  max-width: 100%;
-  padding-left: 10%;
-}
-
-.navbar {
-  width: 100%;
-  margin: auto;
-  padding: 35px 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: #508e46;
-  box-shadow: 0 3px 12px #00000014;
-  background-color: white;
-}
-
-.logo {
-  width: 120px;
-  cursor: pointer;
-}
-
-.navbar ul li {
-  list-style: none;
-  display: inline-block;
-  margin: 0 20px;
-  position: relative;
-}
-
-.navbar ul li a {
-  text-decoration: none;
-  color: #fff;
-  text-transform: uppercase;
-}
-
-.navbar ul li::after {
-  content: "";
-  height: 3px;
-  width: 0;
-  /* width is set to 0 so that the bar below it is hidden until cursor is hovered over */
-  background: #009688;
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  transition: 0.5s;
-  /* when cursor is hovered over, it appears from left to right in 0.5s */
-}
-
-.navbar ul li:not(.login-item):hover::after {
-  width: 100%;
-}
-
-.navbar-nav {
-  margin-left: auto;
-}
-
-.nav-link {
-  color: #508e46 !important;
-}
-
-@media (min-width: 1025px) {
-  .h-custom {
-    height: 100vh !important;
+  img {
+    max-width: 100%;
+    padding-left: 10%;
   }
-}
 
-/* profile menu */
-.profile {
-  position: relative;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  text-align: end;
-}
+  .navbar {
+    width: 100%;
+    margin: auto;
+    padding: 35px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #508e46;
+    box-shadow: 0 3px 12px #00000014;
+    background-color: white;
+  }
 
-.profile h3 {
-  text-align: end;
-  line-height: 1;
-  margin-bottom: 4px;
-  font-weight: 600;
-}
+  .logo {
+    width: 120px;
+    cursor: pointer;
+  }
 
-.profile p {
-  line-height: 1;
-  font-size: 14px;
-  opacity: 0.6;
-}
+  .navbar ul li {
+    list-style: none;
+    display: inline-block;
+    margin: 0 20px;
+    position: relative;
+  }
 
-.profile .img-box {
-  position: relative;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  overflow: hidden;
-}
+  .navbar ul li a {
+    text-decoration: none;
+    color: #fff;
+    text-transform: uppercase;
+  }
 
-.profile .img-box img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+  .navbar ul li::after {
+    content: "";
+    height: 3px;
+    width: 0;
+    /* width is set to 0 so that the bar below it is hidden until cursor is hovered over */
+    background: #009688;
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    transition: 0.5s;
+    /* when cursor is hovered over, it appears from left to right in 0.5s */
+  }
 
-/* menu (the right one) */
+  .navbar ul li:not(.login-item):hover::after {
+    width: 100%;
+  }
 
-.menu {
-  position: absolute;
-  top: calc(100% + 24px);
-  right: 16px;
-  width: 200px;
-  min-height: 100px;
-  background: #fff;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  opacity: 0;
-  transform: translateY(-10px);
-  visibility: hidden;
-  transition: 300ms;
-}
+  .navbar-nav {
+    margin-left: auto;
+  }
 
-.menu::before {
-  content: "";
-  position: absolute;
-  top: -10px;
-  right: 0px;
-  width: 20px;
-  height: 20px;
-  background: #fff;
-  transform: rotate(45deg);
-  z-index: -1;
-}
+  .nav-link {
+    color: #508e46 !important;
+  }
 
-.menu.active {
-  opacity: 1;
-  transform: translateY(0);
-  visibility: visible;
-}
+  @media (min-width: 1025px) {
+    .h-custom {
+      height: 100vh !important;
+    }
+  }
 
-/* menu links */
+  /* profile menu */
+  .profile {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    text-align: end;
+  }
 
-.menu ul {
-  position: relative;
-  flex-direction: column;
-  z-index: 10;
-  background: #fff;
-  right: -5px;
-  padding-left: 0px;
-}
+  .profile h3 {
+    text-align: end;
+    line-height: 1;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
 
-.menu ul li {
-  list-style: none;
-}
+  .profile p {
+    line-height: 1;
+    font-size: 14px;
+    opacity: 0.6;
+  }
 
-.menu ul li:hover {
-  background: #eee;
-}
+  .profile .img-box {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
 
-.menu ul li a {
-  text-decoration: none;
-  color: #000;
-  display: flex;
-  text-align: center;
-  padding: 10px 10px;
-  gap: 6px;
-}
+  .profile .img-box img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
-.menu ul li a i {
-  font-size: 1.2em;
-}
+  /* menu (the right one) */
+
+  .menu {
+    position: absolute;
+    top: calc(100% + 24px);
+    right: 16px;
+    width: 200px;
+    min-height: 100px;
+    background: #fff;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(-10px);
+    visibility: hidden;
+    transition: 300ms;
+  }
+
+  .menu::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    right: 0px;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    transform: rotate(45deg);
+    z-index: -1;
+  }
+
+  .menu.active {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+  }
+
+  /* menu links */
+
+  .menu ul {
+    position: relative;
+    flex-direction: column;
+    z-index: 10;
+    background: #fff;
+    right: -5px;
+    padding-left: 0px;
+  }
+
+  .menu ul li {
+    list-style: none;
+  }
+
+  .menu ul li:hover {
+    background: #eee;
+  }
+
+  .menu ul li a {
+    text-decoration: none;
+    color: #000;
+    display: flex;
+    text-align: center;
+    padding: 10px 10px;
+    gap: 6px;
+  }
+
+  .menu ul li a i {
+    font-size: 1.2em;
+  }
 </style>
